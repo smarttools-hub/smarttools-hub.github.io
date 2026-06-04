@@ -3,134 +3,431 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartToolsHub - Compound Interest Calculator</title>
-
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="shortcut icon" href="favicon.svg">
+<meta name="description" content="SmartToolsHub — Free online calculators: Age, Calories, Retirement, Inflation, Compound Interest. Simple tools that make life easier.">
+<title>SmartToolsHub — Free Smart Calculators</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --cream: #F7F3EC;
+    --warm-white: #FDFAF5;
+    --gold: #C9A84C;
+    --gold-light: #E8CC7A;
+    --amber: #A0672A;
+    --charcoal: #2C2416;
+    --muted: #8C7B63;
+    --card: #FFFFFF;
+    --border: rgba(201,168,76,0.22);
+    --shadow: 0 4px 32px rgba(44,36,22,0.07), 0 1px 4px rgba(44,36,22,0.04);
 
-body{
-font-family: Arial, sans-serif;
-background:#f5f7fb;
-margin:0;
-padding:0;
-}
+    /* Tool accent colors */
+    --age-color: #A0672A;
+    --cal-color: #5A8A5E;
+    --ret-color: #4A7FA5;
+    --inf-color: #B55A4A;
+    --ci-color:  #3A8C80;
+  }
 
-header{
-background:#2563eb;
-color:white;
-padding:20px;
-text-align:center;
-}
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-.container{
-max-width:700px;
-margin:40px auto;
-background:white;
-padding:30px;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
+  html { scroll-behavior: smooth; }
 
-h2{
-text-align:center;
-margin-bottom:20px;
-}
+  body {
+    background-color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--charcoal);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 10% 0%, rgba(201,168,76,0.10) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 90% 100%, rgba(160,103,42,0.07) 0%, transparent 70%);
+  }
 
-input{
-width:100%;
-padding:10px;
-margin:10px 0;
-border-radius:5px;
-border:1px solid #ccc;
-}
+  /* ─── NAV ──────────────────────────────────────── */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 3rem;
+    background: rgba(247,243,236,0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 0.55rem;
+    text-decoration: none;
+  }
+  .nav-brand .logo-mark {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; color: white;
+    box-shadow: 0 2px 8px rgba(201,168,76,0.35);
+    flex-shrink: 0;
+  }
+  .nav-brand .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700;
+    color: var(--charcoal); letter-spacing: -0.01em;
+  }
+  .nav-brand .brand-name span { color: var(--gold); }
+  .nav-tagline {
+    font-size: 0.75rem; color: var(--muted);
+    letter-spacing: 0.05em; text-transform: uppercase;
+    display: none;
+  }
+  @media(min-width:600px) { .nav-tagline { display: block; } }
 
-button{
-width:100%;
-padding:12px;
-background:#2563eb;
-color:white;
-border:none;
-border-radius:5px;
-font-size:16px;
-cursor:pointer;
-}
+  /* ─── HERO ─────────────────────────────────────── */
+  .hero {
+    max-width: 900px; margin: 0 auto;
+    padding: 5rem 2rem 3.5rem;
+    text-align: center;
+    animation: fadeDown 0.7s ease both;
+  }
+  .hero-pill {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.73rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.9rem; border-radius: 20px;
+    margin-bottom: 1.5rem;
+    background: rgba(201,168,76,0.07);
+  }
+  .hero-pill::before { content: '✦'; font-size: 0.6rem; }
 
-button:hover{
-background:#1d4ed8;
-}
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    font-weight: 700; line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.2rem;
+    color: var(--charcoal);
+  }
+  .hero h1 em { font-style: italic; color: var(--amber); }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--muted);
+    max-width: 480px; margin: 0 auto 2.5rem;
+    line-height: 1.7; font-weight: 300;
+  }
+  .hero-stats {
+    display: inline-flex; gap: 2.5rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow);
+  }
+  .stat { text-align: center; }
+  .stat .n { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--amber); }
+  .stat .l { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.1rem; }
 
-.result{
-margin-top:20px;
-font-size:18px;
-text-align:center;
-font-weight:bold;
-}
+  /* ─── TOOLS SECTION ────────────────────────────── */
+  .tools-section {
+    max-width: 1020px; margin: 0 auto;
+    padding: 0 1.5rem 5rem;
+  }
+  .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.7s ease 0.15s both;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 700;
+    color: var(--charcoal);
+  }
+  .section-header p { font-size: 0.85rem; color: var(--muted); }
 
-footer{
-text-align:center;
-padding:20px;
-margin-top:40px;
-color:#666;
-}
+  /* ─── GRID ─────────────────────────────────────── */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1.1rem;
+  }
+  /* Featured: Age (col 1-7) and CI (col 7-13) on row 1 */
+  .tool-card:nth-child(1) { grid-column: 1 / 8; }
+  .tool-card:nth-child(2) { grid-column: 8 / 13; }
+  /* Row 2: three cards */
+  .tool-card:nth-child(3) { grid-column: 1 / 5; }
+  .tool-card:nth-child(4) { grid-column: 5 / 9; }
+  .tool-card:nth-child(5) { grid-column: 9 / 13; }
 
+  @media(max-width: 780px) {
+    .tools-grid { display: flex; flex-direction: column; }
+  }
+
+  /* ─── CARD ─────────────────────────────────────── */
+  .tool-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 2rem 1.7rem;
+    text-decoration: none;
+    color: var(--charcoal);
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+    transition: transform 0.22s cubic-bezier(.22,.68,0,1.2), box-shadow 0.22s ease, border-color 0.2s;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.6s ease both;
+  }
+  .tool-card:nth-child(1) { animation-delay: 0.2s; }
+  .tool-card:nth-child(2) { animation-delay: 0.28s; }
+  .tool-card:nth-child(3) { animation-delay: 0.36s; }
+  .tool-card:nth-child(4) { animation-delay: 0.44s; }
+  .tool-card:nth-child(5) { animation-delay: 0.52s; }
+
+  .tool-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 0%, var(--accent-bg, rgba(201,168,76,0.06)), transparent 70%);
+    pointer-events: none;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .tool-card:hover { transform: translateY(-5px); box-shadow: 0 12px 48px rgba(44,36,22,0.10); }
+  .tool-card:hover { border-color: var(--accent-color, var(--gold)); }
+  .tool-card:hover::before { opacity: 1; }
+
+  /* Accent per card */
+  .tool-card[data-accent="age"]  { --accent-color: var(--age-color); --accent-bg: rgba(160,103,42,0.07); }
+  .tool-card[data-accent="cal"]  { --accent-color: var(--cal-color); --accent-bg: rgba(90,138,94,0.07); }
+  .tool-card[data-accent="ret"]  { --accent-color: var(--ret-color); --accent-bg: rgba(74,127,165,0.07); }
+  .tool-card[data-accent="inf"]  { --accent-color: var(--inf-color); --accent-bg: rgba(181,90,74,0.07); }
+  .tool-card[data-accent="ci"]   { --accent-color: var(--ci-color);  --accent-bg: rgba(58,140,128,0.07); }
+
+  /* Corner decoration */
+  .card-deco {
+    position: absolute; top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    opacity: 0.07;
+    background: var(--accent-color, var(--gold));
+    transition: transform 0.4s ease, opacity 0.3s;
+  }
+  .tool-card:hover .card-deco { transform: scale(1.4); opacity: 0.12; }
+
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(247,243,236,0.6));
+    border: 1px solid rgba(201,168,76,0.2);
+    margin-bottom: 1.2rem;
+    box-shadow: 0 2px 8px rgba(44,36,22,0.07);
+    flex-shrink: 0;
+  }
+  .tool-card:nth-child(1) .card-icon, .tool-card:nth-child(2) .card-icon { font-size: 1.8rem; width: 56px; height: 56px; }
+
+  .card-label {
+    font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--accent-color, var(--gold));
+    margin-bottom: 0.45rem;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; color: var(--charcoal);
+    margin-bottom: 0.6rem; line-height: 1.2;
+  }
+  .tool-card:nth-child(1) .card-title,
+  .tool-card:nth-child(2) .card-title { font-size: 1.55rem; }
+  .tool-card:nth-child(3) .card-title,
+  .tool-card:nth-child(4) .card-title,
+  .tool-card:nth-child(5) .card-title { font-size: 1.2rem; }
+
+  .card-desc {
+    font-size: 0.87rem; color: var(--muted); line-height: 1.6;
+    flex: 1; font-weight: 300;
+  }
+  .tool-card:nth-child(3) .card-desc,
+  .tool-card:nth-child(4) .card-desc,
+  .tool-card:nth-child(5) .card-desc { font-size: 0.82rem; }
+
+  .card-cta {
+    margin-top: 1.5rem;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--accent-color, var(--amber));
+    letter-spacing: 0.04em;
+    transition: gap 0.2s;
+  }
+  .tool-card:hover .card-cta { gap: 0.7rem; }
+  .card-cta::after { content: '→'; transition: transform 0.2s; }
+  .tool-card:hover .card-cta::after { transform: translateX(3px); }
+
+  /* Tags on featured cards */
+  .card-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1rem; }
+  .tag {
+    font-size: 0.7rem; padding: 0.2rem 0.6rem;
+    border-radius: 20px; border: 1px solid var(--border);
+    color: var(--muted); background: var(--cream);
+    font-weight: 500;
+  }
+
+  /* ─── FEATURES BAND ────────────────────────────── */
+  .features-band {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: white;
+    padding: 2rem 3rem;
+    display: flex; justify-content: center; align-items: center;
+    gap: 3rem; flex-wrap: wrap;
+    margin-bottom: 0;
+  }
+  .feature-item {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.85rem; color: var(--muted);
+  }
+  .feature-item .fi { font-size: 1.1rem; }
+  .feature-item strong { color: var(--charcoal); font-weight: 500; }
+
+  /* ─── FOOTER ────────────────────────────────────── */
+  footer {
+    padding: 2.5rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .footer-brand {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; color: var(--charcoal);
+  }
+  .footer-brand .dot { color: var(--gold); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { text-decoration: none; font-size: 0.82rem; color: var(--muted); transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+  /* ─── ANIMATIONS ───────────────────────────────── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 </style>
-
 </head>
-
 <body>
 
-<header>
-<h1>SmartToolsHub</h1>
-<p>Simple Tools for Everyday Life</p>
-</header>
+<!-- ─── NAVIGATION ──────────────────────────────── -->
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="logo-mark">✦</div>
+    <span class="brand-name">Smart<span>Tools</span>Hub</span>
+  </a>
+  <span class="nav-tagline">Free Online Calculators</span>
+</nav>
 
-<div class="container">
+<!-- ─── HERO ────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-pill">Free Smart Tools</div>
+  <h1>Simple tools that<br>make life <em>easier</em></h1>
+  <p class="hero-sub">Beautiful, accurate calculators for your everyday decisions — no ads, no signup, always free.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="n">5</div><div class="l">Calculators</div></div>
+    <div class="stat"><div class="n">100%</div><div class="l">Free</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">Sign-up needed</div></div>
+  </div>
+</section>
 
-<h2>Compound Interest Calculator</h2>
+<!-- ─── TOOLS GRID ──────────────────────────────── -->
+<section class="tools-section">
+  <div class="section-header">
+    <h2>All Calculators</h2>
+    <p>Pick a tool to get started</p>
+  </div>
 
-<label>Initial Investment ($)</label>
-<input type="number" id="principal" placeholder="1000">
+  <div class="tools-grid">
 
-<label>Monthly Contribution ($)</label>
-<input type="number" id="monthly" placeholder="100">
+    <!-- Age -->
+    <a href="age-calculator.html" class="tool-card" data-accent="age">
+      <div class="card-deco"></div>
+      <div class="card-icon">🗓️</div>
+      <div class="card-label">Life · Time</div>
+      <div class="card-title">Age Calculator</div>
+      <p class="card-desc">Find your exact age in years, months and days — plus a countdown to your next birthday. Works for any date in history.</p>
+      <div class="card-tags">
+        <span class="tag">Years · Months · Days</span>
+        <span class="tag">Birthday countdown</span>
+        <span class="tag">Total hours</span>
+      </div>
+      <div class="card-cta">Calculate my age</div>
+    </a>
 
-<label>Annual Interest Rate (%)</label>
-<input type="number" id="rate" placeholder="5">
+    <!-- Compound Interest -->
+    <a href="compound-interest-calculator.html" class="tool-card" data-accent="ci">
+      <div class="card-deco"></div>
+      <div class="card-icon">💰</div>
+      <div class="card-label">Finance · Savings</div>
+      <div class="card-title">Compound Interest Calculator</div>
+      <p class="card-desc">Watch your money grow with the power of compounding. Visualise principal, contributions and interest over time — with tax impact.</p>
+      <div class="card-tags">
+        <span class="tag">Yearly breakdown</span>
+        <span class="tag">Monthly contributions</span>
+        <span class="tag">Tax-adjusted</span>
+      </div>
+      <div class="card-cta">Grow my savings</div>
+    </a>
 
-<label>Years</label>
-<input type="number" id="years" placeholder="10">
+    <!-- Calories -->
+    <a href="calorie-calculator.html" class="tool-card" data-accent="cal">
+      <div class="card-deco"></div>
+      <div class="card-icon">🔥</div>
+      <div class="card-label">Health · Nutrition</div>
+      <div class="card-title">Calorie Calculator</div>
+      <p class="card-desc">Get your daily calorie needs based on age, weight, height and activity level — using the Mifflin-St Jeor formula.</p>
+      <div class="card-cta">Calculate calories</div>
+    </a>
 
-<button onclick="calculate()">Calculate</button>
+    <!-- Retirement -->
+    <a href="retirement-calculator.html" class="tool-card" data-accent="ret">
+      <div class="card-deco"></div>
+      <div class="card-icon">🌅</div>
+      <div class="card-label">Finance · Planning</div>
+      <div class="card-title">Retirement Calculator</div>
+      <p class="card-desc">Plan your retirement target, see how much to save monthly, and track your progress toward financial independence.</p>
+      <div class="card-cta">Plan my retirement</div>
+    </a>
 
-<div class="result" id="result"></div>
+    <!-- Inflation -->
+    <a href="inflation-calculator.html" class="tool-card" data-accent="inf">
+      <div class="card-deco"></div>
+      <div class="card-icon">📈</div>
+      <div class="card-label">Finance · Economy</div>
+      <div class="card-title">Inflation Calculator</div>
+      <p class="card-desc">See how inflation erodes purchasing power. Convert money values across any two years — past or future.</p>
+      <div class="card-cta">Check inflation</div>
+    </a>
 
+  </div>
+</section>
+
+<!-- ─── FEATURES BAND ─────────────────────────────── -->
+<div class="features-band">
+  <div class="feature-item"><span class="fi">⚡</span><span><strong>Instant results</strong> — no loading</span></div>
+  <div class="feature-item"><span class="fi">🔒</span><span><strong>100% private</strong> — all calculations local</span></div>
+  <div class="feature-item"><span class="fi">📱</span><span><strong>Mobile-friendly</strong> — works everywhere</span></div>
+  <div class="feature-item"><span class="fi">🎯</span><span><strong>Accurate</strong> — proven formulas</span></div>
 </div>
 
+<!-- ─── FOOTER ──────────────────────────────────── -->
 <footer>
-© 2026 SmartToolsHub
+  <div class="footer-brand">Smart<span class="dot">Tools</span>Hub</div>
+  <div class="footer-links">
+    <a href="age-calculator.html">Age</a>
+    <a href="calorie-calculator.html">Calories</a>
+    <a href="retirement-calculator.html">Retirement</a>
+    <a href="inflation-calculator.html">Inflation</a>
+    <a href="compound-interest-calculator.html">Compound Interest</a>
+  </div>
+  <p class="footer-copy">SmartToolsHub © 2026 · Free Online Tools</p>
 </footer>
 
-<script>
-
-function calculate(){
-
-let principal = parseFloat(document.getElementById("principal").value) || 0;
-let monthly = parseFloat(document.getElementById("monthly").value) || 0;
-let rate = parseFloat(document.getElementById("rate").value) / 100 / 12 || 0;
-let years = parseFloat(document.getElementById("years").value) * 12 || 0;
-
-let total = principal;
-
-for(let i=0;i<years;i++){
-total = total * (1 + rate) + monthly;
-}
-
-document.getElementById("result").innerHTML =
-"Total Value: $" + total.toFixed(2);
-
-}
-
-</script>
-
 </body>
-
 </html>
