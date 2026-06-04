@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartToolsHub - Compound Interest Calculator</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+background:#f5f7fb;
+margin:0;
+padding:0;
+}
+
+header{
+background:#2563eb;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+.container{
+max-width:700px;
+margin:40px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:5px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+.result{
+margin-top:20px;
+font-size:18px;
+text-align:center;
+font-weight:bold;
+}
+
+footer{
+text-align:center;
+padding:20px;
+margin-top:40px;
+color:#666;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>SmartToolsHub</h1>
+<p>Simple Tools for Everyday Life</p>
+</header>
+
+<div class="container">
+
+<h2>Compound Interest Calculator</h2>
+
+<label>Initial Investment ($)</label>
+<input type="number" id="principal" placeholder="1000">
+
+<label>Monthly Contribution ($)</label>
+<input type="number" id="monthly" placeholder="100">
+
+<label>Annual Interest Rate (%)</label>
+<input type="number" id="rate" placeholder="5">
+
+<label>Years</label>
+<input type="number" id="years" placeholder="10">
+
+<button onclick="calculate()">Calculate</button>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<footer>
+© 2026 SmartToolsHub
+</footer>
+
+<script>
+
+function calculate(){
+
+let principal = parseFloat(document.getElementById("principal").value) || 0;
+let monthly = parseFloat(document.getElementById("monthly").value) || 0;
+let rate = parseFloat(document.getElementById("rate").value) / 100 / 12 || 0;
+let years = parseFloat(document.getElementById("years").value) * 12 || 0;
+
+let total = principal;
+
+for(let i=0;i<years;i++){
+total = total * (1 + rate) + monthly;
+}
+
+document.getElementById("result").innerHTML =
+"Total Value: $" + total.toFixed(2);
+
+}
+
+</script>
+
+</body>
+
+</html>
