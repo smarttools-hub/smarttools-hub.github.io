@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="shortcut icon" href="favicon.svg">
+<meta name="description" data-i18n-meta="meta_desc" content="À propos de SmartToolsHub — notre mission : des calculateurs en ligne gratuits, précis et respectueux de votre vie privée.">
+<title>À propos — SmartToolsHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:#F7F3EC; --warm-white:#FDFAF5; --gold:#C9A84C; --gold-light:#E8CC7A;
+    --amber:#A0672A; --charcoal:#2C2416; --muted:#8C7B63; --card:#FFFFFF;
+    --border:rgba(201,168,76,0.22); --shadow:0 4px 32px rgba(44,36,22,0.07),0 1px 4px rgba(44,36,22,0.04);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background-color:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charcoal);min-height:100vh;overflow-x:hidden;
+    background-image:radial-gradient(ellipse 80% 50% at 10% 0%,rgba(201,168,76,0.10) 0%,transparent 70%),radial-gradient(ellipse 60% 40% at 90% 100%,rgba(160,103,42,0.07) 0%,transparent 70%);}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 3rem;background:rgba(247,243,236,0.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  @media(max-width:600px){nav{padding:1.1rem 1.3rem;}}
+  .nav-brand{display:flex;align-items:center;gap:0.55rem;text-decoration:none;}
+  .nav-brand .logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--amber));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:white;box-shadow:0 2px 8px rgba(201,168,76,0.35);flex-shrink:0;}
+  .nav-brand .brand-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--charcoal);letter-spacing:-0.01em;}
+  .nav-brand .brand-name span{color:var(--gold);}
+  .nav-right{display:flex;align-items:center;gap:1.4rem;}
+  .lang{position:relative;}
+  .lang-btn{display:flex;align-items:center;gap:0.5rem;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:0.4rem 0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--charcoal);transition:border-color 0.2s;}
+  .lang-btn:hover{border-color:var(--gold);}
+  .lang-btn .flag{font-size:1.1rem;line-height:1;}
+  .lang-btn .chev{font-size:0.6rem;color:var(--muted);}
+  .lang-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.4rem;min-width:168px;display:none;box-shadow:0 12px 32px rgba(44,36,22,0.15);z-index:200;}
+  .lang-menu.open{display:block;}
+  .lang-opt{display:flex;align-items:center;gap:0.6rem;width:100%;background:none;border:none;color:var(--charcoal);font-family:'DM Sans',sans-serif;font-size:0.85rem;padding:0.55rem 0.7rem;border-radius:8px;cursor:pointer;text-align:left;transition:background 0.15s;}
+  .lang-opt:hover{background:var(--cream);}
+  .lang-opt .flag{font-size:1.1rem;}
+  .lang-opt.active{color:var(--gold);font-weight:600;}
+  @media(max-width:600px){.lang-btn .label{display:none;}}
+
+  .ad-slot{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.5);border:1px dashed var(--border);border-radius:14px;color:var(--muted);overflow:hidden;}
+  .ad-slot .ad-label{font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;}
+  .ad-header{max-width:970px;margin:1.2rem auto 0;min-height:90px;}
+  .ad-footer{max-width:970px;margin:2rem auto;min-height:90px;}
+
+  .content{max-width:760px;margin:0 auto;padding:3rem 1.5rem 2rem;animation:fadeUp 0.6s ease both;}
+  .page-pill{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.73rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:0.3rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;background:rgba(201,168,76,0.07);}
+  .page-pill::before{content:'✦';font-size:0.6rem;}
+  h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin-bottom:1.5rem;}
+  h1 em{font-style:italic;color:var(--amber);}
+  h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin:2.2rem 0 0.8rem;color:var(--charcoal);}
+  p{color:var(--charcoal);font-size:1rem;line-height:1.8;margin-bottom:1rem;font-weight:300;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.2rem;box-shadow:var(--shadow);margin-top:1rem;}
+  .values{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+  @media(max-width:560px){.values{grid-template-columns:1fr;}}
+  .value-item{background:var(--warm-white);border:1px solid var(--border);border-radius:14px;padding:1.3rem;}
+  .value-item .vi{font-size:1.5rem;margin-bottom:0.5rem;}
+  .value-item h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:0.3rem;}
+  .value-item p{font-size:0.85rem;color:var(--muted);margin:0;}
+  .back-link{display:inline-flex;align-items:center;gap:0.4rem;margin-top:2rem;text-decoration:none;color:var(--amber);font-weight:600;font-size:0.9rem;}
+  .back-link::before{content:'←';}
+
+  footer{padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border);}
+  .footer-brand{display:flex;align-items:center;gap:0.5rem;font-family:'Playfair Display',serif;font-size:1rem;color:var(--charcoal);}
+  .footer-brand .dot{color:var(--gold);}
+  .footer-links{display:flex;gap:1.5rem;flex-wrap:wrap;}
+  .footer-links a{text-decoration:none;font-size:0.82rem;color:var(--muted);transition:color 0.2s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-copy{font-size:0.78rem;color:var(--muted);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="logo-mark">✦</div>
+    <span class="brand-name">Smart<span>Tools</span>Hub</span>
+  </a>
+  <div class="nav-right">
+    <div class="lang">
+      <button class="lang-btn" id="langBtn">
+        <span class="flag" id="curFlag">🇫🇷</span>
+        <span class="label" id="curLabel">Français</span>
+        <span class="chev">▼</span>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-opt" data-lang="en"><span class="flag">🇬🇧</span> English</button>
+        <button class="lang-opt" data-lang="zh"><span class="flag">🇨🇳</span> 中文</button>
+        <button class="lang-opt" data-lang="ru"><span class="flag">🇷🇺</span> Русский</button>
+        <button class="lang-opt" data-lang="es"><span class="flag">🇪🇸</span> Español</button>
+        <button class="lang-opt" data-lang="pt"><span class="flag">🇵🇹</span> Português</button>
+        <button class="lang-opt active" data-lang="fr"><span class="flag">🇫🇷</span> Français</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="ad-slot ad-header">
+  <span class="ad-label" data-i18n="ad_label">Publicité</span>
+  <!-- AdSense header -->
+</div>
+
+<main class="content">
+  <div class="page-pill" data-i18n="pill">À propos</div>
+  <h1 data-i18n="h1">Des outils que nous aurions <em>aimé</em> avoir</h1>
+  <p data-i18n="intro">SmartToolsHub réunit des calculateurs en ligne simples, élégants et précis pour vos décisions du quotidien. Pas d'inscription, pas de jargon, pas de collecte de données : juste des outils qui fonctionnent.</p>
+
+  <div class="card">
+    <h2 data-i18n="mission_t">Notre mission</h2>
+    <p data-i18n="mission_p">Trop d'outils en ligne sont lents, encombrés de publicités intrusives ou réclament vos données personnelles. Nous voulions l'inverse : des calculateurs rapides, beaux et honnêtes, qui font une chose et la font bien. Chaque calcul s'effectue directement dans votre navigateur — vos données ne quittent jamais votre appareil.</p>
+
+    <h2 data-i18n="values_t">Ce qui compte pour nous</h2>
+    <div class="values">
+      <div class="value-item"><div class="vi">⚡</div><h3 data-i18n="v1_t">Rapidité</h3><p data-i18n="v1_p">Des résultats instantanés, sans temps de chargement.</p></div>
+      <div class="value-item"><div class="vi">🔒</div><h3 data-i18n="v2_t">Confidentialité</h3><p data-i18n="v2_p">Tous les calculs sont locaux. Rien n'est envoyé à un serveur.</p></div>
+      <div class="value-item"><div class="vi">🎯</div><h3 data-i18n="v3_t">Précision</h3><p data-i18n="v3_p">Des formules reconnues et vérifiées pour chaque outil.</p></div>
+      <div class="value-item"><div class="vi">🆓</div><h3 data-i18n="v4_t">Gratuité</h3><p data-i18n="v4_p">Tout est gratuit et le restera, sans inscription.</p></div>
+    </div>
+
+    <h2 data-i18n="ads_t">À propos des publicités</h2>
+    <p data-i18n="ads_p">Pour garder ce service gratuit, nous affichons des publicités fournies par des partenaires comme Google AdSense. Elles n'interfèrent pas avec les calculs et ne nous donnent jamais accès à vos données personnelles. Vous pouvez en savoir plus dans notre politique de confidentialité.</p>
+
+    <a href="index.html" class="back-link" data-i18n="back">Retour aux outils</a>
+  </div>
+</main>
+
+<div class="ad-slot ad-footer">
+  <span class="ad-label" data-i18n="ad_label">Publicité</span>
+  <!-- AdSense footer -->
+</div>
+
+<footer>
+  <div class="footer-brand">Smart<span class="dot">Tools</span>Hub</div>
+  <div class="footer-links">
+    <a href="index.html" data-i18n="f_home">Accueil</a>
+    <a href="about.html" data-i18n="f_about">À propos</a>
+    <a href="privacy.html" data-i18n="f_privacy">Confidentialité</a>
+    <a href="contact.html" data-i18n="f_contact">Contact</a>
+  </div>
+  <p class="footer-copy" data-i18n="f_copy">SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte</p>
+</footer>
+
+<script>
+const I18N = {
+  fr:{_flag:'🇫🇷',_label:'Français',_htmllang:'fr',
+    meta_desc:"À propos de SmartToolsHub — notre mission : des calculateurs en ligne gratuits, précis et respectueux de votre vie privée.",
+    title:"À propos — SmartToolsHub", pill:"À propos",
+    h1:"Des outils que nous aurions <em>aimé</em> avoir",
+    intro:"SmartToolsHub réunit des calculateurs en ligne simples, élégants et précis pour vos décisions du quotidien. Pas d'inscription, pas de jargon, pas de collecte de données : juste des outils qui fonctionnent.",
+    mission_t:"Notre mission",
+    mission_p:"Trop d'outils en ligne sont lents, encombrés de publicités intrusives ou réclament vos données personnelles. Nous voulions l'inverse : des calculateurs rapides, beaux et honnêtes, qui font une chose et la font bien. Chaque calcul s'effectue directement dans votre navigateur — vos données ne quittent jamais votre appareil.",
+    values_t:"Ce qui compte pour nous",
+    v1_t:"Rapidité",v1_p:"Des résultats instantanés, sans temps de chargement.",
+    v2_t:"Confidentialité",v2_p:"Tous les calculs sont locaux. Rien n'est envoyé à un serveur.",
+    v3_t:"Précision",v3_p:"Des formules reconnues et vérifiées pour chaque outil.",
+    v4_t:"Gratuité",v4_p:"Tout est gratuit et le restera, sans inscription.",
+    ads_t:"À propos des publicités",
+    ads_p:"Pour garder ce service gratuit, nous affichons des publicités fournies par des partenaires comme Google AdSense. Elles n'interfèrent pas avec les calculs et ne nous donnent jamais accès à vos données personnelles. Vous pouvez en savoir plus dans notre politique de confidentialité.",
+    back:"Retour aux outils",
+    f_home:"Accueil",f_about:"À propos",f_privacy:"Confidentialité",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte", ad_label:"Publicité"},
+  en:{_flag:'🇬🇧',_label:'English',_htmllang:'en',
+    meta_desc:"About SmartToolsHub — our mission: free, accurate, privacy-friendly online calculators.",
+    title:"About — SmartToolsHub", pill:"About",
+    h1:"Tools we <em>wished</em> we had",
+    intro:"SmartToolsHub brings together simple, beautiful and accurate online calculators for your everyday decisions. No signup, no jargon, no data collection — just tools that work.",
+    mission_t:"Our mission",
+    mission_p:"Too many online tools are slow, cluttered with intrusive ads, or demand your personal data. We wanted the opposite: fast, beautiful, honest calculators that do one thing well. Every calculation runs right in your browser — your data never leaves your device.",
+    values_t:"What matters to us",
+    v1_t:"Speed",v1_p:"Instant results, no loading time.",
+    v2_t:"Privacy",v2_p:"All calculations are local. Nothing is sent to a server.",
+    v3_t:"Accuracy",v3_p:"Recognised, verified formulas for every tool.",
+    v4_t:"Free",v4_p:"Everything is free and always will be, no signup.",
+    ads_t:"About the ads",
+    ads_p:"To keep this service free, we display ads from partners such as Google AdSense. They don't interfere with the calculations and never give us access to your personal data. Learn more in our privacy policy.",
+    back:"Back to the tools",
+    f_home:"Home",f_about:"About",f_privacy:"Privacy",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Free Online Tools · a Nordbyte project", ad_label:"Advertisement"},
+  zh:{_flag:'🇨🇳',_label:'中文',_htmllang:'zh',
+    meta_desc:"关于 SmartToolsHub — 我们的使命：免费、精确、保护隐私的在线计算器。",
+    title:"关于 — SmartToolsHub", pill:"关于",
+    h1:"我们<em>梦寐以求</em>的工具",
+    intro:"SmartToolsHub 汇集了简单、精美且精确的在线计算器，助您做出日常决策。无需注册，没有术语，不收集数据 — 只有真正好用的工具。",
+    mission_t:"我们的使命",
+    mission_p:"太多在线工具运行缓慢、充斥着侵扰式广告，或索取您的个人数据。我们想要相反的体验：快速、精美、诚实的计算器，专注做好一件事。每次计算都在您的浏览器中进行 — 您的数据绝不离开您的设备。",
+    values_t:"我们看重什么",
+    v1_t:"速度",v1_p:"即时结果，无需等待加载。",
+    v2_t:"隐私",v2_p:"所有计算均在本地完成，不向服务器发送任何内容。",
+    v3_t:"精确",v3_p:"每个工具都采用公认且经过验证的公式。",
+    v4_t:"免费",v4_p:"一切免费且永久免费，无需注册。",
+    ads_t:"关于广告",
+    ads_p:"为保持本服务免费，我们展示来自 Google AdSense 等合作伙伴的广告。它们不会干扰计算，也绝不会让我们获取您的个人数据。详情请见我们的隐私政策。",
+    back:"返回工具",
+    f_home:"首页",f_about:"关于",f_privacy:"隐私",f_contact:"联系",
+    f_copy:"SmartToolsHub © 2026 · 免费在线工具 · Nordbyte 出品", ad_label:"广告"},
+  ru:{_flag:'🇷🇺',_label:'Русский',_htmllang:'ru',
+    meta_desc:"О SmartToolsHub — наша миссия: бесплатные, точные и конфиденциальные онлайн-калькуляторы.",
+    title:"О нас — SmartToolsHub", pill:"О нас",
+    h1:"Инструменты, о которых мы <em>мечтали</em>",
+    intro:"SmartToolsHub объединяет простые, красивые и точные онлайн-калькуляторы для повседневных решений. Без регистрации, без жаргона, без сбора данных — просто инструменты, которые работают.",
+    mission_t:"Наша миссия",
+    mission_p:"Слишком многие онлайн-инструменты медленные, перегружены навязчивой рекламой или требуют ваши личные данные. Мы хотели обратного: быстрые, красивые и честные калькуляторы, которые делают одно дело хорошо. Все вычисления выполняются прямо в браузере — ваши данные не покидают устройство.",
+    values_t:"Что для нас важно",
+    v1_t:"Скорость",v1_p:"Мгновенный результат без загрузки.",
+    v2_t:"Конфиденциальность",v2_p:"Все расчёты локальны. Ничего не отправляется на сервер.",
+    v3_t:"Точность",v3_p:"Признанные, проверенные формулы для каждого инструмента.",
+    v4_t:"Бесплатно",v4_p:"Всё бесплатно и таким останется, без регистрации.",
+    ads_t:"О рекламе",
+    ads_p:"Чтобы сервис оставался бесплатным, мы показываем рекламу от партнёров, таких как Google AdSense. Она не мешает расчётам и никогда не даёт нам доступ к вашим личным данным. Подробнее — в нашей политике конфиденциальности.",
+    back:"Назад к инструментам",
+    f_home:"Главная",f_about:"О нас",f_privacy:"Конфиденциальность",f_contact:"Контакты",
+    f_copy:"SmartToolsHub © 2026 · Бесплатные онлайн-инструменты · проект Nordbyte", ad_label:"Реклама"},
+  es:{_flag:'🇪🇸',_label:'Español',_htmllang:'es',
+    meta_desc:"Acerca de SmartToolsHub — nuestra misión: calculadoras en línea gratuitas, precisas y respetuosas con tu privacidad.",
+    title:"Acerca de — SmartToolsHub", pill:"Acerca de",
+    h1:"Herramientas que nos <em>habría gustado</em> tener",
+    intro:"SmartToolsHub reúne calculadoras en línea simples, elegantes y precisas para tus decisiones diarias. Sin registro, sin jerga, sin recopilación de datos: solo herramientas que funcionan.",
+    mission_t:"Nuestra misión",
+    mission_p:"Demasiadas herramientas en línea son lentas, están llenas de anuncios intrusivos o exigen tus datos personales. Queríamos lo contrario: calculadoras rápidas, bonitas y honestas que hacen una cosa bien. Cada cálculo se ejecuta en tu navegador — tus datos nunca salen de tu dispositivo.",
+    values_t:"Lo que nos importa",
+    v1_t:"Rapidez",v1_p:"Resultados instantáneos, sin tiempos de carga.",
+    v2_t:"Privacidad",v2_p:"Todos los cálculos son locales. No se envía nada a un servidor.",
+    v3_t:"Precisión",v3_p:"Fórmulas reconocidas y verificadas para cada herramienta.",
+    v4_t:"Gratis",v4_p:"Todo es gratis y siempre lo será, sin registro.",
+    ads_t:"Sobre los anuncios",
+    ads_p:"Para mantener este servicio gratuito, mostramos anuncios de socios como Google AdSense. No interfieren con los cálculos ni nos dan acceso a tus datos personales. Más información en nuestra política de privacidad.",
+    back:"Volver a las herramientas",
+    f_home:"Inicio",f_about:"Acerca de",f_privacy:"Privacidad",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Herramientas en línea gratuitas · un proyecto Nordbyte", ad_label:"Publicidad"},
+  pt:{_flag:'🇵🇹',_label:'Português',_htmllang:'pt',
+    meta_desc:"Sobre o SmartToolsHub — a nossa missão: calculadoras online gratuitas, precisas e que respeitam a sua privacidade.",
+    title:"Sobre — SmartToolsHub", pill:"Sobre",
+    h1:"Ferramentas que <em>gostaríamos</em> de ter tido",
+    intro:"O SmartToolsHub reúne calculadoras online simples, elegantes e precisas para as suas decisões do dia a dia. Sem registo, sem jargão, sem recolha de dados: apenas ferramentas que funcionam.",
+    mission_t:"A nossa missão",
+    mission_p:"Demasiadas ferramentas online são lentas, cheias de anúncios intrusivos ou exigem os seus dados pessoais. Queríamos o oposto: calculadoras rápidas, bonitas e honestas que fazem uma coisa bem. Cada cálculo é feito no seu navegador — os seus dados nunca saem do seu dispositivo.",
+    values_t:"O que nos importa",
+    v1_t:"Rapidez",v1_p:"Resultados instantâneos, sem tempos de carregamento.",
+    v2_t:"Privacidade",v2_p:"Todos os cálculos são locais. Nada é enviado para um servidor.",
+    v3_t:"Precisão",v3_p:"Fórmulas reconhecidas e verificadas para cada ferramenta.",
+    v4_t:"Grátis",v4_p:"Tudo é grátis e assim continuará, sem registo.",
+    ads_t:"Sobre os anúncios",
+    ads_p:"Para manter este serviço gratuito, mostramos anúncios de parceiros como o Google AdSense. Não interferem com os cálculos nem nos dão acesso aos seus dados pessoais. Saiba mais na nossa política de privacidade.",
+    back:"Voltar às ferramentas",
+    f_home:"Início",f_about:"Sobre",f_privacy:"Privacidade",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Ferramentas online gratuitas · um projeto Nordbyte", ad_label:"Publicidade"}
+};
+const $ = id => document.getElementById(id);
+let LANG='fr';
+const T = key => (I18N[LANG]&&I18N[LANG][key]!==undefined)?I18N[LANG][key]:I18N.fr[key];
+function applyLang(lang){
+  if(!I18N[lang])lang='fr';
+  LANG=lang;
+  document.documentElement.lang=I18N[lang]._htmllang;
+  document.title=T('title');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const v=T(el.getAttribute('data-i18n'));if(v!==undefined)el.innerHTML=v;});
+  document.querySelectorAll('[data-i18n-meta]').forEach(el=>{const v=T(el.getAttribute('data-i18n-meta'));if(v!==undefined)el.setAttribute('content',v);});
+  $('curFlag').textContent=I18N[lang]._flag;
+  $('curLabel').textContent=I18N[lang]._label;
+  document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('active',o.dataset.lang===lang));
+  try{localStorage.setItem('sth_lang',lang);}catch{}
+}
+$('langBtn').addEventListener('click',e=>{e.stopPropagation();$('langMenu').classList.toggle('open');});
+document.addEventListener('click',()=>$('langMenu').classList.remove('open'));
+document.querySelectorAll('.lang-opt').forEach(opt=>{opt.addEventListener('click',()=>{applyLang(opt.dataset.lang);$('langMenu').classList.remove('open');});});
+(function init(){
+  const p=new URLSearchParams(location.search);
+  let lang=p.get('l');
+  if(!lang){try{lang=localStorage.getItem('sth_lang');}catch{}}
+  if(!lang){const nav=(navigator.language||'fr').slice(0,2);if(I18N[nav])lang=nav;}
+  applyLang(lang||'fr');
+})();
+</script>
+</body>
+</html>

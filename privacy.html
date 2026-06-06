@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="shortcut icon" href="favicon.svg">
+<meta name="description" data-i18n-meta="meta_desc" content="Politique de confidentialité de SmartToolsHub : cookies, publicités Google AdSense et protection de vos données.">
+<title>Politique de confidentialité — SmartToolsHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:#F7F3EC; --warm-white:#FDFAF5; --gold:#C9A84C; --gold-light:#E8CC7A;
+    --amber:#A0672A; --charcoal:#2C2416; --muted:#8C7B63; --card:#FFFFFF;
+    --border:rgba(201,168,76,0.22); --shadow:0 4px 32px rgba(44,36,22,0.07),0 1px 4px rgba(44,36,22,0.04);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background-color:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charcoal);min-height:100vh;overflow-x:hidden;
+    background-image:radial-gradient(ellipse 80% 50% at 10% 0%,rgba(201,168,76,0.10) 0%,transparent 70%),radial-gradient(ellipse 60% 40% at 90% 100%,rgba(160,103,42,0.07) 0%,transparent 70%);}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 3rem;background:rgba(247,243,236,0.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  @media(max-width:600px){nav{padding:1.1rem 1.3rem;}}
+  .nav-brand{display:flex;align-items:center;gap:0.55rem;text-decoration:none;}
+  .nav-brand .logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--amber));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:white;box-shadow:0 2px 8px rgba(201,168,76,0.35);flex-shrink:0;}
+  .nav-brand .brand-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--charcoal);letter-spacing:-0.01em;}
+  .nav-brand .brand-name span{color:var(--gold);}
+  .nav-right{display:flex;align-items:center;gap:1.4rem;}
+  .lang{position:relative;}
+  .lang-btn{display:flex;align-items:center;gap:0.5rem;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:0.4rem 0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--charcoal);transition:border-color 0.2s;}
+  .lang-btn:hover{border-color:var(--gold);}
+  .lang-btn .flag{font-size:1.1rem;line-height:1;}
+  .lang-btn .chev{font-size:0.6rem;color:var(--muted);}
+  .lang-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.4rem;min-width:168px;display:none;box-shadow:0 12px 32px rgba(44,36,22,0.15);z-index:200;}
+  .lang-menu.open{display:block;}
+  .lang-opt{display:flex;align-items:center;gap:0.6rem;width:100%;background:none;border:none;color:var(--charcoal);font-family:'DM Sans',sans-serif;font-size:0.85rem;padding:0.55rem 0.7rem;border-radius:8px;cursor:pointer;text-align:left;transition:background 0.15s;}
+  .lang-opt:hover{background:var(--cream);}
+  .lang-opt .flag{font-size:1.1rem;}
+  .lang-opt.active{color:var(--gold);font-weight:600;}
+  @media(max-width:600px){.lang-btn .label{display:none;}}
+
+  .ad-slot{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.5);border:1px dashed var(--border);border-radius:14px;color:var(--muted);overflow:hidden;}
+  .ad-slot .ad-label{font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;}
+  .ad-footer{max-width:970px;margin:2rem auto;min-height:90px;}
+
+  .content{max-width:760px;margin:0 auto;padding:3rem 1.5rem 2rem;animation:fadeUp 0.6s ease both;}
+  .page-pill{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.73rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:0.3rem 0.9rem;border-radius:20px;margin-bottom:1.3rem;background:rgba(201,168,76,0.07);}
+  .page-pill::before{content:'✦';font-size:0.6rem;}
+  h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;line-height:1.1;letter-spacing:-0.02em;margin-bottom:0.6rem;}
+  .updated{font-size:0.82rem;color:var(--muted);margin-bottom:1.8rem;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.2rem;box-shadow:var(--shadow);}
+  h2{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin:1.8rem 0 0.7rem;color:var(--charcoal);}
+  h2:first-of-type{margin-top:0;}
+  p{color:var(--charcoal);font-size:0.97rem;line-height:1.8;margin-bottom:0.8rem;font-weight:300;}
+  a.inline{color:var(--amber);text-decoration:underline;}
+  ul{margin:0 0 1rem 1.2rem;}
+  li{color:var(--charcoal);font-size:0.95rem;line-height:1.7;margin-bottom:0.4rem;font-weight:300;}
+  .email-box{background:var(--warm-white);border:1px solid var(--border);border-radius:12px;padding:1rem 1.2rem;font-size:0.95rem;margin:0.5rem 0 1rem;}
+  .email-box strong{color:var(--amber);}
+  .back-link{display:inline-flex;align-items:center;gap:0.4rem;margin-top:1.8rem;text-decoration:none;color:var(--amber);font-weight:600;font-size:0.9rem;}
+  .back-link::before{content:'←';}
+
+  footer{padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border);}
+  .footer-brand{display:flex;align-items:center;gap:0.5rem;font-family:'Playfair Display',serif;font-size:1rem;color:var(--charcoal);}
+  .footer-brand .dot{color:var(--gold);}
+  .footer-links{display:flex;gap:1.5rem;flex-wrap:wrap;}
+  .footer-links a{text-decoration:none;font-size:0.82rem;color:var(--muted);transition:color 0.2s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-copy{font-size:0.78rem;color:var(--muted);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="logo-mark">✦</div>
+    <span class="brand-name">Smart<span>Tools</span>Hub</span>
+  </a>
+  <div class="nav-right">
+    <div class="lang">
+      <button class="lang-btn" id="langBtn">
+        <span class="flag" id="curFlag">🇫🇷</span>
+        <span class="label" id="curLabel">Français</span>
+        <span class="chev">▼</span>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-opt" data-lang="en"><span class="flag">🇬🇧</span> English</button>
+        <button class="lang-opt" data-lang="zh"><span class="flag">🇨🇳</span> 中文</button>
+        <button class="lang-opt" data-lang="ru"><span class="flag">🇷🇺</span> Русский</button>
+        <button class="lang-opt" data-lang="es"><span class="flag">🇪🇸</span> Español</button>
+        <button class="lang-opt" data-lang="pt"><span class="flag">🇵🇹</span> Português</button>
+        <button class="lang-opt active" data-lang="fr"><span class="flag">🇫🇷</span> Français</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="content">
+  <div class="page-pill" data-i18n="pill">Confidentialité</div>
+  <h1 data-i18n="h1">Politique de confidentialité</h1>
+  <p class="updated" data-i18n="updated">Dernière mise à jour : juin 2026</p>
+
+  <div class="card">
+    <h2 data-i18n="s1_t">Notre approche</h2>
+    <p data-i18n="s1_p">SmartToolsHub est conçu pour respecter votre vie privée. Tous les calculs effectués par nos outils se déroulent directement dans votre navigateur. Les valeurs que vous saisissez (âge, montants, poids, etc.) ne sont jamais envoyées à un serveur ni stockées par nous.</p>
+
+    <h2 data-i18n="s2_t">Données que nous ne collectons pas</h2>
+    <p data-i18n="s2_p">Nous ne demandons aucune inscription et ne collectons aucune donnée personnelle identifiable. Nous n'avons pas de base de données d'utilisateurs. Les informations saisies dans les calculateurs restent sur votre appareil.</p>
+
+    <h2 data-i18n="s3_t">Cookies et stockage local</h2>
+    <p data-i18n="s3_p">Notre site utilise le stockage local de votre navigateur uniquement pour mémoriser votre préférence de langue. Nos partenaires publicitaires peuvent, eux, déposer des cookies (voir ci-dessous).</p>
+
+    <h2 data-i18n="s4_t">Publicité — Google AdSense</h2>
+    <p data-i18n="s4_p">Nous affichons des publicités via Google AdSense pour financer ce service gratuit. Google et ses partenaires utilisent des cookies pour diffuser des annonces basées sur vos visites antérieures sur ce site et d'autres sites. Ces cookies permettent à Google et à ses partenaires de proposer des annonces en fonction de vos centres d'intérêt.</p>
+    <ul>
+      <li data-i18n="s4_l1">Vous pouvez désactiver la publicité personnalisée en visitant les paramètres des annonces Google.</li>
+      <li data-i18n="s4_l2">Vous pouvez aussi gérer les cookies de fournisseurs tiers sur la page dédiée de Google.</li>
+      <li data-i18n="s4_l3">Pour en savoir plus, consultez la politique de confidentialité de Google.</li>
+    </ul>
+    <p data-i18n="s4_links">Liens utiles : <a class="inline" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Comment Google utilise les cookies publicitaires</a> · <a class="inline" href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Paramètres des annonces Google</a>.</p>
+
+    <h2 data-i18n="s5_t">Mesure d'audience</h2>
+    <p data-i18n="s5_p">Nous pouvons utiliser un outil de mesure d'audience (par exemple Google Analytics) pour comprendre comment notre site est utilisé, de façon agrégée et anonyme. Ces données nous aident à améliorer nos outils.</p>
+
+    <h2 data-i18n="s6_t">Vos droits</h2>
+    <p data-i18n="s6_p">Selon votre pays de résidence (notamment dans l'Union européenne au titre du RGPD), vous disposez de droits sur vos données. Comme nous ne collectons pas de données personnelles identifiables, ces droits s'exercent principalement auprès de nos partenaires publicitaires via les liens ci-dessus. Pour toute question, contactez-nous.</p>
+
+    <h2 data-i18n="s7_t">Nous contacter</h2>
+    <p data-i18n="s7_p">Pour toute question concernant cette politique de confidentialité :</p>
+    <div class="email-box"><span data-i18n="email_label">Email :</span> <strong>nordbyte.dev+smarttoolshub@gmail.com</strong></div>
+
+    <a href="index.html" class="back-link" data-i18n="back">Retour aux outils</a>
+  </div>
+</main>
+
+<div class="ad-slot ad-footer">
+  <span class="ad-label" data-i18n="ad_label">Publicité</span>
+  <!-- AdSense footer -->
+</div>
+
+<footer>
+  <div class="footer-brand">Smart<span class="dot">Tools</span>Hub</div>
+  <div class="footer-links">
+    <a href="index.html" data-i18n="f_home">Accueil</a>
+    <a href="about.html" data-i18n="f_about">À propos</a>
+    <a href="privacy.html" data-i18n="f_privacy">Confidentialité</a>
+    <a href="contact.html" data-i18n="f_contact">Contact</a>
+  </div>
+  <p class="footer-copy" data-i18n="f_copy">SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte</p>
+</footer>
+
+<script>
+const I18N = {
+  fr:{_flag:'🇫🇷',_label:'Français',_htmllang:'fr',
+    meta_desc:"Politique de confidentialité de SmartToolsHub : cookies, publicités Google AdSense et protection de vos données.",
+    title:"Politique de confidentialité — SmartToolsHub", pill:"Confidentialité",
+    h1:"Politique de confidentialité", updated:"Dernière mise à jour : juin 2026",
+    s1_t:"Notre approche",
+    s1_p:"SmartToolsHub est conçu pour respecter votre vie privée. Tous les calculs effectués par nos outils se déroulent directement dans votre navigateur. Les valeurs que vous saisissez (âge, montants, poids, etc.) ne sont jamais envoyées à un serveur ni stockées par nous.",
+    s2_t:"Données que nous ne collectons pas",
+    s2_p:"Nous ne demandons aucune inscription et ne collectons aucune donnée personnelle identifiable. Nous n'avons pas de base de données d'utilisateurs. Les informations saisies dans les calculateurs restent sur votre appareil.",
+    s3_t:"Cookies et stockage local",
+    s3_p:"Notre site utilise le stockage local de votre navigateur uniquement pour mémoriser votre préférence de langue. Nos partenaires publicitaires peuvent, eux, déposer des cookies (voir ci-dessous).",
+    s4_t:"Publicité — Google AdSense",
+    s4_p:"Nous affichons des publicités via Google AdSense pour financer ce service gratuit. Google et ses partenaires utilisent des cookies pour diffuser des annonces basées sur vos visites antérieures sur ce site et d'autres sites. Ces cookies permettent à Google et à ses partenaires de proposer des annonces en fonction de vos centres d'intérêt.",
+    s4_l1:"Vous pouvez désactiver la publicité personnalisée en visitant les paramètres des annonces Google.",
+    s4_l2:"Vous pouvez aussi gérer les cookies de fournisseurs tiers sur la page dédiée de Google.",
+    s4_l3:"Pour en savoir plus, consultez la politique de confidentialité de Google.",
+    s4_links:'Liens utiles : <a class="inline" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Comment Google utilise les cookies publicitaires</a> · <a class="inline" href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Paramètres des annonces Google</a>.',
+    s5_t:"Mesure d'audience",
+    s5_p:"Nous pouvons utiliser un outil de mesure d'audience (par exemple Google Analytics) pour comprendre comment notre site est utilisé, de façon agrégée et anonyme. Ces données nous aident à améliorer nos outils.",
+    s6_t:"Vos droits",
+    s6_p:"Selon votre pays de résidence (notamment dans l'Union européenne au titre du RGPD), vous disposez de droits sur vos données. Comme nous ne collectons pas de données personnelles identifiables, ces droits s'exercent principalement auprès de nos partenaires publicitaires via les liens ci-dessus. Pour toute question, contactez-nous.",
+    s7_t:"Nous contacter",
+    s7_p:"Pour toute question concernant cette politique de confidentialité :",
+    email_label:"Email :", back:"Retour aux outils",
+    f_home:"Accueil",f_about:"À propos",f_privacy:"Confidentialité",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte", ad_label:"Publicité"},
+  en:{_flag:'🇬🇧',_label:'English',_htmllang:'en',
+    meta_desc:"SmartToolsHub privacy policy: cookies, Google AdSense advertising and how we protect your data.",
+    title:"Privacy Policy — SmartToolsHub", pill:"Privacy",
+    h1:"Privacy Policy", updated:"Last updated: June 2026",
+    s1_t:"Our approach",
+    s1_p:"SmartToolsHub is built to respect your privacy. All calculations performed by our tools run directly in your browser. The values you enter (age, amounts, weight, etc.) are never sent to a server or stored by us.",
+    s2_t:"Data we do not collect",
+    s2_p:"We require no signup and collect no personally identifiable information. We have no user database. The information you enter into the calculators stays on your device.",
+    s3_t:"Cookies and local storage",
+    s3_p:"Our site uses your browser's local storage only to remember your language preference. Our advertising partners, however, may set cookies (see below).",
+    s4_t:"Advertising — Google AdSense",
+    s4_p:"We display ads through Google AdSense to fund this free service. Google and its partners use cookies to serve ads based on your prior visits to this site and other sites. These cookies allow Google and its partners to serve ads based on your interests.",
+    s4_l1:"You can opt out of personalised advertising by visiting Google Ads Settings.",
+    s4_l2:"You can also manage third-party vendor cookies on Google's dedicated page.",
+    s4_l3:"To learn more, see Google's privacy policy.",
+    s4_links:'Useful links: <a class="inline" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">How Google uses advertising cookies</a> · <a class="inline" href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>.',
+    s5_t:"Analytics",
+    s5_p:"We may use an analytics tool (for example Google Analytics) to understand how our site is used, in an aggregated and anonymous way. This data helps us improve our tools.",
+    s6_t:"Your rights",
+    s6_p:"Depending on your country of residence (notably in the European Union under the GDPR), you have rights over your data. Since we do not collect personally identifiable data, these rights are mainly exercised with our advertising partners via the links above. For any questions, contact us.",
+    s7_t:"Contact us",
+    s7_p:"For any question regarding this privacy policy:",
+    email_label:"Email:", back:"Back to the tools",
+    f_home:"Home",f_about:"About",f_privacy:"Privacy",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Free Online Tools · a Nordbyte project", ad_label:"Advertisement"},
+  zh:{_flag:'🇨🇳',_label:'中文',_htmllang:'zh',
+    meta_desc:"SmartToolsHub 隐私政策：Cookie、Google AdSense 广告以及我们如何保护您的数据。",
+    title:"隐私政策 — SmartToolsHub", pill:"隐私",
+    h1:"隐私政策", updated:"最后更新：2026 年 6 月",
+    s1_t:"我们的理念",
+    s1_p:"SmartToolsHub 致力于尊重您的隐私。我们工具执行的所有计算都直接在您的浏览器中进行。您输入的数值（年龄、金额、体重等）绝不会发送到服务器，也不会被我们存储。",
+    s2_t:"我们不收集的数据",
+    s2_p:"我们不要求注册，也不收集任何可识别个人身份的信息。我们没有用户数据库。您在计算器中输入的信息保留在您的设备上。",
+    s3_t:"Cookie 与本地存储",
+    s3_p:"本网站仅使用您浏览器的本地存储来记住您的语言偏好。但我们的广告合作伙伴可能会设置 Cookie（见下文）。",
+    s4_t:"广告 — Google AdSense",
+    s4_p:"我们通过 Google AdSense 展示广告，以支持这项免费服务。Google 及其合作伙伴使用 Cookie，根据您之前访问本网站和其他网站的记录投放广告。这些 Cookie 使 Google 及其合作伙伴能够根据您的兴趣投放广告。",
+    s4_l1:"您可以访问 Google 广告设置以停用个性化广告。",
+    s4_l2:"您也可以在 Google 的专门页面上管理第三方供应商 Cookie。",
+    s4_l3:"如需了解更多，请参阅 Google 的隐私政策。",
+    s4_links:'实用链接：<a class="inline" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google 如何使用广告 Cookie</a> · <a class="inline" href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google 广告设置</a>。',
+    s5_t:"访问统计",
+    s5_p:"我们可能使用访问统计工具（例如 Google Analytics）以汇总和匿名的方式了解网站的使用情况。这些数据帮助我们改进工具。",
+    s6_t:"您的权利",
+    s6_p:"根据您的居住国家/地区（特别是欧盟的 GDPR），您对自己的数据享有相关权利。由于我们不收集可识别个人身份的数据，这些权利主要通过上述链接向我们的广告合作伙伴行使。如有疑问，请联系我们。",
+    s7_t:"联系我们",
+    s7_p:"如对本隐私政策有任何疑问：",
+    email_label:"邮箱：", back:"返回工具",
+    f_home:"首页",f_about:"关于",f_privacy:"隐私",f_contact:"联系",
+    f_copy:"SmartToolsHub © 2026 · 免费在线工具 · Nordbyte 出品", ad_label:"广告"},
+  ru:{_flag:'🇷🇺',_label:'Русский',_htmllang:'ru',
+    meta_desc:"Политика конфиденциальности SmartToolsHub: файлы cookie, реклама Google AdSense и защита ваших данных.",
+    title:"Политика конфиденциальности — SmartToolsHub", pill:"Конфиденциальность",
+    h1:"Политика конфиденциальности", updated:"Последнее обновление: июнь 2026",
+    s1_t:"Наш подход",
+    s1_p:"SmartToolsHub создан с уважением к вашей конфиденциальности. Все вычисления наших инструментов выполняются прямо в вашем браузере. Введённые вами значения (возраст, суммы, вес и т. д.) никогда не отправляются на сервер и не хранятся нами.",
+    s2_t:"Данные, которые мы не собираем",
+    s2_p:"Мы не требуем регистрации и не собираем персональные данные. У нас нет базы пользователей. Информация, введённая в калькуляторы, остаётся на вашем устройстве.",
+    s3_t:"Файлы cookie и локальное хранилище",
+    s3_p:"Наш сайт использует локальное хранилище браузера только для запоминания выбранного языка. Однако наши рекламные партнёры могут устанавливать файлы cookie (см. ниже).",
+    s4_t:"Реклама — Google AdSense",
+    s4_p:"Мы показываем рекламу через Google AdSense для финансирования этого бесплатного сервиса. Google и его партнёры используют файлы cookie для показа рекламы на основе ваших прежних посещений этого и других сайтов. Эти файлы позволяют Google и партнёрам показывать рекламу с учётом ваших интересов.",
+    s4_l1:"Вы можете отключить персонализированную рекламу в настройках рекламы Google.",
+    s4_l2:"Вы также можете управлять файлами cookie сторонних поставщиков на специальной странице Google.",
+    s4_l3:"Подробнее — в политике конфиденциальности Google.",
+    s4_links:'Полезные ссылки: <a class="inline" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Как Google использует рекламные cookie</a> · <a class="inline" href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Настройки рекламы Google</a>.',
+    s5_t:"Аналитика",
+    s5_p:"Мы можем использовать инструмент аналитики (например, Google Analytics), чтобы в агрегированном и анонимном виде понимать, как используется сайт. Эти данные помогают улучшать наши инструменты.",
+    s6_t:"Ваши права",
+    s6_p:"В зависимости от страны проживания (в частности, в Европейском союзе согласно GDPR) вы имеете права в отношении своих данных. Поскольку мы не собираем персональные данные, эти права реализуются в основном через наших рекламных партнёров по ссылкам выше. По любым вопросам свяжитесь с нами.",
+    s7_t:"Связаться с нами",
+    s7_p:"По любым вопросам, касающимся этой политики конфиденциальности:",
+    email_label:"Эл. почта:", back:"Назад к инструментам",
+    f_home:"Главная",f_about:"О нас",f_privacy:"Конфиденциальность",f_contact:"Контакты",
+    f_copy:"SmartToolsHub © 2026 · Бесплатные онлайн-инструменты · проект Nordbyte", ad_label:"Реклама"},
+  es:{_flag:'🇪🇸',_label:'Español',_htmllang:'es',
+    meta_desc:"Política de privacidad de SmartToolsHub: cookies, publicidad de Google AdSense y protección de tus datos.",
+    title:"Política de privacidad — SmartToolsHub", pill:"Privacidad",
+    h1:"Política de privacidad", updated:"Última actualización: junio de 2026",
+    s1_t:"Nuestro enfoque",
+    s1_p:"SmartToolsHub está diseñado para respetar tu privacidad. Todos los cálculos de nuestras herramientas se ejecutan directamente en tu navegador. Los valores que introduces (edad, importes, peso, etc.) nunca se envían a un servidor ni los almacenamos.",
+    s2_t:"Datos que no recopilamos",
+    s2_p:"No requerimos registro ni recopilamos información personal identificable. No tenemos base de datos de usuarios. La información que introduces en las calculadoras permanece en tu dispositivo.",
+    s3_t:"Cookies y almacenamiento local",
+    s3_p:"Nuestro sitio usa el almacenamiento local de tu navegador solo para recordar tu preferencia de idioma. Sin embargo, nuestros socios publicitarios pueden instalar cookies (ver más abajo).",
+    s4_t:"Publicidad — Google AdSense",
+    s4_p:"Mostramos anuncios mediante Google AdSense para financiar este servicio gratuito. Google y sus socios utilizan cookies para mostrar anuncios basados en tus visitas anteriores a este y otros sitios. Estas cookies permiten a Google y a sus socios mostrar anuncios según tus intereses.",
+    s4_l1:"Puedes desactivar la publicidad personalizada en la Configuración de anuncios de Google.",
+    s4_l2:"También puedes gestionar las cookies de proveedores externos en la página dedicada de Google.",
+    s4_l3:"Para saber más, consulta la política de privacidad de Google.",
+    s4_links:'Enlaces útiles: <a class="inline" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Cómo usa Google las cookies publicitarias</a> · <a class="inline" href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Configuración de anuncios de Google</a>.',
+    s5_t:"Analítica",
+    s5_p:"Podemos usar una herramienta de analítica (por ejemplo, Google Analytics) para entender cómo se usa nuestro sitio, de forma agregada y anónima. Estos datos nos ayudan a mejorar nuestras herramientas.",
+    s6_t:"Tus derechos",
+    s6_p:"Según tu país de residencia (en particular en la Unión Europea conforme al RGPD), tienes derechos sobre tus datos. Como no recopilamos datos personales identificables, estos derechos se ejercen principalmente ante nuestros socios publicitarios mediante los enlaces anteriores. Para cualquier duda, contáctanos.",
+    s7_t:"Contáctanos",
+    s7_p:"Para cualquier pregunta sobre esta política de privacidad:",
+    email_label:"Correo:", back:"Volver a las herramientas",
+    f_home:"Inicio",f_about:"Acerca de",f_privacy:"Privacidad",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Herramientas en línea gratuitas · un proyecto Nordbyte", ad_label:"Publicidad"},
+  pt:{_flag:'🇵🇹',_label:'Português',_htmllang:'pt',
+    meta_desc:"Política de privacidade do SmartToolsHub: cookies, publicidade Google AdSense e proteção dos seus dados.",
+    title:"Política de privacidade — SmartToolsHub", pill:"Privacidade",
+    h1:"Política de privacidade", updated:"Última atualização: junho de 2026",
+    s1_t:"A nossa abordagem",
+    s1_p:"O SmartToolsHub foi concebido para respeitar a sua privacidade. Todos os cálculos das nossas ferramentas são executados diretamente no seu navegador. Os valores que introduz (idade, montantes, peso, etc.) nunca são enviados para um servidor nem armazenados por nós.",
+    s2_t:"Dados que não recolhemos",
+    s2_p:"Não exigimos registo nem recolhemos informações pessoais identificáveis. Não temos base de dados de utilizadores. As informações que introduz nas calculadoras permanecem no seu dispositivo.",
+    s3_t:"Cookies e armazenamento local",
+    s3_p:"O nosso site usa o armazenamento local do seu navegador apenas para memorizar a sua preferência de idioma. No entanto, os nossos parceiros de publicidade podem instalar cookies (ver abaixo).",
+    s4_t:"Publicidade — Google AdSense",
+    s4_p:"Apresentamos anúncios através do Google AdSense para financiar este serviço gratuito. A Google e os seus parceiros usam cookies para apresentar anúncios com base nas suas visitas anteriores a este e a outros sites. Estes cookies permitem à Google e aos seus parceiros apresentar anúncios de acordo com os seus interesses.",
+    s4_l1:"Pode desativar a publicidade personalizada nas Definições de anúncios da Google.",
+    s4_l2:"Também pode gerir os cookies de fornecedores terceiros na página dedicada da Google.",
+    s4_l3:"Para saber mais, consulte a política de privacidade da Google.",
+    s4_links:'Ligações úteis: <a class="inline" href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Como a Google usa cookies de publicidade</a> · <a class="inline" href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Definições de anúncios da Google</a>.',
+    s5_t:"Análise de tráfego",
+    s5_p:"Podemos usar uma ferramenta de análise (por exemplo, o Google Analytics) para perceber como o site é usado, de forma agregada e anónima. Estes dados ajudam-nos a melhorar as ferramentas.",
+    s6_t:"Os seus direitos",
+    s6_p:"Consoante o seu país de residência (nomeadamente na União Europeia ao abrigo do RGPD), tem direitos sobre os seus dados. Como não recolhemos dados pessoais identificáveis, esses direitos exercem-se sobretudo junto dos nossos parceiros de publicidade através das ligações acima. Para qualquer questão, contacte-nos.",
+    s7_t:"Contacte-nos",
+    s7_p:"Para qualquer questão sobre esta política de privacidade:",
+    email_label:"E-mail:", back:"Voltar às ferramentas",
+    f_home:"Início",f_about:"Sobre",f_privacy:"Privacidade",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Ferramentas online gratuitas · um projeto Nordbyte", ad_label:"Publicidade"}
+};
+const $ = id => document.getElementById(id);
+let LANG='fr';
+const T = key => (I18N[LANG]&&I18N[LANG][key]!==undefined)?I18N[LANG][key]:I18N.fr[key];
+function applyLang(lang){
+  if(!I18N[lang])lang='fr';
+  LANG=lang;
+  document.documentElement.lang=I18N[lang]._htmllang;
+  document.title=T('title');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const v=T(el.getAttribute('data-i18n'));if(v!==undefined)el.innerHTML=v;});
+  document.querySelectorAll('[data-i18n-meta]').forEach(el=>{const v=T(el.getAttribute('data-i18n-meta'));if(v!==undefined)el.setAttribute('content',v);});
+  $('curFlag').textContent=I18N[lang]._flag;
+  $('curLabel').textContent=I18N[lang]._label;
+  document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('active',o.dataset.lang===lang));
+  try{localStorage.setItem('sth_lang',lang);}catch{}
+}
+$('langBtn').addEventListener('click',e=>{e.stopPropagation();$('langMenu').classList.toggle('open');});
+document.addEventListener('click',()=>$('langMenu').classList.remove('open'));
+document.querySelectorAll('.lang-opt').forEach(opt=>{opt.addEventListener('click',()=>{applyLang(opt.dataset.lang);$('langMenu').classList.remove('open');});});
+(function init(){
+  const p=new URLSearchParams(location.search);
+  let lang=p.get('l');
+  if(!lang){try{lang=localStorage.getItem('sth_lang');}catch{}}
+  if(!lang){const nav=(navigator.language||'fr').slice(0,2);if(I18N[nav])lang=nav;}
+  applyLang(lang||'fr');
+})();
+</script>
+</body>
+</html>

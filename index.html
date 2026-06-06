@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="shortcut icon" href="favicon.svg">
-<meta name="description" content="SmartToolsHub — Free online calculators: Age, Calories, Retirement, Inflation, Compound Interest. Simple tools that make life easier.">
-<title>SmartToolsHub — Free Smart Calculators</title>
+<meta name="description" data-i18n-meta="meta_desc" content="SmartToolsHub — Calculateurs en ligne gratuits : Âge, Calories, Retraite, Inflation, Intérêts composés. Des outils simples qui facilitent la vie.">
+<title>SmartToolsHub — Calculateurs intelligents gratuits</title>
+<!--
+  AdSense : pour activer, décommentez la ligne ci-dessous et remplacez
+  ca-pub-XXXXXXXXXXXXXXXX par votre identifiant éditeur Google AdSense.
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+-->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -20,8 +25,6 @@
     --card: #FFFFFF;
     --border: rgba(201,168,76,0.22);
     --shadow: 0 4px 32px rgba(44,36,22,0.07), 0 1px 4px rgba(44,36,22,0.04);
-
-    /* Tool accent colors */
     --age-color: #A0672A;
     --cal-color: #5A8A5E;
     --ret-color: #4A7FA5;
@@ -30,9 +33,7 @@
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
-
   body {
     background-color: var(--cream);
     font-family: 'DM Sans', sans-serif;
@@ -53,10 +54,8 @@
     border-bottom: 1px solid var(--border);
     position: sticky; top: 0; z-index: 100;
   }
-  .nav-brand {
-    display: flex; align-items: center; gap: 0.55rem;
-    text-decoration: none;
-  }
+  @media(max-width:600px){ nav { padding: 1.1rem 1.3rem; } }
+  .nav-brand { display: flex; align-items: center; gap: 0.55rem; text-decoration: none; }
   .nav-brand .logo-mark {
     width: 32px; height: 32px;
     background: linear-gradient(135deg, var(--gold), var(--amber));
@@ -72,17 +71,84 @@
     color: var(--charcoal); letter-spacing: -0.01em;
   }
   .nav-brand .brand-name span { color: var(--gold); }
+  .nav-right { display: flex; align-items: center; gap: 1.4rem; }
   .nav-tagline {
     font-size: 0.75rem; color: var(--muted);
     letter-spacing: 0.05em; text-transform: uppercase;
     display: none;
   }
-  @media(min-width:600px) { .nav-tagline { display: block; } }
+  @media(min-width:720px) { .nav-tagline { display: block; } }
+
+  /* ─── LANGUAGE SELECTOR ────────────────────────── */
+  .lang { position: relative; }
+  .lang-btn {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 100px; padding: 0.4rem 0.8rem;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; color: var(--charcoal);
+    transition: border-color 0.2s;
+  }
+  .lang-btn:hover { border-color: var(--gold); }
+  .lang-btn .flag { font-size: 1.1rem; line-height: 1; }
+  .lang-btn .chev { font-size: 0.6rem; color: var(--muted); }
+  .lang-menu {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 0.4rem; min-width: 168px;
+    display: none; box-shadow: 0 12px 32px rgba(44,36,22,0.15); z-index: 200;
+  }
+  .lang-menu.open { display: block; }
+  .lang-opt {
+    display: flex; align-items: center; gap: 0.6rem; width: 100%;
+    background: none; border: none; color: var(--charcoal);
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    padding: 0.55rem 0.7rem; border-radius: 8px; cursor: pointer; text-align: left;
+    transition: background 0.15s;
+  }
+  .lang-opt:hover { background: var(--cream); }
+  .lang-opt .flag { font-size: 1.1rem; }
+  .lang-opt.active { color: var(--gold); font-weight: 600; }
+  @media(max-width:600px){ .lang-btn .label { display: none; } }
+
+  /* ─── LAYOUT WITH SIDE AD ──────────────────────── */
+  .page-wrap {
+    max-width: 1320px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr;
+    gap: 0;
+  }
+  @media(min-width:1100px) {
+    .page-wrap { grid-template-columns: 1fr 200px; align-items: start; gap: 1.5rem; padding-right: 1.5rem; }
+  }
+
+  /* ─── AD SLOTS ─────────────────────────────────── */
+  .ad-slot {
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.5);
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    color: var(--muted);
+    overflow: hidden;
+  }
+  .ad-slot .ad-label { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; }
+  .ad-header { max-width: 970px; margin: 1.2rem auto 0; min-height: 90px; }
+  .ad-footer { max-width: 970px; margin: 0 auto 2rem; min-height: 90px; }
+  .ad-side {
+    position: sticky; top: 90px;
+    min-height: 600px; width: 200px;
+    margin-top: 1.2rem;
+    display: none;
+  }
+  @media(min-width:1100px) { .ad-side { display: flex; } }
+  .ad-inline {
+    max-width: 720px; margin: 0 auto 2.5rem;
+    min-height: 100px;
+  }
 
   /* ─── HERO ─────────────────────────────────────── */
   .hero {
     max-width: 900px; margin: 0 auto;
-    padding: 5rem 2rem 3.5rem;
+    padding: 3.5rem 2rem 3rem;
     text-align: center;
     animation: fadeDown 0.7s ease both;
   }
@@ -96,10 +162,9 @@
     background: rgba(201,168,76,0.07);
   }
   .hero-pill::before { content: '✦'; font-size: 0.6rem; }
-
   .hero h1 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
     font-weight: 700; line-height: 1.08;
     letter-spacing: -0.02em;
     margin-bottom: 1.2rem;
@@ -124,42 +189,27 @@
   .stat .l { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.1rem; }
 
   /* ─── TOOLS SECTION ────────────────────────────── */
-  .tools-section {
-    max-width: 1020px; margin: 0 auto;
-    padding: 0 1.5rem 5rem;
-  }
+  .tools-section { max-width: 1020px; margin: 0 auto; padding: 0 1.5rem 3rem; }
   .section-header {
     display: flex; align-items: baseline; justify-content: space-between;
     margin-bottom: 2rem;
     animation: fadeUp 0.7s ease 0.15s both;
   }
-  .section-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem; font-weight: 700;
-    color: var(--charcoal);
-  }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--charcoal); }
   .section-header p { font-size: 0.85rem; color: var(--muted); }
 
-  /* ─── GRID ─────────────────────────────────────── */
   .tools-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto auto;
     gap: 1.1rem;
   }
-  /* Featured: Age (col 1-7) and CI (col 7-13) on row 1 */
   .tool-card:nth-child(1) { grid-column: 1 / 8; }
   .tool-card:nth-child(2) { grid-column: 8 / 13; }
-  /* Row 2: three cards */
   .tool-card:nth-child(3) { grid-column: 1 / 5; }
   .tool-card:nth-child(4) { grid-column: 5 / 9; }
   .tool-card:nth-child(5) { grid-column: 9 / 13; }
+  @media(max-width: 780px) { .tools-grid { display: flex; flex-direction: column; } }
 
-  @media(max-width: 780px) {
-    .tools-grid { display: flex; flex-direction: column; }
-  }
-
-  /* ─── CARD ─────────────────────────────────────── */
   .tool-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -178,39 +228,28 @@
   .tool-card:nth-child(3) { animation-delay: 0.36s; }
   .tool-card:nth-child(4) { animation-delay: 0.44s; }
   .tool-card:nth-child(5) { animation-delay: 0.52s; }
-
   .tool-card::before {
     content: '';
     position: absolute; inset: 0;
     background: radial-gradient(ellipse at 80% 0%, var(--accent-bg, rgba(201,168,76,0.06)), transparent 70%);
-    pointer-events: none;
-    opacity: 0; transition: opacity 0.3s;
+    pointer-events: none; opacity: 0; transition: opacity 0.3s;
   }
-  .tool-card:hover { transform: translateY(-5px); box-shadow: 0 12px 48px rgba(44,36,22,0.10); }
-  .tool-card:hover { border-color: var(--accent-color, var(--gold)); }
+  .tool-card:hover { transform: translateY(-5px); box-shadow: 0 12px 48px rgba(44,36,22,0.10); border-color: var(--accent-color, var(--gold)); }
   .tool-card:hover::before { opacity: 1; }
-
-  /* Accent per card */
   .tool-card[data-accent="age"]  { --accent-color: var(--age-color); --accent-bg: rgba(160,103,42,0.07); }
   .tool-card[data-accent="cal"]  { --accent-color: var(--cal-color); --accent-bg: rgba(90,138,94,0.07); }
   .tool-card[data-accent="ret"]  { --accent-color: var(--ret-color); --accent-bg: rgba(74,127,165,0.07); }
   .tool-card[data-accent="inf"]  { --accent-color: var(--inf-color); --accent-bg: rgba(181,90,74,0.07); }
   .tool-card[data-accent="ci"]   { --accent-color: var(--ci-color);  --accent-bg: rgba(58,140,128,0.07); }
-
-  /* Corner decoration */
   .card-deco {
     position: absolute; top: -30px; right: -30px;
-    width: 120px; height: 120px;
-    border-radius: 50%;
-    opacity: 0.07;
-    background: var(--accent-color, var(--gold));
+    width: 120px; height: 120px; border-radius: 50%;
+    opacity: 0.07; background: var(--accent-color, var(--gold));
     transition: transform 0.4s ease, opacity 0.3s;
   }
   .tool-card:hover .card-deco { transform: scale(1.4); opacity: 0.12; }
-
   .card-icon {
-    width: 48px; height: 48px;
-    border-radius: 14px;
+    width: 48px; height: 48px; border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
     font-size: 1.5rem;
     background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(247,243,236,0.6));
@@ -220,51 +259,34 @@
     flex-shrink: 0;
   }
   .tool-card:nth-child(1) .card-icon, .tool-card:nth-child(2) .card-icon { font-size: 1.8rem; width: 56px; height: 56px; }
-
   .card-label {
     font-size: 0.7rem; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.12em;
-    color: var(--accent-color, var(--gold));
-    margin-bottom: 0.45rem;
+    color: var(--accent-color, var(--gold)); margin-bottom: 0.45rem;
   }
   .card-title {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700; color: var(--charcoal);
-    margin-bottom: 0.6rem; line-height: 1.2;
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    color: var(--charcoal); margin-bottom: 0.6rem; line-height: 1.2;
   }
-  .tool-card:nth-child(1) .card-title,
-  .tool-card:nth-child(2) .card-title { font-size: 1.55rem; }
-  .tool-card:nth-child(3) .card-title,
-  .tool-card:nth-child(4) .card-title,
-  .tool-card:nth-child(5) .card-title { font-size: 1.2rem; }
-
-  .card-desc {
-    font-size: 0.87rem; color: var(--muted); line-height: 1.6;
-    flex: 1; font-weight: 300;
-  }
-  .tool-card:nth-child(3) .card-desc,
-  .tool-card:nth-child(4) .card-desc,
-  .tool-card:nth-child(5) .card-desc { font-size: 0.82rem; }
-
+  .tool-card:nth-child(1) .card-title, .tool-card:nth-child(2) .card-title { font-size: 1.55rem; }
+  .tool-card:nth-child(3) .card-title, .tool-card:nth-child(4) .card-title, .tool-card:nth-child(5) .card-title { font-size: 1.2rem; }
+  .card-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.6; flex: 1; font-weight: 300; }
+  .tool-card:nth-child(3) .card-desc, .tool-card:nth-child(4) .card-desc, .tool-card:nth-child(5) .card-desc { font-size: 0.82rem; }
   .card-cta {
     margin-top: 1.5rem;
     display: inline-flex; align-items: center; gap: 0.4rem;
     font-size: 0.82rem; font-weight: 600;
-    color: var(--accent-color, var(--amber));
-    letter-spacing: 0.04em;
+    color: var(--accent-color, var(--amber)); letter-spacing: 0.04em;
     transition: gap 0.2s;
   }
   .tool-card:hover .card-cta { gap: 0.7rem; }
   .card-cta::after { content: '→'; transition: transform 0.2s; }
   .tool-card:hover .card-cta::after { transform: translateX(3px); }
-
-  /* Tags on featured cards */
   .card-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1rem; }
   .tag {
     font-size: 0.7rem; padding: 0.2rem 0.6rem;
     border-radius: 20px; border: 1px solid var(--border);
-    color: var(--muted); background: var(--cream);
-    font-weight: 500;
+    color: var(--muted); background: var(--cream); font-weight: 500;
   }
 
   /* ─── FEATURES BAND ────────────────────────────── */
@@ -275,12 +297,8 @@
     padding: 2rem 3rem;
     display: flex; justify-content: center; align-items: center;
     gap: 3rem; flex-wrap: wrap;
-    margin-bottom: 0;
   }
-  .feature-item {
-    display: flex; align-items: center; gap: 0.6rem;
-    font-size: 0.85rem; color: var(--muted);
-  }
+  .feature-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: var(--muted); }
   .feature-item .fi { font-size: 1.1rem; }
   .feature-item strong { color: var(--charcoal); font-weight: 500; }
 
@@ -291,26 +309,15 @@
     flex-wrap: wrap; gap: 1rem;
     border-top: 1px solid var(--border);
   }
-  .footer-brand {
-    display: flex; align-items: center; gap: 0.5rem;
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem; color: var(--charcoal);
-  }
+  .footer-brand { display: flex; align-items: center; gap: 0.5rem; font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--charcoal); }
   .footer-brand .dot { color: var(--gold); }
-  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
   .footer-links a { text-decoration: none; font-size: 0.82rem; color: var(--muted); transition: color 0.2s; }
   .footer-links a:hover { color: var(--gold); }
   .footer-copy { font-size: 0.78rem; color: var(--muted); }
 
-  /* ─── ANIMATIONS ───────────────────────────────── */
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
@@ -321,113 +328,403 @@
     <div class="logo-mark">✦</div>
     <span class="brand-name">Smart<span>Tools</span>Hub</span>
   </a>
-  <span class="nav-tagline">Free Online Calculators</span>
+  <div class="nav-right">
+    <span class="nav-tagline" data-i18n="nav_tagline">Calculateurs en ligne gratuits</span>
+    <div class="lang">
+      <button class="lang-btn" id="langBtn">
+        <span class="flag" id="curFlag">🇫🇷</span>
+        <span class="label" id="curLabel">Français</span>
+        <span class="chev">▼</span>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-opt" data-lang="en"><span class="flag">🇬🇧</span> English</button>
+        <button class="lang-opt" data-lang="zh"><span class="flag">🇨🇳</span> 中文</button>
+        <button class="lang-opt" data-lang="ru"><span class="flag">🇷🇺</span> Русский</button>
+        <button class="lang-opt" data-lang="es"><span class="flag">🇪🇸</span> Español</button>
+        <button class="lang-opt" data-lang="pt"><span class="flag">🇵🇹</span> Português</button>
+        <button class="lang-opt active" data-lang="fr"><span class="flag">🇫🇷</span> Français</button>
+      </div>
+    </div>
+  </div>
 </nav>
 
-<!-- ─── HERO ────────────────────────────────────── -->
-<section class="hero">
-  <div class="hero-pill">Free Smart Tools</div>
-  <h1>Simple tools that<br>make life <em>easier</em></h1>
-  <p class="hero-sub">Beautiful, accurate calculators for your everyday decisions — no ads, no signup, always free.</p>
-  <div class="hero-stats">
-    <div class="stat"><div class="n">5</div><div class="l">Calculators</div></div>
-    <div class="stat"><div class="n">100%</div><div class="l">Free</div></div>
-    <div class="stat"><div class="n">0</div><div class="l">Sign-up needed</div></div>
-  </div>
-</section>
+<!-- ─── AD: HEADER ──────────────────────────────── -->
+<div class="ad-slot ad-header">
+  <span class="ad-label" data-i18n="ad_label">Publicité</span>
+  <!-- AdSense header : collez votre bloc <ins class="adsbygoogle"> ici -->
+</div>
 
-<!-- ─── TOOLS GRID ──────────────────────────────── -->
-<section class="tools-section">
-  <div class="section-header">
-    <h2>All Calculators</h2>
-    <p>Pick a tool to get started</p>
-  </div>
+<!-- ─── PAGE WRAP (content + side ad) ───────────── -->
+<div class="page-wrap">
+  <div class="main-col">
 
-  <div class="tools-grid">
-
-    <!-- Age -->
-    <a href="age-calculator.html" class="tool-card" data-accent="age">
-      <div class="card-deco"></div>
-      <div class="card-icon">🗓️</div>
-      <div class="card-label">Life · Time</div>
-      <div class="card-title">Age Calculator</div>
-      <p class="card-desc">Find your exact age in years, months and days — plus a countdown to your next birthday. Works for any date in history.</p>
-      <div class="card-tags">
-        <span class="tag">Years · Months · Days</span>
-        <span class="tag">Birthday countdown</span>
-        <span class="tag">Total hours</span>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-pill" data-i18n="hero_pill">Outils intelligents gratuits</div>
+      <h1 data-i18n="hero_h1">Des outils simples qui<br>vous <em>facilitent</em> la vie</h1>
+      <p class="hero-sub" data-i18n="hero_sub">Des calculateurs élégants et précis pour vos décisions du quotidien — sans inscription, toujours gratuits.</p>
+      <div class="hero-stats">
+        <div class="stat"><div class="n">5</div><div class="l" data-i18n="stat_calc">Calculateurs</div></div>
+        <div class="stat"><div class="n">100%</div><div class="l" data-i18n="stat_free">Gratuit</div></div>
+        <div class="stat"><div class="n">0</div><div class="l" data-i18n="stat_signup">Inscription</div></div>
       </div>
-      <div class="card-cta">Calculate my age</div>
-    </a>
+    </section>
 
-    <!-- Compound Interest -->
-    <a href="compound-interest-calculator.html" class="tool-card" data-accent="ci">
-      <div class="card-deco"></div>
-      <div class="card-icon">💰</div>
-      <div class="card-label">Finance · Savings</div>
-      <div class="card-title">Compound Interest Calculator</div>
-      <p class="card-desc">Watch your money grow with the power of compounding. Visualise principal, contributions and interest over time — with tax impact.</p>
-      <div class="card-tags">
-        <span class="tag">Yearly breakdown</span>
-        <span class="tag">Monthly contributions</span>
-        <span class="tag">Tax-adjusted</span>
+    <!-- TOOLS GRID -->
+    <section class="tools-section">
+      <div class="section-header">
+        <h2 data-i18n="sec_title">Tous les calculateurs</h2>
+        <p data-i18n="sec_sub">Choisissez un outil pour commencer</p>
       </div>
-      <div class="card-cta">Grow my savings</div>
-    </a>
 
-    <!-- Calories -->
-    <a href="calorie-calculator.html" class="tool-card" data-accent="cal">
-      <div class="card-deco"></div>
-      <div class="card-icon">🔥</div>
-      <div class="card-label">Health · Nutrition</div>
-      <div class="card-title">Calorie Calculator</div>
-      <p class="card-desc">Get your daily calorie needs based on age, weight, height and activity level — using the Mifflin-St Jeor formula.</p>
-      <div class="card-cta">Calculate calories</div>
-    </a>
+      <div class="tools-grid">
+        <!-- Age -->
+        <a href="age-calculator.html" class="tool-card" data-accent="age">
+          <div class="card-deco"></div>
+          <div class="card-icon">🗓️</div>
+          <div class="card-label" data-i18n="age_label">Vie · Temps</div>
+          <div class="card-title" data-i18n="age_title">Calculateur d'âge</div>
+          <p class="card-desc" data-i18n="age_desc">Trouvez votre âge exact en années, mois et jours — avec le compte à rebours jusqu'à votre prochain anniversaire. Fonctionne pour toute date.</p>
+          <div class="card-tags">
+            <span class="tag" data-i18n="age_tag1">Années · Mois · Jours</span>
+            <span class="tag" data-i18n="age_tag2">Compte à rebours anniversaire</span>
+            <span class="tag" data-i18n="age_tag3">Total en heures</span>
+          </div>
+          <div class="card-cta" data-i18n="age_cta">Calculer mon âge</div>
+        </a>
 
-    <!-- Retirement -->
-    <a href="retirement-calculator.html" class="tool-card" data-accent="ret">
-      <div class="card-deco"></div>
-      <div class="card-icon">🌅</div>
-      <div class="card-label">Finance · Planning</div>
-      <div class="card-title">Retirement Calculator</div>
-      <p class="card-desc">Plan your retirement target, see how much to save monthly, and track your progress toward financial independence.</p>
-      <div class="card-cta">Plan my retirement</div>
-    </a>
+        <!-- Compound Interest -->
+        <a href="compound-interest-calculator.html" class="tool-card" data-accent="ci">
+          <div class="card-deco"></div>
+          <div class="card-icon">💰</div>
+          <div class="card-label" data-i18n="ci_label">Finance · Épargne</div>
+          <div class="card-title" data-i18n="ci_title">Calculateur d'intérêts composés</div>
+          <p class="card-desc" data-i18n="ci_desc">Voyez votre argent croître grâce à la puissance des intérêts composés. Visualisez capital, versements et intérêts dans le temps — avec l'impact fiscal.</p>
+          <div class="card-tags">
+            <span class="tag" data-i18n="ci_tag1">Détail annuel</span>
+            <span class="tag" data-i18n="ci_tag2">Versements mensuels</span>
+            <span class="tag" data-i18n="ci_tag3">Ajusté de l'impôt</span>
+          </div>
+          <div class="card-cta" data-i18n="ci_cta">Faire fructifier mon épargne</div>
+        </a>
 
-    <!-- Inflation -->
-    <a href="inflation-calculator.html" class="tool-card" data-accent="inf">
-      <div class="card-deco"></div>
-      <div class="card-icon">📈</div>
-      <div class="card-label">Finance · Economy</div>
-      <div class="card-title">Inflation Calculator</div>
-      <p class="card-desc">See how inflation erodes purchasing power. Convert money values across any two years — past or future.</p>
-      <div class="card-cta">Check inflation</div>
-    </a>
+        <!-- Calories -->
+        <a href="calorie-calculator.html" class="tool-card" data-accent="cal">
+          <div class="card-deco"></div>
+          <div class="card-icon">🔥</div>
+          <div class="card-label" data-i18n="cal_label">Santé · Nutrition</div>
+          <div class="card-title" data-i18n="cal_title">Calculateur de calories</div>
+          <p class="card-desc" data-i18n="cal_desc">Obtenez vos besoins caloriques journaliers selon l'âge, le poids, la taille et l'activité — avec la formule Mifflin-St Jeor.</p>
+          <div class="card-cta" data-i18n="cal_cta">Calculer mes calories</div>
+        </a>
+
+        <!-- Retirement -->
+        <a href="retirement-calculator.html" class="tool-card" data-accent="ret">
+          <div class="card-deco"></div>
+          <div class="card-icon">🌅</div>
+          <div class="card-label" data-i18n="ret_label">Finance · Planification</div>
+          <div class="card-title" data-i18n="ret_title">Calculateur de retraite</div>
+          <p class="card-desc" data-i18n="ret_desc">Planifiez votre objectif de retraite, voyez combien épargner chaque mois et suivez votre progression vers l'indépendance financière.</p>
+          <div class="card-cta" data-i18n="ret_cta">Planifier ma retraite</div>
+        </a>
+
+        <!-- Inflation -->
+        <a href="inflation-calculator.html" class="tool-card" data-accent="inf">
+          <div class="card-deco"></div>
+          <div class="card-icon">📈</div>
+          <div class="card-label" data-i18n="inf_label">Finance · Économie</div>
+          <div class="card-title" data-i18n="inf_title">Calculateur d'inflation</div>
+          <p class="card-desc" data-i18n="inf_desc">Voyez comment l'inflation érode le pouvoir d'achat. Convertissez des montants entre deux années — passées ou futures.</p>
+          <div class="card-cta" data-i18n="inf_cta">Vérifier l'inflation</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- AD: INLINE (middle) -->
+    <div class="ad-slot ad-inline">
+      <span class="ad-label" data-i18n="ad_label">Publicité</span>
+      <!-- AdSense inline : collez votre bloc <ins class="adsbygoogle"> ici -->
+    </div>
 
   </div>
-</section>
+
+  <!-- AD: SIDE (right) -->
+  <aside class="ad-slot ad-side">
+    <span class="ad-label" data-i18n="ad_label">Publicité</span>
+    <!-- AdSense vertical 200x600 : collez votre bloc <ins class="adsbygoogle"> ici -->
+  </aside>
+</div>
 
 <!-- ─── FEATURES BAND ─────────────────────────────── -->
 <div class="features-band">
-  <div class="feature-item"><span class="fi">⚡</span><span><strong>Instant results</strong> — no loading</span></div>
-  <div class="feature-item"><span class="fi">🔒</span><span><strong>100% private</strong> — all calculations local</span></div>
-  <div class="feature-item"><span class="fi">📱</span><span><strong>Mobile-friendly</strong> — works everywhere</span></div>
-  <div class="feature-item"><span class="fi">🎯</span><span><strong>Accurate</strong> — proven formulas</span></div>
+  <div class="feature-item"><span class="fi">⚡</span><span data-i18n="feat1"><strong>Résultats instantanés</strong> — aucun chargement</span></div>
+  <div class="feature-item"><span class="fi">🔒</span><span data-i18n="feat2"><strong>100% privé</strong> — calculs en local</span></div>
+  <div class="feature-item"><span class="fi">📱</span><span data-i18n="feat3"><strong>Compatible mobile</strong> — partout</span></div>
+  <div class="feature-item"><span class="fi">🎯</span><span data-i18n="feat4"><strong>Précis</strong> — formules éprouvées</span></div>
 </div>
 
 <!-- ─── FOOTER ──────────────────────────────────── -->
 <footer>
   <div class="footer-brand">Smart<span class="dot">Tools</span>Hub</div>
   <div class="footer-links">
-    <a href="age-calculator.html">Age</a>
-    <a href="calorie-calculator.html">Calories</a>
-    <a href="retirement-calculator.html">Retirement</a>
-    <a href="inflation-calculator.html">Inflation</a>
-    <a href="compound-interest-calculator.html">Compound Interest</a>
+    <a href="age-calculator.html" data-i18n="f_age">Âge</a>
+    <a href="calorie-calculator.html" data-i18n="f_cal">Calories</a>
+    <a href="retirement-calculator.html" data-i18n="f_ret">Retraite</a>
+    <a href="inflation-calculator.html" data-i18n="f_inf">Inflation</a>
+    <a href="compound-interest-calculator.html" data-i18n="f_ci">Intérêts composés</a>
+    <a href="about.html" data-i18n="f_about">À propos</a>
+    <a href="privacy.html" data-i18n="f_privacy">Confidentialité</a>
+    <a href="contact.html" data-i18n="f_contact">Contact</a>
   </div>
-  <p class="footer-copy">SmartToolsHub © 2026 · Free Online Tools</p>
+  <p class="footer-copy" data-i18n="f_copy">SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte</p>
 </footer>
 
+<script>
+const I18N = {
+  fr: {
+    _flag:'🇫🇷', _label:'Français', _htmllang:'fr',
+    meta_desc:"SmartToolsHub — Calculateurs en ligne gratuits : Âge, Calories, Retraite, Inflation, Intérêts composés. Des outils simples qui facilitent la vie.",
+    title:"SmartToolsHub — Calculateurs intelligents gratuits",
+    nav_tagline:"Calculateurs en ligne gratuits",
+    hero_pill:"Outils intelligents gratuits",
+    hero_h1:"Des outils simples qui<br>vous <em>facilitent</em> la vie",
+    hero_sub:"Des calculateurs élégants et précis pour vos décisions du quotidien — sans inscription, toujours gratuits.",
+    stat_calc:"Calculateurs", stat_free:"Gratuit", stat_signup:"Inscription",
+    sec_title:"Tous les calculateurs", sec_sub:"Choisissez un outil pour commencer",
+    age_label:"Vie · Temps", age_title:"Calculateur d'âge",
+    age_desc:"Trouvez votre âge exact en années, mois et jours — avec le compte à rebours jusqu'à votre prochain anniversaire. Fonctionne pour toute date.",
+    age_tag1:"Années · Mois · Jours", age_tag2:"Compte à rebours anniversaire", age_tag3:"Total en heures", age_cta:"Calculer mon âge",
+    ci_label:"Finance · Épargne", ci_title:"Calculateur d'intérêts composés",
+    ci_desc:"Voyez votre argent croître grâce à la puissance des intérêts composés. Visualisez capital, versements et intérêts dans le temps — avec l'impact fiscal.",
+    ci_tag1:"Détail annuel", ci_tag2:"Versements mensuels", ci_tag3:"Ajusté de l'impôt", ci_cta:"Faire fructifier mon épargne",
+    cal_label:"Santé · Nutrition", cal_title:"Calculateur de calories",
+    cal_desc:"Obtenez vos besoins caloriques journaliers selon l'âge, le poids, la taille et l'activité — avec la formule Mifflin-St Jeor.",
+    cal_cta:"Calculer mes calories",
+    ret_label:"Finance · Planification", ret_title:"Calculateur de retraite",
+    ret_desc:"Planifiez votre objectif de retraite, voyez combien épargner chaque mois et suivez votre progression vers l'indépendance financière.",
+    ret_cta:"Planifier ma retraite",
+    inf_label:"Finance · Économie", inf_title:"Calculateur d'inflation",
+    inf_desc:"Voyez comment l'inflation érode le pouvoir d'achat. Convertissez des montants entre deux années — passées ou futures.",
+    inf_cta:"Vérifier l'inflation",
+    feat1:"<strong>Résultats instantanés</strong> — aucun chargement",
+    feat2:"<strong>100% privé</strong> — calculs en local",
+    feat3:"<strong>Compatible mobile</strong> — partout",
+    feat4:"<strong>Précis</strong> — formules éprouvées",
+    f_age:"Âge", f_cal:"Calories", f_ret:"Retraite", f_inf:"Inflation", f_ci:"Intérêts composés",
+    f_about:"À propos", f_privacy:"Confidentialité", f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte",
+    ad_label:"Publicité"
+  },
+  en: {
+    _flag:'🇬🇧', _label:'English', _htmllang:'en',
+    meta_desc:"SmartToolsHub — Free online calculators: Age, Calories, Retirement, Inflation, Compound Interest. Simple tools that make life easier.",
+    title:"SmartToolsHub — Free Smart Calculators",
+    nav_tagline:"Free Online Calculators",
+    hero_pill:"Free Smart Tools",
+    hero_h1:"Simple tools that<br>make life <em>easier</em>",
+    hero_sub:"Beautiful, accurate calculators for your everyday decisions — no signup, always free.",
+    stat_calc:"Calculators", stat_free:"Free", stat_signup:"Sign-up needed",
+    sec_title:"All Calculators", sec_sub:"Pick a tool to get started",
+    age_label:"Life · Time", age_title:"Age Calculator",
+    age_desc:"Find your exact age in years, months and days — plus a countdown to your next birthday. Works for any date in history.",
+    age_tag1:"Years · Months · Days", age_tag2:"Birthday countdown", age_tag3:"Total hours", age_cta:"Calculate my age",
+    ci_label:"Finance · Savings", ci_title:"Compound Interest Calculator",
+    ci_desc:"Watch your money grow with the power of compounding. Visualise principal, contributions and interest over time — with tax impact.",
+    ci_tag1:"Yearly breakdown", ci_tag2:"Monthly contributions", ci_tag3:"Tax-adjusted", ci_cta:"Grow my savings",
+    cal_label:"Health · Nutrition", cal_title:"Calorie Calculator",
+    cal_desc:"Get your daily calorie needs based on age, weight, height and activity level — using the Mifflin-St Jeor formula.",
+    cal_cta:"Calculate calories",
+    ret_label:"Finance · Planning", ret_title:"Retirement Calculator",
+    ret_desc:"Plan your retirement target, see how much to save monthly, and track your progress toward financial independence.",
+    ret_cta:"Plan my retirement",
+    inf_label:"Finance · Economy", inf_title:"Inflation Calculator",
+    inf_desc:"See how inflation erodes purchasing power. Convert money values across any two years — past or future.",
+    inf_cta:"Check inflation",
+    feat1:"<strong>Instant results</strong> — no loading",
+    feat2:"<strong>100% private</strong> — all calculations local",
+    feat3:"<strong>Mobile-friendly</strong> — works everywhere",
+    feat4:"<strong>Accurate</strong> — proven formulas",
+    f_age:"Age", f_cal:"Calories", f_ret:"Retirement", f_inf:"Inflation", f_ci:"Compound Interest",
+    f_about:"About", f_privacy:"Privacy", f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Free Online Tools · a Nordbyte project",
+    ad_label:"Advertisement"
+  },
+  zh: {
+    _flag:'🇨🇳', _label:'中文', _htmllang:'zh',
+    meta_desc:"SmartToolsHub — 免费在线计算器：年龄、卡路里、退休、通货膨胀、复利。让生活更轻松的简单工具。",
+    title:"SmartToolsHub — 免费智能计算器",
+    nav_tagline:"免费在线计算器",
+    hero_pill:"免费智能工具",
+    hero_h1:"让生活<br>更<em>轻松</em>的简单工具",
+    hero_sub:"为您的日常决策提供精美、精确的计算器 — 无需注册，永久免费。",
+    stat_calc:"计算器", stat_free:"免费", stat_signup:"无需注册",
+    sec_title:"所有计算器", sec_sub:"选择一个工具开始使用",
+    age_label:"生活 · 时间", age_title:"年龄计算器",
+    age_desc:"精确计算您的年龄（年、月、日），并显示距离下次生日的倒计时。适用于任何历史日期。",
+    age_tag1:"年 · 月 · 日", age_tag2:"生日倒计时", age_tag3:"总小时数", age_cta:"计算我的年龄",
+    ci_label:"金融 · 储蓄", ci_title:"复利计算器",
+    ci_desc:"借助复利的力量见证财富增长。直观展示本金、追加投入与利息随时间的变化 — 含税务影响。",
+    ci_tag1:"年度明细", ci_tag2:"每月追加", ci_tag3:"税后调整", ci_cta:"增长我的储蓄",
+    cal_label:"健康 · 营养", cal_title:"卡路里计算器",
+    cal_desc:"根据年龄、体重、身高和活动水平计算每日所需卡路里 — 采用 Mifflin-St Jeor 公式。",
+    cal_cta:"计算卡路里",
+    ret_label:"金融 · 规划", ret_title:"退休计算器",
+    ret_desc:"规划您的退休目标，了解每月需储蓄多少，并跟踪实现财务自由的进度。",
+    ret_cta:"规划我的退休",
+    inf_label:"金融 · 经济", inf_title:"通货膨胀计算器",
+    inf_desc:"了解通货膨胀如何侵蚀购买力。在任意两个年份之间换算金额 — 过去或未来。",
+    inf_cta:"查看通货膨胀",
+    feat1:"<strong>即时结果</strong> — 无需加载",
+    feat2:"<strong>100% 隐私</strong> — 所有计算均在本地",
+    feat3:"<strong>移动友好</strong> — 随处可用",
+    feat4:"<strong>精确</strong> — 经过验证的公式",
+    f_age:"年龄", f_cal:"卡路里", f_ret:"退休", f_inf:"通货膨胀", f_ci:"复利",
+    f_about:"关于", f_privacy:"隐私", f_contact:"联系",
+    f_copy:"SmartToolsHub © 2026 · 免费在线工具 · Nordbyte 出品",
+    ad_label:"广告"
+  },
+  ru: {
+    _flag:'🇷🇺', _label:'Русский', _htmllang:'ru',
+    meta_desc:"SmartToolsHub — Бесплатные онлайн-калькуляторы: возраст, калории, пенсия, инфляция, сложные проценты. Простые инструменты, облегчающие жизнь.",
+    title:"SmartToolsHub — Бесплатные умные калькуляторы",
+    nav_tagline:"Бесплатные онлайн-калькуляторы",
+    hero_pill:"Бесплатные умные инструменты",
+    hero_h1:"Простые инструменты,<br>которые <em>облегчают</em> жизнь",
+    hero_sub:"Красивые и точные калькуляторы для повседневных решений — без регистрации, всегда бесплатно.",
+    stat_calc:"Калькуляторов", stat_free:"Бесплатно", stat_signup:"Без регистрации",
+    sec_title:"Все калькуляторы", sec_sub:"Выберите инструмент, чтобы начать",
+    age_label:"Жизнь · Время", age_title:"Калькулятор возраста",
+    age_desc:"Узнайте точный возраст в годах, месяцах и днях — с обратным отсчётом до следующего дня рождения. Работает для любой даты.",
+    age_tag1:"Годы · Месяцы · Дни", age_tag2:"Отсчёт до дня рождения", age_tag3:"Всего часов", age_cta:"Рассчитать возраст",
+    ci_label:"Финансы · Сбережения", ci_title:"Калькулятор сложных процентов",
+    ci_desc:"Наблюдайте за ростом денег благодаря сложным процентам. Визуализируйте капитал, взносы и проценты во времени — с учётом налогов.",
+    ci_tag1:"Разбивка по годам", ci_tag2:"Ежемесячные взносы", ci_tag3:"С учётом налогов", ci_cta:"Приумножить сбережения",
+    cal_label:"Здоровье · Питание", cal_title:"Калькулятор калорий",
+    cal_desc:"Узнайте дневную норму калорий по возрасту, весу, росту и уровню активности — по формуле Миффлина-Сан Жеора.",
+    cal_cta:"Рассчитать калории",
+    ret_label:"Финансы · Планирование", ret_title:"Пенсионный калькулятор",
+    ret_desc:"Спланируйте пенсионную цель, узнайте, сколько откладывать ежемесячно, и отслеживайте путь к финансовой независимости.",
+    ret_cta:"Спланировать пенсию",
+    inf_label:"Финансы · Экономика", inf_title:"Калькулятор инфляции",
+    inf_desc:"Узнайте, как инфляция снижает покупательную способность. Пересчитайте суммы между любыми двумя годами — в прошлом или будущем.",
+    inf_cta:"Проверить инфляцию",
+    feat1:"<strong>Мгновенный результат</strong> — без загрузки",
+    feat2:"<strong>100% приватно</strong> — все расчёты локально",
+    feat3:"<strong>Для мобильных</strong> — работает везде",
+    feat4:"<strong>Точно</strong> — проверенные формулы",
+    f_age:"Возраст", f_cal:"Калории", f_ret:"Пенсия", f_inf:"Инфляция", f_ci:"Сложные проценты",
+    f_about:"О нас", f_privacy:"Конфиденциальность", f_contact:"Контакты",
+    f_copy:"SmartToolsHub © 2026 · Бесплатные онлайн-инструменты · проект Nordbyte",
+    ad_label:"Реклама"
+  },
+  es: {
+    _flag:'🇪🇸', _label:'Español', _htmllang:'es',
+    meta_desc:"SmartToolsHub — Calculadoras en línea gratuitas: Edad, Calorías, Jubilación, Inflación, Interés compuesto. Herramientas simples que facilitan la vida.",
+    title:"SmartToolsHub — Calculadoras inteligentes gratuitas",
+    nav_tagline:"Calculadoras en línea gratuitas",
+    hero_pill:"Herramientas inteligentes gratuitas",
+    hero_h1:"Herramientas simples que<br>te <em>facilitan</em> la vida",
+    hero_sub:"Calculadoras elegantes y precisas para tus decisiones diarias — sin registro, siempre gratis.",
+    stat_calc:"Calculadoras", stat_free:"Gratis", stat_signup:"Sin registro",
+    sec_title:"Todas las calculadoras", sec_sub:"Elige una herramienta para empezar",
+    age_label:"Vida · Tiempo", age_title:"Calculadora de edad",
+    age_desc:"Encuentra tu edad exacta en años, meses y días — con cuenta atrás hasta tu próximo cumpleaños. Funciona con cualquier fecha.",
+    age_tag1:"Años · Meses · Días", age_tag2:"Cuenta atrás cumpleaños", age_tag3:"Horas totales", age_cta:"Calcular mi edad",
+    ci_label:"Finanzas · Ahorro", ci_title:"Calculadora de interés compuesto",
+    ci_desc:"Observa crecer tu dinero con el poder del interés compuesto. Visualiza capital, aportaciones e intereses en el tiempo — con impacto fiscal.",
+    ci_tag1:"Desglose anual", ci_tag2:"Aportaciones mensuales", ci_tag3:"Ajustado a impuestos", ci_cta:"Hacer crecer mis ahorros",
+    cal_label:"Salud · Nutrición", cal_title:"Calculadora de calorías",
+    cal_desc:"Obtén tus necesidades calóricas diarias según edad, peso, altura y nivel de actividad — con la fórmula Mifflin-St Jeor.",
+    cal_cta:"Calcular calorías",
+    ret_label:"Finanzas · Planificación", ret_title:"Calculadora de jubilación",
+    ret_desc:"Planifica tu objetivo de jubilación, descubre cuánto ahorrar al mes y sigue tu progreso hacia la independencia financiera.",
+    ret_cta:"Planificar mi jubilación",
+    inf_label:"Finanzas · Economía", inf_title:"Calculadora de inflación",
+    inf_desc:"Descubre cómo la inflación erosiona el poder adquisitivo. Convierte importes entre dos años cualesquiera — pasados o futuros.",
+    inf_cta:"Comprobar inflación",
+    feat1:"<strong>Resultados instantáneos</strong> — sin esperas",
+    feat2:"<strong>100% privado</strong> — todos los cálculos locales",
+    feat3:"<strong>Adaptado a móvil</strong> — funciona en todas partes",
+    feat4:"<strong>Preciso</strong> — fórmulas probadas",
+    f_age:"Edad", f_cal:"Calorías", f_ret:"Jubilación", f_inf:"Inflación", f_ci:"Interés compuesto",
+    f_about:"Acerca de", f_privacy:"Privacidad", f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Herramientas en línea gratuitas · un proyecto Nordbyte",
+    ad_label:"Publicidad"
+  },
+  pt: {
+    _flag:'🇵🇹', _label:'Português', _htmllang:'pt',
+    meta_desc:"SmartToolsHub — Calculadoras online gratuitas: Idade, Calorias, Reforma, Inflação, Juros compostos. Ferramentas simples que facilitam a vida.",
+    title:"SmartToolsHub — Calculadoras inteligentes gratuitas",
+    nav_tagline:"Calculadoras online gratuitas",
+    hero_pill:"Ferramentas inteligentes gratuitas",
+    hero_h1:"Ferramentas simples que<br>lhe <em>facilitam</em> a vida",
+    hero_sub:"Calculadoras elegantes e precisas para as suas decisões do dia a dia — sem registo, sempre grátis.",
+    stat_calc:"Calculadoras", stat_free:"Grátis", stat_signup:"Sem registo",
+    sec_title:"Todas as calculadoras", sec_sub:"Escolha uma ferramenta para começar",
+    age_label:"Vida · Tempo", age_title:"Calculadora de idade",
+    age_desc:"Encontre a sua idade exata em anos, meses e dias — com contagem decrescente até ao próximo aniversário. Funciona para qualquer data.",
+    age_tag1:"Anos · Meses · Dias", age_tag2:"Contagem para aniversário", age_tag3:"Total de horas", age_cta:"Calcular a minha idade",
+    ci_label:"Finanças · Poupança", ci_title:"Calculadora de juros compostos",
+    ci_desc:"Veja o seu dinheiro crescer com o poder dos juros compostos. Visualize capital, contribuições e juros ao longo do tempo — com impacto fiscal.",
+    ci_tag1:"Detalhe anual", ci_tag2:"Contribuições mensais", ci_tag3:"Ajustado a impostos", ci_cta:"Fazer crescer a poupança",
+    cal_label:"Saúde · Nutrição", cal_title:"Calculadora de calorias",
+    cal_desc:"Obtenha as suas necessidades calóricas diárias com base na idade, peso, altura e nível de atividade — com a fórmula Mifflin-St Jeor.",
+    cal_cta:"Calcular calorias",
+    ret_label:"Finanças · Planeamento", ret_title:"Calculadora de reforma",
+    ret_desc:"Planeie o seu objetivo de reforma, veja quanto poupar por mês e acompanhe o progresso rumo à independência financeira.",
+    ret_cta:"Planear a minha reforma",
+    inf_label:"Finanças · Economia", inf_title:"Calculadora de inflação",
+    inf_desc:"Veja como a inflação corrói o poder de compra. Converta valores entre quaisquer dois anos — passados ou futuros.",
+    inf_cta:"Verificar inflação",
+    feat1:"<strong>Resultados instantâneos</strong> — sem carregamento",
+    feat2:"<strong>100% privado</strong> — todos os cálculos locais",
+    feat3:"<strong>Compatível com telemóvel</strong> — funciona em todo o lado",
+    feat4:"<strong>Preciso</strong> — fórmulas comprovadas",
+    f_age:"Idade", f_cal:"Calorias", f_ret:"Reforma", f_inf:"Inflação", f_ci:"Juros compostos",
+    f_about:"Sobre", f_privacy:"Privacidade", f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Ferramentas online gratuitas · um projeto Nordbyte",
+    ad_label:"Publicidade"
+  }
+};
+
+const $ = id => document.getElementById(id);
+let LANG = 'fr';
+const T = key => (I18N[LANG] && I18N[LANG][key] !== undefined) ? I18N[LANG][key] : I18N.fr[key];
+
+function applyLang(lang) {
+  if (!I18N[lang]) lang = 'fr';
+  LANG = lang;
+  document.documentElement.lang = I18N[lang]._htmllang;
+  document.title = T('title');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = T(el.getAttribute('data-i18n'));
+    if (v !== undefined) el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-meta]').forEach(el => {
+    const v = T(el.getAttribute('data-i18n-meta'));
+    if (v !== undefined) el.setAttribute('content', v);
+  });
+  $('curFlag').textContent = I18N[lang]._flag;
+  $('curLabel').textContent = I18N[lang]._label;
+  document.querySelectorAll('.lang-opt').forEach(o =>
+    o.classList.toggle('active', o.dataset.lang === lang));
+  try { localStorage.setItem('sth_lang', lang); } catch {}
+}
+
+$('langBtn').addEventListener('click', e => { e.stopPropagation(); $('langMenu').classList.toggle('open'); });
+document.addEventListener('click', () => $('langMenu').classList.remove('open'));
+document.querySelectorAll('.lang-opt').forEach(opt => {
+  opt.addEventListener('click', () => { applyLang(opt.dataset.lang); $('langMenu').classList.remove('open'); });
+});
+
+// Init: URL ?l= > localStorage > navigator > fr
+(function init() {
+  const p = new URLSearchParams(location.search);
+  let lang = p.get('l');
+  if (!lang) { try { lang = localStorage.getItem('sth_lang'); } catch {} }
+  if (!lang) { const nav = (navigator.language || 'fr').slice(0,2); if (I18N[nav]) lang = nav; }
+  applyLang(lang || 'fr');
+})();
+</script>
 </body>
 </html>
