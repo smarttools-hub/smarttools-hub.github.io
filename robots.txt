@@ -1,0 +1,5 @@
+# robots.txt — SmartToolsHub
+User-agent: *
+Allow: /
+
+Sitemap: https://smarttools-hub.github.io/sitemap.xml

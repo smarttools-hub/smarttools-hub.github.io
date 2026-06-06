@@ -5,294 +5,533 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="shortcut icon" href="favicon.svg">
-<title>Compound Interest Calculator</title>
+<meta name="description" data-i18n-meta="meta_desc" content="Calculateur d'intérêts composés gratuit : simulez la croissance de votre épargne avec capital initial, versements mensuels et taux annuel, avec détail année par année.">
+<title>Calculateur d'intérêts composés — SmartToolsHub</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #F7F3EC; --warm-white: #FDFAF5;
-    --gold: #C9A84C; --gold-light: #E8CC7A;
-    --amber: #A0672A; --charcoal: #2C2416;
-    --muted: #8C7B63; --card: #FFFFFF;
-    --border: rgba(201,168,76,0.25);
-    --teal: #3A8C80; --teal-light: rgba(58,140,128,0.08);
+    --cream:#F7F3EC; --warm-white:#FDFAF5; --gold:#C9A84C; --gold-light:#E8CC7A;
+    --amber:#A0672A; --charcoal:#2C2416; --muted:#8C7B63; --card:#FFFFFF;
+    --border:rgba(201,168,76,0.25); --teal:#3A8C80;
+    --shadow:0 4px 32px rgba(44,36,22,0.07),0 1px 4px rgba(44,36,22,0.04);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background-color: var(--cream); font-family: 'DM Sans', sans-serif; color: var(--charcoal); min-height: 100vh; background-image: radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(58,140,128,0.07) 0%, transparent 60%); }
-  nav { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 2.5rem; background: rgba(247,243,236,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
-  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--amber); letter-spacing: 0.05em; }
-  .nav-links { display: flex; gap: 1.5rem; }
-  .nav-links a { text-decoration: none; font-size: 0.82rem; font-weight: 500; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
-  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background-color:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charcoal);min-height:100vh;
+    background-image:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(58,140,128,0.06) 0%,transparent 60%);}
 
-  .hero { text-align: center; padding: 4rem 2rem 2rem; animation: fadeDown 0.7s ease both; }
-  .hero-label { display: inline-block; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--border); padding: 0.35rem 1rem; border-radius: 20px; margin-bottom: 1.2rem; background: rgba(201,168,76,0.07); }
-  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; line-height: 1.1; margin-bottom: 0.8rem; }
-  .hero h1 em { font-style: italic; color: var(--teal); }
-  .hero p { color: var(--muted); font-size: 1rem; max-width: 420px; margin: 0 auto; line-height: 1.7; }
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:rgba(247,243,236,0.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  @media(max-width:600px){nav{padding:1.1rem 1.3rem;}}
+  .nav-brand{display:flex;align-items:center;gap:0.55rem;text-decoration:none;}
+  .nav-brand .logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),var(--amber));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;color:white;box-shadow:0 2px 8px rgba(201,168,76,0.35);flex-shrink:0;}
+  .nav-brand .brand-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--charcoal);}
+  .nav-brand .brand-name span{color:var(--gold);}
+  .nav-right{display:flex;align-items:center;gap:1.2rem;}
+  .nav-links{display:flex;gap:1.3rem;}
+  @media(max-width:860px){.nav-links{display:none;}}
+  .nav-links a{text-decoration:none;font-size:0.8rem;font-weight:500;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase;transition:color 0.2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--gold);}
 
-  .main { max-width: 720px; margin: 2.5rem auto; padding: 0 1.5rem 4rem; animation: fadeUp 0.8s ease 0.2s both; }
-  .card { background: var(--card); border-radius: 20px; border: 1px solid var(--border); padding: 2.5rem; box-shadow: 0 4px 40px rgba(44,36,22,0.06); }
+  .lang{position:relative;}
+  .lang-btn{display:flex;align-items:center;gap:0.5rem;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:0.4rem 0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--charcoal);transition:border-color 0.2s;}
+  .lang-btn:hover{border-color:var(--gold);}
+  .lang-btn .flag{font-size:1.1rem;line-height:1;}
+  .lang-btn .chev{font-size:0.6rem;color:var(--muted);}
+  .lang-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.4rem;min-width:168px;display:none;box-shadow:0 12px 32px rgba(44,36,22,0.15);z-index:200;}
+  .lang-menu.open{display:block;}
+  .lang-opt{display:flex;align-items:center;gap:0.6rem;width:100%;background:none;border:none;color:var(--charcoal);font-family:'DM Sans',sans-serif;font-size:0.85rem;padding:0.55rem 0.7rem;border-radius:8px;cursor:pointer;text-align:left;transition:background 0.15s;}
+  .lang-opt:hover{background:var(--cream);}
+  .lang-opt .flag{font-size:1.1rem;}
+  .lang-opt.active{color:var(--gold);font-weight:600;}
+  @media(max-width:600px){.lang-btn .label{display:none;}}
 
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
-  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
-  .form-group label { font-size: 0.78rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-  .input-wrap { position: relative; }
-  .input-wrap input, .input-wrap select { width: 100%; padding: 0.85rem 2.5rem 0.85rem 1rem; border: 1.5px solid var(--border); border-radius: 10px; background: var(--warm-white); color: var(--charcoal); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; transition: border-color 0.2s, box-shadow 0.2s; outline: none; appearance: none; }
-  .input-wrap input:focus, .input-wrap select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.12); }
-  .input-unit { position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: var(--muted); pointer-events: none; }
-  .input-prefix { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 0.88rem; color: var(--muted); pointer-events: none; }
-  .input-wrap input.has-prefix { padding-left: 1.8rem; }
-  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C7B63' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.8rem center; cursor: pointer; padding-right: 2.2rem; }
+  .ad-slot{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.5);border:1px dashed var(--border);border-radius:14px;color:var(--muted);overflow:hidden;}
+  .ad-slot .ad-label{font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;}
+  .ad-header{max-width:970px;margin:1.2rem auto 0;min-height:90px;}
+  .ad-footer{max-width:970px;margin:0 auto 2rem;min-height:90px;}
+  .ad-side{position:sticky;top:90px;min-height:600px;width:200px;margin-top:1.2rem;display:none;}
+  @media(min-width:1100px){.ad-side{display:flex;}}
 
-  .range-wrap { margin-top: 0.3rem; }
-  input[type=range] { width: 100%; -webkit-appearance: none; height: 4px; border-radius: 2px; background: var(--border); outline: none; cursor: pointer; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--gold); cursor: pointer; box-shadow: 0 2px 6px rgba(201,168,76,0.4); }
+  .page-wrap{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr;}
+  @media(min-width:1100px){.page-wrap{grid-template-columns:1fr 200px;align-items:start;gap:1.5rem;padding-right:1.5rem;}}
 
-  .btn { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--gold), var(--amber)); color: white; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(201,168,76,0.35); }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.4); }
+  .hero{text-align:center;padding:3.5rem 2rem 1.5rem;animation:fadeDown 0.7s ease both;}
+  .hero-label{display:inline-block;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:0.35rem 1rem;border-radius:20px;margin-bottom:1.2rem;background:rgba(201,168,76,0.07);}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;line-height:1.1;color:var(--charcoal);margin-bottom:0.8rem;}
+  .hero h1 em{font-style:italic;color:var(--teal);}
+  .hero p{color:var(--muted);font-size:1rem;max-width:440px;margin:0 auto;line-height:1.7;}
 
-  .result { margin-top: 2rem; display: none; animation: fadeUp 0.5s ease both; }
-  .result.show { display: block; }
-  .divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0; color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .main{max-width:680px;margin:1.5rem auto 0;padding:0 1.5rem 3rem;animation:fadeUp 0.8s ease 0.2s both;}
+  .card{background:var(--card);border-radius:20px;border:1px solid var(--border);padding:2.5rem;box-shadow:var(--shadow);}
+  @media(max-width:600px){.card{padding:1.6rem;}}
 
-  .big-result { background: linear-gradient(135deg, var(--charcoal), #3d3020); border-radius: 16px; padding: 2rem; color: white; text-align: center; margin-bottom: 1.5rem; }
-  .big-result p { font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
-  .big-result .amount { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--gold-light); }
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem;}
+  @media(max-width:480px){.form-grid{grid-template-columns:1fr;}}
+  .form-group{display:flex;flex-direction:column;gap:0.5rem;}
+  .form-group.full{grid-column:1/-1;}
+  .form-group label{font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);}
+  .input-wrap{position:relative;}
+  .input-wrap input{width:100%;padding:0.85rem 2.8rem 0.85rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--warm-white);color:var(--charcoal);font-family:'DM Sans',sans-serif;font-size:0.95rem;transition:border-color 0.2s,box-shadow 0.2s;outline:none;}
+  .input-wrap input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+  .input-unit{position:absolute;right:0.9rem;top:50%;transform:translateY(-50%);font-size:0.82rem;color:var(--muted);pointer-events:none;}
 
-  .breakdown-trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1.5rem; }
-  .trio-box { border-radius: 12px; padding: 1.2rem; text-align: center; }
-  .trio-box.principal { background: var(--teal-light); border: 1px solid rgba(58,140,128,0.2); }
-  .trio-box.contributions { background: rgba(201,168,76,0.08); border: 1px solid var(--border); }
-  .trio-box.interest { background: linear-gradient(135deg, rgba(160,103,42,0.1), rgba(201,168,76,0.05)); border: 1px solid var(--border); }
-  .trio-box .tl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
-  .trio-box.principal .tl { color: var(--teal); }
-  .trio-box.contributions .tl { color: var(--gold); }
-  .trio-box.interest .tl { color: var(--amber); }
-  .trio-box .v { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--charcoal); }
+  .btn{width:100%;padding:1rem;background:linear-gradient(135deg,var(--gold),var(--amber));color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:transform 0.15s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(201,168,76,0.35);margin-top:0.5rem;}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,0.4);}
 
-  /* Stacked bar */
-  .bar-visual { margin-bottom: 1.5rem; }
-  .bar-visual p { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem; }
-  .stacked-bar { height: 20px; border-radius: 10px; overflow: hidden; display: flex; }
-  .bar-seg { height: 100%; transition: width 1s ease; }
-  .bar-seg.p { background: var(--teal); }
-  .bar-seg.c { background: var(--gold); }
-  .bar-seg.i { background: var(--amber); }
-  .bar-legend { display: flex; gap: 1rem; margin-top: 0.6rem; }
-  .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--muted); }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .result{margin-top:2rem;display:none;animation:fadeUp 0.5s ease both;}
+  .result.show{display:block;}
+  .divider{display:flex;align-items:center;gap:1rem;margin:2rem 0;color:var(--muted);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+  .total-card{background:linear-gradient(135deg,var(--charcoal),#3d3020);border-radius:14px;padding:1.5rem;color:white;text-align:center;margin-bottom:1.5rem;}
+  .total-card p{font-size:0.82rem;opacity:0.6;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
+  .total-card .big-number{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;color:var(--gold-light);line-height:1.1;}
+  .breakdown{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+  .bd-box{background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(58,140,128,0.05));border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center;}
+  .bd-box .v{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--amber);}
+  .bd-box.interest .v{color:var(--teal);}
+  .bd-box .l{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.3rem;}
 
-  /* Growth table */
-  .growth-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-  .growth-table th { text-align: left; padding: 0.6rem 0.8rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); border-bottom: 1px solid var(--border); }
-  .growth-table td { padding: 0.7rem 0.8rem; border-bottom: 1px solid rgba(201,168,76,0.07); }
-  .growth-table tr:last-child td { border-bottom: none; }
-  .growth-table td:last-child { font-weight: 500; color: var(--amber); }
-  .growth-table tr:hover td { background: rgba(201,168,76,0.03); }
+  .chart{margin-top:0.5rem;}
+  .chart-bar-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.5rem;font-size:0.8rem;}
+  .chart-bar-row .yr{width:46px;color:var(--muted);flex-shrink:0;}
+  .chart-bar-track{flex:1;background:var(--cream);border-radius:6px;height:22px;overflow:hidden;display:flex;}
+  .chart-bar-contrib{background:var(--gold);height:100%;}
+  .chart-bar-interest{background:var(--teal);height:100%;}
+  .chart-bar-row .amt{width:90px;text-align:right;color:var(--charcoal);font-weight:500;flex-shrink:0;}
+  .chart-legend{display:flex;gap:1.2rem;justify-content:center;margin-top:1rem;font-size:0.8rem;color:var(--muted);}
+  .chart-legend span{display:inline-flex;align-items:center;gap:0.4rem;}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .dot.c{background:var(--gold);} .dot.i{background:var(--teal);}
+  .disclaimer{margin-top:1.5rem;padding:1rem 1.2rem;background:rgba(58,140,128,0.08);border:1px solid rgba(58,140,128,0.25);border-radius:10px;font-size:0.85rem;color:var(--charcoal);line-height:1.6;}
 
-  .other-tools { margin-top: 3rem; }
-  .other-tools h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--charcoal); margin-bottom: 1.2rem; text-align: center; }
-  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-  .tool-link { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--charcoal); font-size: 0.88rem; font-weight: 500; transition: all 0.2s; }
-  .tool-link:hover { border-color: var(--gold); transform: translateX(3px); }
+  .article{max-width:680px;margin:3rem auto 0;}
+  .article-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:var(--shadow);}
+  @media(max-width:600px){.article-card{padding:1.6rem;}}
+  .article h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--charcoal);margin-bottom:1rem;line-height:1.2;}
+  .article h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--charcoal);margin:1.8rem 0 0.6rem;}
+  .article p{color:var(--charcoal);font-size:0.97rem;line-height:1.8;margin-bottom:1rem;font-weight:300;}
+  .article ul{margin:0 0 1rem 1.2rem;}
+  .article li{color:var(--charcoal);font-size:0.95rem;line-height:1.7;margin-bottom:0.5rem;font-weight:300;}
+  .article .formula{background:var(--warm-white);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:10px;padding:1rem 1.2rem;font-size:0.92rem;color:var(--charcoal);margin:0 0 1rem;}
+  .faq-item{border-top:1px solid rgba(201,168,76,0.15);padding:1.1rem 0;}
+  .faq-item:last-child{padding-bottom:0;}
+  .faq-q{font-weight:500;color:var(--charcoal);font-size:0.97rem;margin-bottom:0.4rem;}
+  .faq-a{color:var(--muted);font-size:0.92rem;line-height:1.7;font-weight:300;}
 
-  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .other-tools{margin-top:3rem;}
+  .other-tools h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:1.2rem;text-align:center;}
+  .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+  .tool-link{display:flex;align-items:center;gap:0.75rem;padding:1rem 1.2rem;background:var(--card);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--charcoal);font-size:0.88rem;font-weight:500;transition:all 0.2s;}
+  .tool-link:hover{border-color:var(--gold);transform:translateX(3px);box-shadow:0 3px 16px rgba(201,168,76,0.12);}
+  .tool-link .icon{font-size:1.3rem;}
+
+  footer{padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border);}
+  .footer-brand{display:flex;align-items:center;gap:0.5rem;font-family:'Playfair Display',serif;font-size:1rem;color:var(--charcoal);}
+  .footer-brand .dot{color:var(--gold);width:auto;height:auto;}
+  .footer-links{display:flex;gap:1.3rem;flex-wrap:wrap;}
+  .footer-links a{text-decoration:none;font-size:0.82rem;color:var(--muted);transition:color 0.2s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-copy{font-size:0.78rem;color:var(--muted);}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>
 <body>
+
 <nav>
-  <span class="nav-logo">✦ Calculators</span>
-  <div class="nav-links">
-    <a href="age-calculator.html">Âge</a>
-    <a href="calorie-calculator.html">Calories</a>
-    <a href="retirement-calculator.html">Retraite</a>
-    <a href="inflation-calculator.html">Inflation</a>
-    <a href="compound-interest-calculator.html" class="active">Intérêts</a>
+  <a href="index.html" class="nav-brand">
+    <div class="logo-mark">✦</div>
+    <span class="brand-name">Smart<span>Tools</span>Hub</span>
+  </a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="age-calculator.html" data-i18n="nav_age">Âge</a>
+      <a href="calorie-calculator.html" data-i18n="nav_cal">Calories</a>
+      <a href="retirement-calculator.html" data-i18n="nav_ret">Retraite</a>
+      <a href="inflation-calculator.html" data-i18n="nav_inf">Inflation</a>
+      <a href="compound-interest-calculator.html" class="active" data-i18n="nav_ci">Intérêts</a>
+    </div>
+    <div class="lang">
+      <button class="lang-btn" id="langBtn">
+        <span class="flag" id="curFlag">🇫🇷</span>
+        <span class="label" id="curLabel">Français</span>
+        <span class="chev">▼</span>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-opt" data-lang="en"><span class="flag">🇬🇧</span> English</button>
+        <button class="lang-opt" data-lang="zh"><span class="flag">🇨🇳</span> 中文</button>
+        <button class="lang-opt" data-lang="ru"><span class="flag">🇷🇺</span> Русский</button>
+        <button class="lang-opt" data-lang="es"><span class="flag">🇪🇸</span> Español</button>
+        <button class="lang-opt" data-lang="pt"><span class="flag">🇵🇹</span> Português</button>
+        <button class="lang-opt active" data-lang="fr"><span class="flag">🇫🇷</span> Français</button>
+      </div>
+    </div>
   </div>
 </nav>
 
-<div class="hero">
-  <span class="hero-label">💰 Calculateur</span>
-  <h1>La magie des<br><em>intérêts composés</em></h1>
-  <p>Visualisez la puissance de la capitalisation et regardez votre argent croître exponentiellement avec le temps.</p>
+<div class="ad-slot ad-header">
+  <span class="ad-label" data-i18n="ad_label">Publicité</span>
+  <!-- AdSense header -->
 </div>
 
-<main class="main">
-  <div class="card">
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Capital initial</label>
-        <div class="input-wrap">
-          <span class="input-prefix">€</span>
-          <input type="number" id="principal" class="has-prefix" value="10000" min="0">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Versement mensuel</label>
-        <div class="input-wrap">
-          <span class="input-prefix">€</span>
-          <input type="number" id="monthly" class="has-prefix" value="200" min="0">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Taux d'intérêt annuel</label>
-        <div class="input-wrap">
-          <input type="number" id="rate" value="7" min="0" max="50" step="0.1">
-          <span class="input-unit">%</span>
-        </div>
-        <div class="range-wrap">
-          <input type="range" min="0" max="20" step="0.1" value="7" oninput="document.getElementById('rate').value=this.value">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Durée</label>
-        <div class="input-wrap">
-          <input type="number" id="years" value="20" min="1" max="50">
-          <span class="input-unit">ans</span>
-        </div>
-        <div class="range-wrap">
-          <input type="range" min="1" max="50" value="20" oninput="document.getElementById('years').value=this.value">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Fréquence de capitalisation</label>
-        <div class="input-wrap">
-          <select id="compound-freq">
-            <option value="12" selected>Mensuelle</option>
-            <option value="4">Trimestrielle</option>
-            <option value="2">Semestrielle</option>
-            <option value="1">Annuelle</option>
-            <option value="365">Quotidienne</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Imposition des gains</label>
-        <div class="input-wrap">
-          <input type="number" id="tax" value="30" min="0" max="100" step="0.5">
-          <span class="input-unit">%</span>
-        </div>
-      </div>
+<div class="page-wrap">
+  <div class="main-col">
+    <div class="hero">
+      <span class="hero-label" data-i18n="hero_label">💰 Calculateur</span>
+      <h1 data-i18n="hero_h1">La puissance des<br><em>intérêts composés</em></h1>
+      <p data-i18n="hero_p">Simulez la croissance de votre épargne dans le temps, avec versements réguliers et intérêts réinvestis.</p>
     </div>
 
-    <button class="btn" onclick="calculate()">Calculer la croissance →</button>
-
-    <div class="result" id="result">
-      <div class="divider">Capital final</div>
-      <div class="big-result">
-        <p>Valeur finale brute</p>
-        <div class="amount" id="final-amount">—</div>
-        <div style="font-size:0.82rem;opacity:0.5;margin-top:0.5rem;">Après impôts : <span id="after-tax">—</span></div>
-      </div>
-
-      <div class="breakdown-trio">
-        <div class="trio-box principal"><div class="tl">Capital initial</div><div class="v" id="b-principal">—</div></div>
-        <div class="trio-box contributions"><div class="tl">Versements</div><div class="v" id="b-contributions">—</div></div>
-        <div class="trio-box interest"><div class="tl">Intérêts</div><div class="v" id="b-interest">—</div></div>
-      </div>
-
-      <div class="bar-visual">
-        <p>Répartition du capital final</p>
-        <div class="stacked-bar">
-          <div class="bar-seg p" id="bar-p"></div>
-          <div class="bar-seg c" id="bar-c"></div>
-          <div class="bar-seg i" id="bar-i"></div>
+    <main class="main">
+      <div class="card">
+        <div class="form-grid">
+          <div class="form-group">
+            <label data-i18n="l_initial">Capital initial</label>
+            <div class="input-wrap"><input type="number" id="initial" placeholder="1000" min="0"><span class="input-unit">€</span></div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="l_monthly">Versement mensuel</label>
+            <div class="input-wrap"><input type="number" id="monthly" placeholder="100" min="0"><span class="input-unit">€</span></div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="l_rate">Taux annuel</label>
+            <div class="input-wrap"><input type="number" id="rate" placeholder="5" min="0" max="100" step="0.1"><span class="input-unit">%</span></div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="l_years">Durée</label>
+            <div class="input-wrap"><input type="number" id="years" placeholder="20" min="1" max="60"><span class="input-unit" data-i18n="u_years">ans</span></div>
+          </div>
         </div>
-        <div class="bar-legend">
-          <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>Capital</div>
-          <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Versements</div>
-          <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Intérêts</div>
+
+        <button class="btn" onclick="calculate()" data-i18n="btn">Calculer →</button>
+
+        <div class="result" id="result">
+          <div class="divider" data-i18n="div_total">Valeur finale estimée</div>
+          <div class="total-card">
+            <p data-i18n="total_label">Capital au terme</p>
+            <div class="big-number" id="final-total">—</div>
+          </div>
+          <div class="breakdown">
+            <div class="bd-box"><div class="v" id="total-contrib">—</div><div class="l" data-i18n="bd_contrib">Total versé</div></div>
+            <div class="bd-box interest"><div class="v" id="total-interest">—</div><div class="l" data-i18n="bd_interest">Intérêts générés</div></div>
+          </div>
+          <div class="divider" data-i18n="div_evolution">Évolution année par année</div>
+          <div class="chart" id="chart"></div>
+          <div class="chart-legend">
+            <span><span class="dot c"></span> <span data-i18n="leg_contrib">Versements</span></span>
+            <span><span class="dot i"></span> <span data-i18n="leg_interest">Intérêts</span></span>
+          </div>
+          <div class="disclaimer" data-i18n="disclaimer">⚠️ Cette simulation suppose un taux de rendement constant, ce qui n'existe pas dans la réalité : les rendements réels fluctuent et un placement peut perdre de la valeur. Cet outil est éducatif et ne constitue pas un conseil en investissement.</div>
         </div>
       </div>
 
-      <div class="divider">Croissance année par année</div>
-      <table class="growth-table">
-        <thead>
-          <tr><th>Année</th><th>Capital versé</th><th>Intérêts accumulés</th><th>Valeur totale</th></tr>
-        </thead>
-        <tbody id="growth-tbody"></tbody>
-      </table>
-    </div>
+      <div class="ad-slot ad-footer" style="margin-top:2.5rem;">
+        <span class="ad-label" data-i18n="ad_label">Publicité</span>
+        <!-- AdSense inline -->
+      </div>
+
+      <section class="article">
+        <div class="article-card" id="article"></div>
+      </section>
+
+      <div class="other-tools">
+        <h3 data-i18n="other_t">Autres calculateurs</h3>
+        <div class="tools-grid">
+          <a href="age-calculator.html" class="tool-link"><span class="icon">🗓️</span><span data-i18n="nav_age">Âge</span></a>
+          <a href="calorie-calculator.html" class="tool-link"><span class="icon">🔥</span><span data-i18n="nav_cal">Calories</span></a>
+          <a href="retirement-calculator.html" class="tool-link"><span class="icon">🌅</span><span data-i18n="nav_ret">Retraite</span></a>
+          <a href="inflation-calculator.html" class="tool-link"><span class="icon">📈</span><span data-i18n="nav_inf">Inflation</span></a>
+        </div>
+      </div>
+    </main>
   </div>
 
-  <div class="other-tools">
-    <h3>Autres calculateurs</h3>
-    <div class="tools-grid">
-      <a href="age-calculator.html" class="tool-link"><span>🗓️</span>Âge</a>
-      <a href="calorie-calculator.html" class="tool-link"><span>🔥</span>Calories</a>
-      <a href="retirement-calculator.html" class="tool-link"><span>🌅</span>Retraite</a>
-      <a href="inflation-calculator.html" class="tool-link"><span>📈</span>Inflation</a>
-    </div>
+  <aside class="ad-slot ad-side">
+    <span class="ad-label" data-i18n="ad_label">Publicité</span>
+    <!-- AdSense vertical 200x600 -->
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-brand">Smart<span class="dot">Tools</span>Hub</div>
+  <div class="footer-links">
+    <a href="index.html" data-i18n="f_home">Accueil</a>
+    <a href="about.html" data-i18n="f_about">À propos</a>
+    <a href="privacy.html" data-i18n="f_privacy">Confidentialité</a>
+    <a href="contact.html" data-i18n="f_contact">Contact</a>
   </div>
-</main>
+  <p class="footer-copy" data-i18n="f_copy">SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte</p>
+</footer>
 
 <script>
-  function fmt(n) { return Math.round(n).toLocaleString('fr-FR') + ' €'; }
-  function fmtShort(n) {
-    if(n >= 1e6) return (n/1e6).toFixed(1) + 'M€';
-    if(n >= 1e3) return (n/1e3).toFixed(0) + 'k€';
-    return Math.round(n) + '€';
-  }
+const I18N = {
+  fr:{_flag:'🇫🇷',_label:'Français',_htmllang:'fr',_locale:'fr-FR',_cur:'EUR',
+    meta_desc:"Calculateur d'intérêts composés gratuit : simulez la croissance de votre épargne avec capital initial, versements mensuels et taux annuel, avec détail année par année.",
+    title:"Calculateur d'intérêts composés — SmartToolsHub",
+    nav_age:"Âge",nav_cal:"Calories",nav_ret:"Retraite",nav_inf:"Inflation",nav_ci:"Intérêts",
+    hero_label:"💰 Calculateur", hero_h1:"La puissance des<br><em>intérêts composés</em>",
+    hero_p:"Simulez la croissance de votre épargne dans le temps, avec versements réguliers et intérêts réinvestis.",
+    l_initial:"Capital initial", l_monthly:"Versement mensuel", l_rate:"Taux annuel", l_years:"Durée", u_years:"ans",
+    btn:"Calculer →", div_total:"Valeur finale estimée", total_label:"Capital au terme",
+    bd_contrib:"Total versé", bd_interest:"Intérêts générés",
+    div_evolution:"Évolution année par année", leg_contrib:"Versements", leg_interest:"Intérêts",
+    disclaimer:"⚠️ Cette simulation suppose un taux de rendement constant, ce qui n'existe pas dans la réalité : les rendements réels fluctuent et un placement peut perdre de la valeur. Cet outil est éducatif et ne constitue pas un conseil en investissement.",
+    err_fill:"Veuillez remplir les champs avec des valeurs valides.",
+    other_t:"Autres calculateurs",
+    f_home:"Accueil",f_about:"À propos",f_privacy:"Confidentialité",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte", ad_label:"Publicité",
+    article:`<h2>Comment fonctionnent les intérêts composés ?</h2>
+<p>Les intérêts composés sont le mécanisme par lequel vos intérêts génèrent à leur tour des intérêts. Contrairement aux intérêts simples, calculés uniquement sur le capital de départ, les intérêts composés s'ajoutent au capital à chaque période, si bien que la base de calcul grossit continuellement. C'est ce qu'Einstein aurait appelé, selon la légende, « la huitième merveille du monde ».</p>
+<h3>La formule</h3>
+<p>Pour un capital placé avec des versements réguliers, la valeur future combine deux éléments :</p>
+<div class="formula">Capital final = Capital initial × (1 + t)^n + Versements × [((1 + t)^n − 1) ÷ t]<br>où t est le taux par période et n le nombre de périodes.</div>
+<p>Notre calculateur applique une capitalisation mensuelle : le taux annuel est divisé par douze et les versements sont ajoutés chaque mois, ce qui reflète la plupart des plans d'épargne.</p>
+<h3>Pourquoi le temps est-il déterminant ?</h3>
+<ul>
+<li>Plus la durée est longue, plus la part des intérêts dans le total devient importante.</li>
+<li>Commencer tôt, même avec de petits montants, bat souvent un démarrage tardif avec de gros versements.</li>
+<li>Les intérêts générés sur les dernières années peuvent dépasser plusieurs années de versements.</li>
+</ul>
+<h3>Questions fréquentes</h3>
+<div class="faq-item"><div class="faq-q">Le rendement est-il garanti ?</div><div class="faq-a">Non. Cette simulation suppose un taux constant, alors que les rendements réels varient et peuvent être négatifs. Considérez le résultat comme une projection théorique, pas une promesse.</div></div>
+<div class="faq-item"><div class="faq-q">À quelle fréquence les intérêts sont-ils capitalisés ?</div><div class="faq-a">Ce calculateur utilise une capitalisation mensuelle. Une capitalisation plus fréquente augmente légèrement le résultat final.</div></div>
+<div class="faq-item"><div class="faq-q">Mes données sont-elles enregistrées ?</div><div class="faq-a">Non. Tout le calcul s'effectue dans votre navigateur ; rien n'est envoyé ni conservé.</div></div>`},
+  en:{_flag:'🇬🇧',_label:'English',_htmllang:'en',_locale:'en-US',_cur:'USD',
+    meta_desc:"Free compound interest calculator: simulate your savings growth with starting capital, monthly contributions and annual rate, with a year-by-year breakdown.",
+    title:"Compound Interest Calculator — SmartToolsHub",
+    nav_age:"Age",nav_cal:"Calories",nav_ret:"Retirement",nav_inf:"Inflation",nav_ci:"Interest",
+    hero_label:"💰 Calculator", hero_h1:"The power of<br><em>compound interest</em>",
+    hero_p:"Simulate how your savings grow over time, with regular contributions and reinvested interest.",
+    l_initial:"Initial capital", l_monthly:"Monthly contribution", l_rate:"Annual rate", l_years:"Duration", u_years:"yrs",
+    btn:"Calculate →", div_total:"Estimated final value", total_label:"Capital at term",
+    bd_contrib:"Total contributed", bd_interest:"Interest earned",
+    div_evolution:"Year-by-year growth", leg_contrib:"Contributions", leg_interest:"Interest",
+    disclaimer:"⚠️ This simulation assumes a constant rate of return, which does not exist in reality: real returns fluctuate and an investment can lose value. This tool is educational and is not investment advice.",
+    err_fill:"Please fill in the fields with valid values.",
+    other_t:"Other calculators",
+    f_home:"Home",f_about:"About",f_privacy:"Privacy",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Free Online Tools · a Nordbyte project", ad_label:"Advertisement",
+    article:`<h2>How does compound interest work?</h2>
+<p>Compound interest is the mechanism by which your interest itself earns interest. Unlike simple interest, calculated only on the starting capital, compound interest is added to the capital each period, so the base keeps growing. It's what Einstein reportedly called "the eighth wonder of the world".</p>
+<h3>The formula</h3>
+<p>For capital invested with regular contributions, the future value combines two parts:</p>
+<div class="formula">Final = Initial × (1 + r)^n + Contribution × [((1 + r)^n − 1) ÷ r]<br>where r is the rate per period and n the number of periods.</div>
+<p>Our calculator uses monthly compounding: the annual rate is divided by twelve and contributions are added each month, reflecting most savings plans.</p>
+<h3>Why does time matter so much?</h3>
+<ul>
+<li>The longer the duration, the larger the share of interest in the total.</li>
+<li>Starting early, even with small amounts, often beats starting late with large contributions.</li>
+<li>Interest earned in the final years can exceed several years of contributions.</li>
+</ul>
+<h3>Frequently asked questions</h3>
+<div class="faq-item"><div class="faq-q">Is the return guaranteed?</div><div class="faq-a">No. This simulation assumes a constant rate, whereas real returns vary and can be negative. Treat the result as a theoretical projection, not a promise.</div></div>
+<div class="faq-item"><div class="faq-q">How often is interest compounded?</div><div class="faq-a">This calculator uses monthly compounding. More frequent compounding slightly increases the final result.</div></div>
+<div class="faq-item"><div class="faq-q">Is my data stored?</div><div class="faq-a">No. The whole calculation runs in your browser; nothing is sent or kept.</div></div>`},
+  zh:{_flag:'🇨🇳',_label:'中文',_htmllang:'zh',_locale:'zh-CN',_cur:'CNY',
+    meta_desc:"免费复利计算器：通过初始本金、每月追加和年利率模拟储蓄增长，并提供逐年明细。",
+    title:"复利计算器 — SmartToolsHub",
+    nav_age:"年龄",nav_cal:"卡路里",nav_ret:"退休",nav_inf:"通胀",nav_ci:"利息",
+    hero_label:"💰 计算器", hero_h1:"<em>复利</em><br>的力量",
+    hero_p:"模拟您的储蓄如何随时间增长，包含定期追加和再投资的利息。",
+    l_initial:"初始本金", l_monthly:"每月追加", l_rate:"年利率", l_years:"期限", u_years:"年",
+    btn:"计算 →", div_total:"预计最终价值", total_label:"期末本金",
+    bd_contrib:"总投入", bd_interest:"所得利息",
+    div_evolution:"逐年增长", leg_contrib:"投入", leg_interest:"利息",
+    disclaimer:"⚠️ 此模拟假设回报率恒定，而现实中并不存在：实际回报会波动，投资可能亏损。本工具仅供教育用途，不构成投资建议。",
+    err_fill:"请用有效数值填写各字段。",
+    other_t:"其他计算器",
+    f_home:"首页",f_about:"关于",f_privacy:"隐私",f_contact:"联系",
+    f_copy:"SmartToolsHub © 2026 · 免费在线工具 · Nordbyte 出品", ad_label:"广告",
+    article:`<h2>复利是如何运作的？</h2>
+<p>复利是指您的利息本身也能产生利息的机制。与仅按初始本金计算的单利不同，复利每期都会加入本金，因此计算基数会不断增长。据传爱因斯坦称之为"世界第八大奇迹"。</p>
+<h3>公式</h3>
+<p>对于带定期追加的投资本金，未来价值由两部分组成：</p>
+<div class="formula">最终 = 初始 × (1 + r)^n + 追加 × [((1 + r)^n − 1) ÷ r]<br>其中 r 为每期利率，n 为期数。</div>
+<p>我们的计算器采用按月复利：年利率除以十二，每月加入追加金额，符合大多数储蓄计划。</p>
+<h3>为什么时间如此关键？</h3>
+<ul>
+<li>期限越长，利息在总额中所占比例越大。</li>
+<li>即使金额较小，尽早开始也常常胜过晚开始但大额投入。</li>
+<li>最后几年所得的利息可能超过数年的投入总和。</li>
+</ul>
+<h3>常见问题</h3>
+<div class="faq-item"><div class="faq-q">回报有保证吗？</div><div class="faq-a">没有。此模拟假设利率恒定，而实际回报会变化甚至可能为负。请将结果视为理论预测，而非承诺。</div></div>
+<div class="faq-item"><div class="faq-q">利息多久复利一次？</div><div class="faq-a">本计算器采用按月复利。复利越频繁，最终结果略高。</div></div>
+<div class="faq-item"><div class="faq-q">我的数据会被保存吗？</div><div class="faq-a">不会。整个计算都在您的浏览器中进行；不会发送或保留任何内容。</div></div>`},
+  ru:{_flag:'🇷🇺',_label:'Русский',_htmllang:'ru',_locale:'ru-RU',_cur:'RUB',
+    meta_desc:"Бесплатный калькулятор сложных процентов: смоделируйте рост сбережений с начальным капиталом, ежемесячными взносами и годовой ставкой, с разбивкой по годам.",
+    title:"Калькулятор сложных процентов — SmartToolsHub",
+    nav_age:"Возраст",nav_cal:"Калории",nav_ret:"Пенсия",nav_inf:"Инфляция",nav_ci:"Проценты",
+    hero_label:"💰 Калькулятор", hero_h1:"Сила<br><em>сложных процентов</em>",
+    hero_p:"Смоделируйте рост сбережений со временем, с регулярными взносами и реинвестированием процентов.",
+    l_initial:"Начальный капитал", l_monthly:"Ежемесячный взнос", l_rate:"Годовая ставка", l_years:"Срок", u_years:"лет",
+    btn:"Рассчитать →", div_total:"Оценочная итоговая сумма", total_label:"Капитал в конце срока",
+    bd_contrib:"Всего внесено", bd_interest:"Начислено процентов",
+    div_evolution:"Рост по годам", leg_contrib:"Взносы", leg_interest:"Проценты",
+    disclaimer:"⚠️ Эта симуляция предполагает постоянную доходность, которой не бывает в реальности: реальная доходность колеблется, и вложение может потерять в стоимости. Инструмент образовательный и не является инвестиционным советом.",
+    err_fill:"Пожалуйста, заполните поля корректными значениями.",
+    other_t:"Другие калькуляторы",
+    f_home:"Главная",f_about:"О нас",f_privacy:"Конфиденциальность",f_contact:"Контакты",
+    f_copy:"SmartToolsHub © 2026 · Бесплатные онлайн-инструменты · проект Nordbyte", ad_label:"Реклама",
+    article:`<h2>Как работают сложные проценты?</h2>
+<p>Сложные проценты — это механизм, при котором ваши проценты сами приносят проценты. В отличие от простых процентов, начисляемых только на первоначальный капитал, сложные проценты добавляются к капиталу каждый период, поэтому база расчёта постоянно растёт. По легенде, Эйнштейн называл это «восьмым чудом света».</p>
+<h3>Формула</h3>
+<p>Для капитала с регулярными взносами будущая стоимость складывается из двух частей:</p>
+<div class="formula">Итог = Начальный × (1 + r)^n + Взнос × [((1 + r)^n − 1) ÷ r]<br>где r — ставка за период, n — число периодов.</div>
+<p>Наш калькулятор использует ежемесячную капитализацию: годовая ставка делится на двенадцать, а взносы добавляются каждый месяц, что отражает большинство планов накоплений.</p>
+<h3>Почему время так важно?</h3>
+<ul>
+<li>Чем дольше срок, тем больше доля процентов в итоговой сумме.</li>
+<li>Начать рано даже с малых сумм часто выгоднее, чем поздно с крупными взносами.</li>
+<li>Проценты за последние годы могут превысить несколько лет взносов.</li>
+</ul>
+<h3>Частые вопросы</h3>
+<div class="faq-item"><div class="faq-q">Гарантирована ли доходность?</div><div class="faq-a">Нет. Симуляция предполагает постоянную ставку, тогда как реальная доходность меняется и может быть отрицательной. Считайте результат теоретическим прогнозом, а не обещанием.</div></div>
+<div class="faq-item"><div class="faq-q">Как часто капитализируются проценты?</div><div class="faq-a">Этот калькулятор использует ежемесячную капитализацию. Более частая капитализация немного увеличивает итог.</div></div>
+<div class="faq-item"><div class="faq-q">Сохраняются ли мои данные?</div><div class="faq-a">Нет. Весь расчёт выполняется в вашем браузере; ничего не отправляется и не хранится.</div></div>`},
+  es:{_flag:'🇪🇸',_label:'Español',_htmllang:'es',_locale:'es-ES',_cur:'EUR',
+    meta_desc:"Calculadora de interés compuesto gratuita: simula el crecimiento de tu ahorro con capital inicial, aportaciones mensuales y tasa anual, con desglose año por año.",
+    title:"Calculadora de interés compuesto — SmartToolsHub",
+    nav_age:"Edad",nav_cal:"Calorías",nav_ret:"Jubilación",nav_inf:"Inflación",nav_ci:"Interés",
+    hero_label:"💰 Calculadora", hero_h1:"El poder del<br><em>interés compuesto</em>",
+    hero_p:"Simula cómo crece tu ahorro con el tiempo, con aportaciones periódicas e intereses reinvertidos.",
+    l_initial:"Capital inicial", l_monthly:"Aportación mensual", l_rate:"Tasa anual", l_years:"Duración", u_years:"años",
+    btn:"Calcular →", div_total:"Valor final estimado", total_label:"Capital al final",
+    bd_contrib:"Total aportado", bd_interest:"Intereses generados",
+    div_evolution:"Crecimiento año por año", leg_contrib:"Aportaciones", leg_interest:"Intereses",
+    disclaimer:"⚠️ Esta simulación supone una tasa de rendimiento constante, que no existe en la realidad: los rendimientos reales fluctúan y una inversión puede perder valor. Esta herramienta es educativa y no constituye asesoramiento de inversión.",
+    err_fill:"Por favor, completa los campos con valores válidos.",
+    other_t:"Otras calculadoras",
+    f_home:"Inicio",f_about:"Acerca de",f_privacy:"Privacidad",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Herramientas en línea gratuitas · un proyecto Nordbyte", ad_label:"Publicidad",
+    article:`<h2>¿Cómo funciona el interés compuesto?</h2>
+<p>El interés compuesto es el mecanismo por el cual tus intereses generan a su vez intereses. A diferencia del interés simple, calculado solo sobre el capital inicial, el interés compuesto se suma al capital cada periodo, de modo que la base de cálculo crece continuamente. Es lo que Einstein habría llamado "la octava maravilla del mundo".</p>
+<h3>La fórmula</h3>
+<p>Para un capital invertido con aportaciones periódicas, el valor futuro combina dos partes:</p>
+<div class="formula">Final = Inicial × (1 + r)^n + Aportación × [((1 + r)^n − 1) ÷ r]<br>donde r es la tasa por periodo y n el número de periodos.</div>
+<p>Nuestra calculadora usa capitalización mensual: la tasa anual se divide entre doce y las aportaciones se añaden cada mes, reflejando la mayoría de planes de ahorro.</p>
+<h3>¿Por qué es tan decisivo el tiempo?</h3>
+<ul>
+<li>Cuanto mayor es la duración, mayor es la proporción de intereses en el total.</li>
+<li>Empezar pronto, aun con cantidades pequeñas, suele superar empezar tarde con grandes aportaciones.</li>
+<li>Los intereses de los últimos años pueden superar varios años de aportaciones.</li>
+</ul>
+<h3>Preguntas frecuentes</h3>
+<div class="faq-item"><div class="faq-q">¿Está garantizado el rendimiento?</div><div class="faq-a">No. Esta simulación supone una tasa constante, mientras que los rendimientos reales varían y pueden ser negativos. Toma el resultado como una proyección teórica, no una promesa.</div></div>
+<div class="faq-item"><div class="faq-q">¿Con qué frecuencia se capitalizan los intereses?</div><div class="faq-a">Esta calculadora usa capitalización mensual. Una capitalización más frecuente aumenta ligeramente el resultado final.</div></div>
+<div class="faq-item"><div class="faq-q">¿Se guardan mis datos?</div><div class="faq-a">No. Todo el cálculo se realiza en tu navegador; no se envía ni se conserva nada.</div></div>`},
+  pt:{_flag:'🇵🇹',_label:'Português',_htmllang:'pt',_locale:'pt-BR',_cur:'BRL',
+    meta_desc:"Calculadora de juros compostos gratuita: simule o crescimento da poupança com capital inicial, contribuições mensais e taxa anual, com detalhe ano a ano.",
+    title:"Calculadora de juros compostos — SmartToolsHub",
+    nav_age:"Idade",nav_cal:"Calorias",nav_ret:"Reforma",nav_inf:"Inflação",nav_ci:"Juros",
+    hero_label:"💰 Calculadora", hero_h1:"O poder dos<br><em>juros compostos</em>",
+    hero_p:"Simule como a sua poupança cresce ao longo do tempo, com contribuições regulares e juros reinvestidos.",
+    l_initial:"Capital inicial", l_monthly:"Contribuição mensal", l_rate:"Taxa anual", l_years:"Duração", u_years:"anos",
+    btn:"Calcular →", div_total:"Valor final estimado", total_label:"Capital no final",
+    bd_contrib:"Total contribuído", bd_interest:"Juros gerados",
+    div_evolution:"Crescimento ano a ano", leg_contrib:"Contribuições", leg_interest:"Juros",
+    disclaimer:"⚠️ Esta simulação pressupõe uma taxa de rendimento constante, o que não existe na realidade: os rendimentos reais flutuam e um investimento pode perder valor. Esta ferramenta é educativa e não constitui aconselhamento de investimento.",
+    err_fill:"Por favor, preencha os campos com valores válidos.",
+    other_t:"Outras calculadoras",
+    f_home:"Início",f_about:"Sobre",f_privacy:"Privacidade",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Ferramentas online gratuitas · um projeto Nordbyte", ad_label:"Publicidade",
+    article:`<h2>Como funcionam os juros compostos?</h2>
+<p>Os juros compostos são o mecanismo pelo qual os seus juros geram, por sua vez, juros. Ao contrário dos juros simples, calculados apenas sobre o capital inicial, os juros compostos somam-se ao capital a cada período, pelo que a base de cálculo cresce continuamente. É o que Einstein terá chamado "a oitava maravilha do mundo".</p>
+<h3>A fórmula</h3>
+<p>Para um capital investido com contribuições regulares, o valor futuro combina duas partes:</p>
+<div class="formula">Final = Inicial × (1 + r)^n + Contribuição × [((1 + r)^n − 1) ÷ r]<br>onde r é a taxa por período e n o número de períodos.</div>
+<p>A nossa calculadora usa capitalização mensal: a taxa anual é dividida por doze e as contribuições são adicionadas todos os meses, refletindo a maioria dos planos de poupança.</p>
+<h3>Porque é que o tempo é tão decisivo?</h3>
+<ul>
+<li>Quanto maior a duração, maior a parcela de juros no total.</li>
+<li>Começar cedo, mesmo com valores pequenos, supera muitas vezes começar tarde com grandes contribuições.</li>
+<li>Os juros gerados nos últimos anos podem superar vários anos de contribuições.</li>
+</ul>
+<h3>Perguntas frequentes</h3>
+<div class="faq-item"><div class="faq-q">O rendimento é garantido?</div><div class="faq-a">Não. Esta simulação pressupõe uma taxa constante, ao passo que os rendimentos reais variam e podem ser negativos. Encare o resultado como uma projeção teórica, não uma promessa.</div></div>
+<div class="faq-item"><div class="faq-q">Com que frequência os juros são capitalizados?</div><div class="faq-a">Esta calculadora usa capitalização mensal. Uma capitalização mais frequente aumenta ligeiramente o resultado final.</div></div>
+<div class="faq-item"><div class="faq-q">Os meus dados são guardados?</div><div class="faq-a">Não. Todo o cálculo é feito no seu navegador; nada é enviado ou guardado.</div></div>`}
+};
 
-  function calculate() {
-    const principal = parseFloat(document.getElementById('principal').value) || 0;
-    const monthly = parseFloat(document.getElementById('monthly').value) || 0;
-    const annualRate = parseFloat(document.getElementById('rate').value) / 100;
-    const years = parseInt(document.getElementById('years').value);
-    const freq = parseInt(document.getElementById('compound-freq').value);
-    const taxRate = parseFloat(document.getElementById('tax').value) / 100;
+const $ = id => document.getElementById(id);
+let LANG='fr';
+const T = key => (I18N[LANG]&&I18N[LANG][key]!==undefined)?I18N[LANG][key]:I18N.fr[key];
+const money = n => Number(Math.round(n)).toLocaleString(I18N[LANG]._locale,{style:'currency',currency:I18N[LANG]._cur,maximumFractionDigits:0});
 
-    const ratePerPeriod = annualRate / freq;
-    const periodsPerYear = freq;
-    const monthlyPeriodRatio = freq / 12;
+function applyLang(lang){
+  if(!I18N[lang])lang='fr';
+  LANG=lang;
+  document.documentElement.lang=I18N[lang]._htmllang;
+  document.title=T('title');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const v=T(el.getAttribute('data-i18n'));if(typeof v==='string')el.innerHTML=v;});
+  document.querySelectorAll('[data-i18n-meta]').forEach(el=>{const v=T(el.getAttribute('data-i18n-meta'));if(typeof v==='string')el.setAttribute('content',v);});
+  $('curFlag').textContent=I18N[lang]._flag;
+  $('curLabel').textContent=I18N[lang]._label;
+  document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('active',o.dataset.lang===lang));
+  $('article').innerHTML=T('article');
+  if($('result').classList.contains('show')) calculate(true);
+  try{localStorage.setItem('sth_lang',lang);}catch{}
+}
 
-    let balance = principal;
-    const yearlyData = [];
+$('langBtn').addEventListener('click',e=>{e.stopPropagation();$('langMenu').classList.toggle('open');});
+document.addEventListener('click',()=>$('langMenu').classList.remove('open'));
+document.querySelectorAll('.lang-opt').forEach(opt=>{opt.addEventListener('click',()=>{applyLang(opt.dataset.lang);$('langMenu').classList.remove('open');});});
 
-    for(let y = 1; y <= years; y++) {
-      for(let p = 0; p < periodsPerYear; p++) {
-        balance = balance * (1 + ratePerPeriod) + monthly * (12 / periodsPerYear);
-      }
-      const totalInvested = principal + monthly * 12 * y;
-      yearlyData.push({ year: y, totalInvested, balance });
+function calculate(silent){
+  const initial=parseFloat($('initial').value)||0;
+  const monthly=parseFloat($('monthly').value)||0;
+  const rate=parseFloat($('rate').value);
+  const years=parseInt($('years').value);
+  if((!initial&&!monthly)||isNaN(rate)||!years){ if(!silent) alert(T('err_fill')); return; }
+
+  const r=rate/100/12;
+  const yearly=[];
+  let balance=initial;
+  let contributed=initial;
+  for(let y=1;y<=years;y++){
+    for(let m=0;m<12;m++){
+      balance=balance*(1+r)+monthly;
+      contributed+=monthly;
     }
-
-    const finalBalance = balance;
-    const totalInvested = principal + monthly * 12 * years;
-    const totalContributions = monthly * 12 * years;
-    const totalInterest = finalBalance - totalInvested;
-    const taxOnInterest = Math.max(0, totalInterest) * taxRate;
-    const afterTax = finalBalance - taxOnInterest;
-
-    document.getElementById('final-amount').textContent = fmt(finalBalance);
-    document.getElementById('after-tax').textContent = fmt(afterTax);
-    document.getElementById('b-principal').textContent = fmtShort(principal);
-    document.getElementById('b-contributions').textContent = fmtShort(totalContributions);
-    document.getElementById('b-interest').textContent = fmtShort(Math.max(0, totalInterest));
-
-    const pPct = (principal / finalBalance) * 100;
-    const cPct = (totalContributions / finalBalance) * 100;
-    const iPct = Math.max(0, (totalInterest / finalBalance) * 100);
-    document.getElementById('bar-p').style.width = pPct + '%';
-    document.getElementById('bar-c').style.width = cPct + '%';
-    document.getElementById('bar-i').style.width = iPct + '%';
-
-    const tbody = document.getElementById('growth-tbody');
-    tbody.innerHTML = '';
-    const step = Math.max(1, Math.floor(years / 15));
-    yearlyData.filter((_,i) => (i+1) % step === 0 || i+1 === years).forEach(d => {
-      const interest = d.balance - d.totalInvested;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>Année ${d.year}</td><td>${fmt(d.totalInvested)}</td><td>${fmt(Math.max(0, interest))}</td><td>${fmt(d.balance)}</td>`;
-      tbody.appendChild(tr);
-    });
-
-    const result = document.getElementById('result');
-    result.classList.add('show');
-    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    yearly.push({year:y, balance:balance, contributed:contributed, interest:balance-contributed});
   }
+  const finalBalance=balance;
+  const totalContrib=contributed;
+  const totalInterest=finalBalance-totalContrib;
+
+  $('final-total').textContent=money(finalBalance);
+  $('total-contrib').textContent=money(totalContrib);
+  $('total-interest').textContent=money(totalInterest);
+
+  // Chart : afficher jusqu'à ~12 lignes réparties
+  const chart=$('chart');
+  chart.innerHTML='';
+  const maxVal=finalBalance;
+  const step=Math.max(1,Math.ceil(years/12));
+  for(let i=0;i<yearly.length;i++){
+    const d=yearly[i];
+    if(i!==yearly.length-1 && (i+1)%step!==0) continue;
+    const contribPct=Math.max(0,(d.contributed/maxVal)*100);
+    const interestPct=Math.max(0,(d.interest/maxVal)*100);
+    const row=document.createElement('div');
+    row.className='chart-bar-row';
+    row.innerHTML=`<span class="yr">${d.year}</span><div class="chart-bar-track"><div class="chart-bar-contrib" style="width:${contribPct}%"></div><div class="chart-bar-interest" style="width:${interestPct}%"></div></div><span class="amt">${money(d.balance)}</span>`;
+    chart.appendChild(row);
+  }
+
+  const result=$('result');
+  result.classList.add('show');
+  if(!silent) result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+(function init(){
+  const p=new URLSearchParams(location.search);
+  let lang=p.get('l');
+  if(!lang){try{lang=localStorage.getItem('sth_lang');}catch{}}
+  if(!lang){const nav=(navigator.language||'fr').slice(0,2);if(I18N[nav])lang=nav;}
+  applyLang(lang||'fr');
+})();
 </script>
 </body>
 </html>

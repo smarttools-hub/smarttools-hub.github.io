@@ -5,340 +5,558 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="shortcut icon" href="favicon.svg">
-<title>Age Calculator</title>
+<meta name="description" data-i18n-meta="meta_desc" content="Calculateur d'âge gratuit : votre âge exact en années, mois et jours, avec le compte à rebours jusqu'à votre prochain anniversaire.">
+<title>Calculateur d'âge — SmartToolsHub</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #F7F3EC;
-    --warm-white: #FDFAF5;
-    --gold: #C9A84C;
-    --gold-light: #E8CC7A;
-    --amber: #A0672A;
-    --charcoal: #2C2416;
-    --muted: #8C7B63;
-    --card: #FFFFFF;
-    --border: rgba(201,168,76,0.25);
+    --cream:#F7F3EC; --warm-white:#FDFAF5; --gold:#C9A84C; --gold-light:#E8CC7A;
+    --amber:#A0672A; --charcoal:#2C2416; --muted:#8C7B63; --card:#FFFFFF;
+    --border:rgba(201,168,76,0.25);
+    --shadow:0 4px 32px rgba(44,36,22,0.07),0 1px 4px rgba(44,36,22,0.04);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background-color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    color: var(--charcoal);
-    min-height: 100vh;
-    background-image: 
-      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 80%, rgba(160,103,42,0.06) 0%, transparent 60%);
-  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background-color:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charcoal);min-height:100vh;
+    background-image:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(160,103,42,0.06) 0%,transparent 60%);}
 
-  nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 2.5rem;
-    background: rgba(247,243,236,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 10;
-  }
-  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--amber); letter-spacing: 0.05em; }
-  .nav-links { display: flex; gap: 1.5rem; }
-  .nav-links a {
-    text-decoration: none; font-size: 0.82rem; font-weight: 500;
-    color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:rgba(247,243,236,0.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  @media(max-width:600px){nav{padding:1.1rem 1.3rem;}}
+  .nav-brand{display:flex;align-items:center;gap:0.55rem;text-decoration:none;}
+  .nav-brand .logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),var(--amber));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;color:white;box-shadow:0 2px 8px rgba(201,168,76,0.35);flex-shrink:0;}
+  .nav-brand .brand-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--charcoal);}
+  .nav-brand .brand-name span{color:var(--gold);}
+  .nav-right{display:flex;align-items:center;gap:1.2rem;}
+  .nav-links{display:flex;gap:1.3rem;}
+  @media(max-width:860px){.nav-links{display:none;}}
+  .nav-links a{text-decoration:none;font-size:0.8rem;font-weight:500;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase;transition:color 0.2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--gold);}
 
-  .hero {
-    text-align: center;
-    padding: 4rem 2rem 2rem;
-    animation: fadeDown 0.7s ease both;
-  }
-  .hero-label {
-    display: inline-block;
-    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--gold); border: 1px solid var(--border);
-    padding: 0.35rem 1rem; border-radius: 20px;
-    margin-bottom: 1.2rem;
-    background: rgba(201,168,76,0.07);
-  }
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.4rem, 5vw, 3.8rem);
-    font-weight: 700; line-height: 1.1;
-    color: var(--charcoal);
-    margin-bottom: 0.8rem;
-  }
-  .hero h1 em { font-style: italic; color: var(--amber); }
-  .hero p { color: var(--muted); font-size: 1rem; max-width: 400px; margin: 0 auto; line-height: 1.7; }
+  .lang{position:relative;}
+  .lang-btn{display:flex;align-items:center;gap:0.5rem;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:0.4rem 0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--charcoal);transition:border-color 0.2s;}
+  .lang-btn:hover{border-color:var(--gold);}
+  .lang-btn .flag{font-size:1.1rem;line-height:1;}
+  .lang-btn .chev{font-size:0.6rem;color:var(--muted);}
+  .lang-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.4rem;min-width:168px;display:none;box-shadow:0 12px 32px rgba(44,36,22,0.15);z-index:200;}
+  .lang-menu.open{display:block;}
+  .lang-opt{display:flex;align-items:center;gap:0.6rem;width:100%;background:none;border:none;color:var(--charcoal);font-family:'DM Sans',sans-serif;font-size:0.85rem;padding:0.55rem 0.7rem;border-radius:8px;cursor:pointer;text-align:left;transition:background 0.15s;}
+  .lang-opt:hover{background:var(--cream);}
+  .lang-opt .flag{font-size:1.1rem;}
+  .lang-opt.active{color:var(--gold);font-weight:600;}
+  @media(max-width:600px){.lang-btn .label{display:none;}}
 
-  .main {
-    max-width: 680px; margin: 2.5rem auto;
-    padding: 0 1.5rem 4rem;
-    animation: fadeUp 0.8s ease 0.2s both;
-  }
+  .ad-slot{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.5);border:1px dashed var(--border);border-radius:14px;color:var(--muted);overflow:hidden;}
+  .ad-slot .ad-label{font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;}
+  .ad-header{max-width:970px;margin:1.2rem auto 0;min-height:90px;}
+  .ad-footer{max-width:970px;margin:0 auto 2rem;min-height:90px;}
+  .ad-side{position:sticky;top:90px;min-height:600px;width:200px;margin-top:1.2rem;display:none;}
+  @media(min-width:1100px){.ad-side{display:flex;}}
 
-  .card {
-    background: var(--card);
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    padding: 2.5rem;
-    box-shadow: 0 4px 40px rgba(44,36,22,0.06), 0 1px 4px rgba(44,36,22,0.04);
-  }
+  .page-wrap{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr;}
+  @media(min-width:1100px){.page-wrap{grid-template-columns:1fr 200px;align-items:start;gap:1.5rem;padding-right:1.5rem;}}
 
-  .form-section { margin-bottom: 2rem; }
-  .form-section label {
-    display: block; font-size: 0.8rem; font-weight: 500;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--muted); margin-bottom: 0.6rem;
-  }
-  .date-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
-  .date-inputs select, .date-inputs input {
-    padding: 0.85rem 1rem;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    background: var(--warm-white);
-    color: var(--charcoal);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none; width: 100%;
-    appearance: none;
-  }
-  .date-inputs select:focus, .date-inputs input:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
-  }
-  select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C7B63' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.8rem center; padding-right: 2.2rem; }
+  .hero{text-align:center;padding:3.5rem 2rem 1.5rem;animation:fadeDown 0.7s ease both;}
+  .hero-label{display:inline-block;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:0.35rem 1rem;border-radius:20px;margin-bottom:1.2rem;background:rgba(201,168,76,0.07);}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;line-height:1.1;color:var(--charcoal);margin-bottom:0.8rem;}
+  .hero h1 em{font-style:italic;color:var(--amber);}
+  .hero p{color:var(--muted);font-size:1rem;max-width:440px;margin:0 auto;line-height:1.7;}
 
-  .btn {
-    width: 100%;
-    padding: 1rem;
-    background: linear-gradient(135deg, var(--gold), var(--amber));
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 4px 20px rgba(201,168,76,0.35);
-    margin-top: 0.5rem;
-  }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.4); }
-  .btn:active { transform: translateY(0); }
+  .main{max-width:680px;margin:1.5rem auto 0;padding:0 1.5rem 3rem;animation:fadeUp 0.8s ease 0.2s both;}
+  .card{background:var(--card);border-radius:20px;border:1px solid var(--border);padding:2.5rem;box-shadow:var(--shadow);}
+  @media(max-width:600px){.card{padding:1.6rem;}}
 
-  .result {
-    margin-top: 2rem;
-    display: none;
-    animation: fadeUp 0.5s ease both;
-  }
-  .result.show { display: block; }
+  .form-section{margin-bottom:2rem;}
+  .form-section label{display:block;font-size:0.8rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.6rem;}
+  .date-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;}
+  .date-inputs select,.date-inputs input{padding:0.85rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--warm-white);color:var(--charcoal);font-family:'DM Sans',sans-serif;font-size:0.95rem;transition:border-color 0.2s,box-shadow 0.2s;outline:none;width:100%;appearance:none;}
+  .date-inputs select:focus,.date-inputs input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+  select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C7B63' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.8rem center;padding-right:2.2rem;}
 
-  .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
-  .result-box {
-    background: linear-gradient(135deg, rgba(201,168,76,0.07), rgba(160,103,42,0.05));
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.3rem 1rem;
-    text-align: center;
-  }
-  .result-box .number {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem; font-weight: 700;
-    color: var(--amber); line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-  .result-box .unit { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .btn{width:100%;padding:1rem;background:linear-gradient(135deg,var(--gold),var(--amber));color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:transform 0.15s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(201,168,76,0.35);margin-top:0.5rem;}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,0.4);}
+  .btn:active{transform:translateY(0);}
 
-  .detail-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid rgba(201,168,76,0.1);
-    font-size: 0.9rem;
-  }
-  .detail-row:last-child { border-bottom: none; }
-  .detail-row .label { color: var(--muted); }
-  .detail-row .value { font-weight: 500; color: var(--charcoal); }
+  .result{margin-top:2rem;display:none;animation:fadeUp 0.5s ease both;}
+  .result.show{display:block;}
+  .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
+  .result-box{background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(160,103,42,0.05));border:1px solid var(--border);border-radius:14px;padding:1.3rem 1rem;text-align:center;}
+  .result-box .number{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--amber);line-height:1;margin-bottom:0.3rem;}
+  .result-box .unit{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;}
+  .detail-row{display:flex;justify-content:space-between;align-items:center;padding:0.8rem 0;border-bottom:1px solid rgba(201,168,76,0.1);font-size:0.9rem;}
+  .detail-row:last-child{border-bottom:none;}
+  .detail-row .label{color:var(--muted);}
+  .detail-row .value{font-weight:500;color:var(--charcoal);}
+  .next-birthday{margin-top:1.5rem;background:linear-gradient(135deg,var(--charcoal),#3d3020);border-radius:14px;padding:1.5rem;color:white;text-align:center;}
+  .next-birthday .emoji{font-size:1.8rem;margin-bottom:0.5rem;}
+  .next-birthday p{font-size:0.85rem;opacity:0.7;margin-bottom:0.3rem;}
+  .next-birthday strong{font-family:'Playfair Display',serif;font-size:1.3rem;}
+  .divider{display:flex;align-items:center;gap:1rem;margin:2rem 0;color:var(--muted);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
 
-  .next-birthday {
-    margin-top: 1.5rem;
-    background: linear-gradient(135deg, var(--charcoal), #3d3020);
-    border-radius: 14px;
-    padding: 1.5rem;
-    color: white; text-align: center;
-  }
-  .next-birthday .emoji { font-size: 1.8rem; margin-bottom: 0.5rem; }
-  .next-birthday p { font-size: 0.85rem; opacity: 0.7; margin-bottom: 0.3rem; }
-  .next-birthday strong { font-family: 'Playfair Display', serif; font-size: 1.3rem; }
+  .article{max-width:680px;margin:3rem auto 0;padding:0 0;}
+  .article-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:var(--shadow);}
+  @media(max-width:600px){.article-card{padding:1.6rem;}}
+  .article h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--charcoal);margin-bottom:1rem;line-height:1.2;}
+  .article h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--charcoal);margin:1.8rem 0 0.6rem;}
+  .article p{color:var(--charcoal);font-size:0.97rem;line-height:1.8;margin-bottom:1rem;font-weight:300;}
+  .article ul{margin:0 0 1rem 1.2rem;}
+  .article li{color:var(--charcoal);font-size:0.95rem;line-height:1.7;margin-bottom:0.5rem;font-weight:300;}
+  .article .formula{background:var(--warm-white);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:10px;padding:1rem 1.2rem;font-size:0.92rem;color:var(--charcoal);margin:0 0 1rem;}
+  .faq-item{border-top:1px solid rgba(201,168,76,0.15);padding:1.1rem 0;}
+  .faq-item:last-child{padding-bottom:0;}
+  .faq-q{font-weight:500;color:var(--charcoal);font-size:0.97rem;margin-bottom:0.4rem;}
+  .faq-a{color:var(--muted);font-size:0.92rem;line-height:1.7;font-weight:300;}
 
-  .divider {
-    display: flex; align-items: center; gap: 1rem;
-    margin: 2rem 0;
-    color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em;
-  }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .other-tools{margin-top:3rem;}
+  .other-tools h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:1.2rem;text-align:center;}
+  .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+  .tool-link{display:flex;align-items:center;gap:0.75rem;padding:1rem 1.2rem;background:var(--card);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--charcoal);font-size:0.88rem;font-weight:500;transition:all 0.2s;}
+  .tool-link:hover{border-color:var(--gold);transform:translateX(3px);box-shadow:0 3px 16px rgba(201,168,76,0.12);}
+  .tool-link .icon{font-size:1.3rem;}
 
-  .other-tools {
-    margin-top: 3rem;
-  }
-  .other-tools h3 {
-    font-family: 'Playfair Display', serif; font-size: 1.3rem;
-    color: var(--charcoal); margin-bottom: 1.2rem; text-align: center;
-  }
-  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-  .tool-link {
-    display: flex; align-items: center; gap: 0.75rem;
-    padding: 1rem 1.2rem;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    text-decoration: none;
-    color: var(--charcoal);
-    font-size: 0.88rem; font-weight: 500;
-    transition: all 0.2s;
-  }
-  .tool-link:hover { border-color: var(--gold); transform: translateX(3px); box-shadow: 0 3px 16px rgba(201,168,76,0.12); }
-  .tool-link .icon { font-size: 1.3rem; }
+  footer{padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border);}
+  .footer-brand{display:flex;align-items:center;gap:0.5rem;font-family:'Playfair Display',serif;font-size:1rem;color:var(--charcoal);}
+  .footer-brand .dot{color:var(--gold);}
+  .footer-links{display:flex;gap:1.3rem;flex-wrap:wrap;}
+  .footer-links a{text-decoration:none;font-size:0.82rem;color:var(--muted);transition:color 0.2s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-copy{font-size:0.78rem;color:var(--muted);}
 
-  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>
 <body>
 
 <nav>
-  <span class="nav-logo">✦ Calculators</span>
-  <div class="nav-links">
-    <a href="age-calculator.html" class="active">Âge</a>
-    <a href="calorie-calculator.html">Calories</a>
-    <a href="retirement-calculator.html">Retraite</a>
-    <a href="inflation-calculator.html">Inflation</a>
-    <a href="compound-interest-calculator.html">Intérêts</a>
+  <a href="index.html" class="nav-brand">
+    <div class="logo-mark">✦</div>
+    <span class="brand-name">Smart<span>Tools</span>Hub</span>
+  </a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="age-calculator.html" class="active" data-i18n="nav_age">Âge</a>
+      <a href="calorie-calculator.html" data-i18n="nav_cal">Calories</a>
+      <a href="retirement-calculator.html" data-i18n="nav_ret">Retraite</a>
+      <a href="inflation-calculator.html" data-i18n="nav_inf">Inflation</a>
+      <a href="compound-interest-calculator.html" data-i18n="nav_ci">Intérêts</a>
+    </div>
+    <div class="lang">
+      <button class="lang-btn" id="langBtn">
+        <span class="flag" id="curFlag">🇫🇷</span>
+        <span class="label" id="curLabel">Français</span>
+        <span class="chev">▼</span>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-opt" data-lang="en"><span class="flag">🇬🇧</span> English</button>
+        <button class="lang-opt" data-lang="zh"><span class="flag">🇨🇳</span> 中文</button>
+        <button class="lang-opt" data-lang="ru"><span class="flag">🇷🇺</span> Русский</button>
+        <button class="lang-opt" data-lang="es"><span class="flag">🇪🇸</span> Español</button>
+        <button class="lang-opt" data-lang="pt"><span class="flag">🇵🇹</span> Português</button>
+        <button class="lang-opt active" data-lang="fr"><span class="flag">🇫🇷</span> Français</button>
+      </div>
+    </div>
   </div>
 </nav>
 
-<div class="hero">
-  <span class="hero-label">✦ Calculateur</span>
-  <h1>Votre <em>âge exact</em><br>en quelques clics</h1>
-  <p>Découvrez votre âge précis en années, mois et jours — et combien de temps avant votre prochain anniversaire.</p>
+<div class="ad-slot ad-header">
+  <span class="ad-label" data-i18n="ad_label">Publicité</span>
+  <!-- AdSense header -->
 </div>
 
-<main class="main">
-  <div class="card">
-    <div class="form-section">
-      <label>Date de naissance</label>
-      <div class="date-inputs">
-        <select id="birth-day">
-          <option value="">Jour</option>
-        </select>
-        <select id="birth-month">
-          <option value="">Mois</option>
-          <option value="1">Janvier</option><option value="2">Février</option><option value="3">Mars</option>
-          <option value="4">Avril</option><option value="5">Mai</option><option value="6">Juin</option>
-          <option value="7">Juillet</option><option value="8">Août</option><option value="9">Septembre</option>
-          <option value="10">Octobre</option><option value="11">Novembre</option><option value="12">Décembre</option>
-        </select>
-        <select id="birth-year">
-          <option value="">Année</option>
-        </select>
-      </div>
+<div class="page-wrap">
+  <div class="main-col">
+    <div class="hero">
+      <span class="hero-label" data-i18n="hero_label">✦ Calculateur</span>
+      <h1 data-i18n="hero_h1">Votre <em>âge exact</em><br>en quelques clics</h1>
+      <p data-i18n="hero_p">Découvrez votre âge précis en années, mois et jours — et combien de temps avant votre prochain anniversaire.</p>
     </div>
 
-    <div class="form-section">
-      <label>Date de référence</label>
-      <div class="date-inputs" style="grid-template-columns:1fr;">
-        <input type="date" id="ref-date">
-      </div>
-    </div>
+    <main class="main">
+      <div class="card">
+        <div class="form-section">
+          <label data-i18n="l_birth">Date de naissance</label>
+          <div class="date-inputs">
+            <select id="birth-day"><option value="" data-i18n="opt_day">Jour</option></select>
+            <select id="birth-month"><option value="" data-i18n="opt_month">Mois</option></select>
+            <select id="birth-year"><option value="" data-i18n="opt_year">Année</option></select>
+          </div>
+        </div>
 
-    <button class="btn" onclick="calculateAge()">Calculer mon âge →</button>
+        <div class="form-section">
+          <label data-i18n="l_ref">Date de référence</label>
+          <div class="date-inputs" style="grid-template-columns:1fr;">
+            <input type="date" id="ref-date">
+          </div>
+        </div>
 
-    <div class="result" id="result">
-      <div class="divider">Résultats</div>
-      <div class="result-grid">
-        <div class="result-box"><div class="number" id="res-years">—</div><div class="unit">Années</div></div>
-        <div class="result-box"><div class="number" id="res-months">—</div><div class="unit">Mois</div></div>
-        <div class="result-box"><div class="number" id="res-days">—</div><div class="unit">Jours</div></div>
-      </div>
-      <div class="detail-row"><span class="label">Total en mois</span><span class="value" id="total-months">—</span></div>
-      <div class="detail-row"><span class="label">Total en semaines</span><span class="value" id="total-weeks">—</span></div>
-      <div class="detail-row"><span class="label">Total en jours</span><span class="value" id="total-days">—</span></div>
-      <div class="detail-row"><span class="label">Total en heures</span><span class="value" id="total-hours">—</span></div>
+        <button class="btn" onclick="calculateAge()" data-i18n="btn">Calculer mon âge →</button>
 
-      <div class="next-birthday" id="next-bday">
-        <div class="emoji">🎂</div>
-        <p>Prochain anniversaire dans</p>
-        <strong id="days-to-bday">—</strong>
+        <div class="result" id="result">
+          <div class="divider" data-i18n="div_results">Résultats</div>
+          <div class="result-grid">
+            <div class="result-box"><div class="number" id="res-years">—</div><div class="unit" data-i18n="u_years">Années</div></div>
+            <div class="result-box"><div class="number" id="res-months">—</div><div class="unit" data-i18n="u_months">Mois</div></div>
+            <div class="result-box"><div class="number" id="res-days">—</div><div class="unit" data-i18n="u_days">Jours</div></div>
+          </div>
+          <div class="detail-row"><span class="label" data-i18n="d_months">Total en mois</span><span class="value" id="total-months">—</span></div>
+          <div class="detail-row"><span class="label" data-i18n="d_weeks">Total en semaines</span><span class="value" id="total-weeks">—</span></div>
+          <div class="detail-row"><span class="label" data-i18n="d_days">Total en jours</span><span class="value" id="total-days">—</span></div>
+          <div class="detail-row"><span class="label" data-i18n="d_hours">Total en heures</span><span class="value" id="total-hours">—</span></div>
+
+          <div class="next-birthday" id="next-bday">
+            <div class="emoji">🎂</div>
+            <p data-i18n="bday_label">Prochain anniversaire dans</p>
+            <strong id="days-to-bday">—</strong>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <div class="ad-slot ad-footer" style="margin-top:2.5rem;">
+        <span class="ad-label" data-i18n="ad_label">Publicité</span>
+        <!-- AdSense inline -->
+      </div>
+
+      <section class="article">
+        <div class="article-card" id="article"></div>
+      </section>
+
+      <div class="other-tools">
+        <h3 data-i18n="other_t">Autres calculateurs</h3>
+        <div class="tools-grid">
+          <a href="calorie-calculator.html" class="tool-link"><span class="icon">🔥</span><span data-i18n="nav_cal">Calories</span></a>
+          <a href="retirement-calculator.html" class="tool-link"><span class="icon">🌅</span><span data-i18n="nav_ret">Retraite</span></a>
+          <a href="inflation-calculator.html" class="tool-link"><span class="icon">📈</span><span data-i18n="nav_inf">Inflation</span></a>
+          <a href="compound-interest-calculator.html" class="tool-link"><span class="icon">💰</span><span data-i18n="ci_long">Intérêts composés</span></a>
+        </div>
+      </div>
+    </main>
   </div>
 
-  <div class="other-tools">
-    <h3>Autres calculateurs</h3>
-    <div class="tools-grid">
-      <a href="calorie-calculator.html" class="tool-link"><span class="icon">🔥</span>Calories</a>
-      <a href="retirement-calculator.html" class="tool-link"><span class="icon">🌅</span>Retraite</a>
-      <a href="inflation-calculator.html" class="tool-link"><span class="icon">📈</span>Inflation</a>
-      <a href="compound-interest-calculator.html" class="tool-link"><span class="icon">💰</span>Intérêts composés</a>
-    </div>
+  <aside class="ad-slot ad-side">
+    <span class="ad-label" data-i18n="ad_label">Publicité</span>
+    <!-- AdSense vertical 200x600 -->
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-brand">Smart<span class="dot">Tools</span>Hub</div>
+  <div class="footer-links">
+    <a href="index.html" data-i18n="f_home">Accueil</a>
+    <a href="about.html" data-i18n="f_about">À propos</a>
+    <a href="privacy.html" data-i18n="f_privacy">Confidentialité</a>
+    <a href="contact.html" data-i18n="f_contact">Contact</a>
   </div>
-</main>
+  <p class="footer-copy" data-i18n="f_copy">SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte</p>
+</footer>
 
 <script>
-  // Populate dropdowns
-  const daySelect = document.getElementById('birth-day');
-  for(let i=1;i<=31;i++) { const o=document.createElement('option'); o.value=i; o.textContent=i; daySelect.appendChild(o); }
-  const yearSelect = document.getElementById('birth-year');
-  const currentYear = new Date().getFullYear();
-  for(let y=currentYear;y>=1920;y--) { const o=document.createElement('option'); o.value=y; o.textContent=y; yearSelect.appendChild(o); }
+const I18N = {
+  fr:{_flag:'🇫🇷',_label:'Français',_htmllang:'fr',_locale:'fr-FR',
+    meta_desc:"Calculateur d'âge gratuit : votre âge exact en années, mois et jours, avec le compte à rebours jusqu'à votre prochain anniversaire.",
+    title:"Calculateur d'âge — SmartToolsHub",
+    nav_age:"Âge",nav_cal:"Calories",nav_ret:"Retraite",nav_inf:"Inflation",nav_ci:"Intérêts",ci_long:"Intérêts composés",
+    hero_label:"✦ Calculateur", hero_h1:"Votre <em>âge exact</em><br>en quelques clics",
+    hero_p:"Découvrez votre âge précis en années, mois et jours — et combien de temps avant votre prochain anniversaire.",
+    l_birth:"Date de naissance", l_ref:"Date de référence",
+    opt_day:"Jour",opt_month:"Mois",opt_year:"Année",
+    months_list:["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"],
+    btn:"Calculer mon âge →", div_results:"Résultats",
+    u_years:"Années",u_months:"Mois",u_days:"Jours",
+    d_months:"Total en mois",d_weeks:"Total en semaines",d_days:"Total en jours",d_hours:"Total en heures",
+    bday_label:"Prochain anniversaire dans", bday_today:"Aujourd'hui ! 🎉",
+    bday_days:n=>`${n} jour${n>1?'s':''}`,
+    err_fill:"Veuillez remplir tous les champs.", err_order:"La date de naissance doit être antérieure à la date de référence.",
+    other_t:"Autres calculateurs",
+    article:`<h2>Comment calculer son âge exact ?</h2>
+<p>Calculer son âge précis va au-delà de la simple soustraction entre deux années. L'âge exact tient compte du jour et du mois de naissance par rapport à la date d'aujourd'hui (ou à une date de référence que vous choisissez). Notre calculateur d'âge effectue ce calcul instantanément et vous donne le résultat en années, mois et jours, ainsi que des totaux pratiques en mois, semaines, jours et heures.</p>
+<h3>La méthode de calcul</h3>
+<p>Le principe est de comparer la date de naissance à la date de référence en partant des jours, puis des mois, puis des années :</p>
+<div class="formula">Si le jour de référence est inférieur au jour de naissance, on emprunte les jours du mois précédent. Si le mois devient négatif, on retire une année et on ajoute douze mois. Ce qui reste donne l'âge en années, mois et jours.</div>
+<p>Cette méthode gère correctement les années bissextiles et les mois de longueurs différentes, contrairement à une simple division du nombre de jours par 365.</p>
+<h3>À quoi sert le calcul d'âge ?</h3>
+<ul>
+<li>Connaître son âge exact pour un formulaire administratif ou médical.</li>
+<li>Calculer l'âge d'un enfant en mois ou en semaines.</li>
+<li>Savoir combien de jours vous séparent de votre prochain anniversaire.</li>
+<li>Déterminer l'âge à une date passée ou future précise.</li>
+</ul>
+<h3>Questions fréquentes</h3>
+<div class="faq-item"><div class="faq-q">Le calcul tient-il compte des années bissextiles ?</div><div class="faq-a">Oui. Le calcul se base sur les dates réelles du calendrier, donc les années bissextiles et la longueur variable des mois sont prises en compte automatiquement.</div></div>
+<div class="faq-item"><div class="faq-q">Mes données sont-elles enregistrées ?</div><div class="faq-a">Non. Tout le calcul s'effectue dans votre navigateur. Aucune date saisie n'est envoyée à un serveur ni conservée.</div></div>
+<div class="faq-item"><div class="faq-q">Puis-je calculer mon âge à une date future ?</div><div class="faq-a">Oui. Il suffit de choisir la date de référence souhaitée, passée ou future, pour connaître votre âge à ce moment-là.</div></div>`,
+    f_home:"Accueil",f_about:"À propos",f_privacy:"Confidentialité",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte", ad_label:"Publicité"},
+  en:{_flag:'🇬🇧',_label:'English',_htmllang:'en',_locale:'en-US',
+    meta_desc:"Free age calculator: your exact age in years, months and days, with a countdown to your next birthday.",
+    title:"Age Calculator — SmartToolsHub",
+    nav_age:"Age",nav_cal:"Calories",nav_ret:"Retirement",nav_inf:"Inflation",nav_ci:"Interest",ci_long:"Compound Interest",
+    hero_label:"✦ Calculator", hero_h1:"Your <em>exact age</em><br>in a few clicks",
+    hero_p:"Find your precise age in years, months and days — and how long until your next birthday.",
+    l_birth:"Date of birth", l_ref:"Reference date",
+    opt_day:"Day",opt_month:"Month",opt_year:"Year",
+    months_list:["January","February","March","April","May","June","July","August","September","October","November","December"],
+    btn:"Calculate my age →", div_results:"Results",
+    u_years:"Years",u_months:"Months",u_days:"Days",
+    d_months:"Total in months",d_weeks:"Total in weeks",d_days:"Total in days",d_hours:"Total in hours",
+    bday_label:"Next birthday in", bday_today:"Today! 🎉",
+    bday_days:n=>`${n} day${n>1?'s':''}`,
+    err_fill:"Please fill in all fields.", err_order:"The date of birth must be before the reference date.",
+    other_t:"Other calculators",
+    article:`<h2>How to calculate your exact age?</h2>
+<p>Working out your precise age is more than subtracting one year from another. Exact age takes into account your day and month of birth relative to today (or a reference date you choose). Our age calculator does this instantly and gives you the result in years, months and days, along with handy totals in months, weeks, days and hours.</p>
+<h3>The calculation method</h3>
+<p>The idea is to compare the date of birth with the reference date, starting from days, then months, then years:</p>
+<div class="formula">If the reference day is smaller than the birth day, we borrow days from the previous month. If the month becomes negative, we subtract one year and add twelve months. What remains is the age in years, months and days.</div>
+<p>This method correctly handles leap years and months of different lengths, unlike simply dividing the number of days by 365.</p>
+<h3>What is an age calculation used for?</h3>
+<ul>
+<li>Knowing your exact age for an administrative or medical form.</li>
+<li>Calculating a child's age in months or weeks.</li>
+<li>Finding out how many days until your next birthday.</li>
+<li>Determining your age at a specific past or future date.</li>
+</ul>
+<h3>Frequently asked questions</h3>
+<div class="faq-item"><div class="faq-q">Does the calculation account for leap years?</div><div class="faq-a">Yes. The calculation is based on real calendar dates, so leap years and the varying length of months are handled automatically.</div></div>
+<div class="faq-item"><div class="faq-q">Is my data stored?</div><div class="faq-a">No. The entire calculation runs in your browser. No date you enter is sent to a server or kept.</div></div>
+<div class="faq-item"><div class="faq-q">Can I calculate my age at a future date?</div><div class="faq-a">Yes. Simply choose the reference date you want, past or future, to find your age at that moment.</div></div>`,
+    f_home:"Home",f_about:"About",f_privacy:"Privacy",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Free Online Tools · a Nordbyte project", ad_label:"Advertisement"},
+  zh:{_flag:'🇨🇳',_label:'中文',_htmllang:'zh',_locale:'zh-CN',
+    meta_desc:"免费年龄计算器：精确计算您的年龄（年、月、日），并显示距离下次生日的倒计时。",
+    title:"年龄计算器 — SmartToolsHub",
+    nav_age:"年龄",nav_cal:"卡路里",nav_ret:"退休",nav_inf:"通胀",nav_ci:"利息",ci_long:"复利",
+    hero_label:"✦ 计算器", hero_h1:"几次点击<br>算出您的<em>准确年龄</em>",
+    hero_p:"精确计算您的年龄（年、月、日），以及距离下次生日还有多久。",
+    l_birth:"出生日期", l_ref:"参考日期",
+    opt_day:"日",opt_month:"月",opt_year:"年",
+    months_list:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+    btn:"计算我的年龄 →", div_results:"结果",
+    u_years:"年",u_months:"月",u_days:"日",
+    d_months:"总月数",d_weeks:"总周数",d_days:"总天数",d_hours:"总小时数",
+    bday_label:"距离下次生日", bday_today:"就是今天！🎉",
+    bday_days:n=>`${n} 天`,
+    err_fill:"请填写所有字段。", err_order:"出生日期必须早于参考日期。",
+    other_t:"其他计算器",
+    article:`<h2>如何计算准确年龄？</h2>
+<p>计算准确年龄不仅仅是两个年份相减。准确年龄会根据您的出生日和出生月相对于今天（或您选择的参考日期）来计算。我们的年龄计算器能即时完成计算，并以年、月、日的形式呈现结果，同时给出实用的总月数、总周数、总天数和总小时数。</p>
+<h3>计算方法</h3>
+<p>其原理是将出生日期与参考日期进行比较，依次从日、月、年逐级计算：</p>
+<div class="formula">如果参考日小于出生日，则从上个月借天数。如果月份变为负数，则减去一年并加上十二个月。剩下的即为以年、月、日表示的年龄。</div>
+<p>与简单地将天数除以 365 不同，此方法能正确处理闰年和不同月份的天数差异。</p>
+<h3>年龄计算有什么用？</h3>
+<ul>
+<li>在行政或医疗表格中填写准确年龄。</li>
+<li>以月或周为单位计算孩子的年龄。</li>
+<li>了解距离下次生日还有多少天。</li>
+<li>确定在某个过去或未来日期时的年龄。</li>
+</ul>
+<h3>常见问题</h3>
+<div class="faq-item"><div class="faq-q">计算是否考虑闰年？</div><div class="faq-a">是的。计算基于真实的日历日期，因此闰年和月份长度的差异都会被自动处理。</div></div>
+<div class="faq-item"><div class="faq-q">我的数据会被保存吗？</div><div class="faq-a">不会。整个计算都在您的浏览器中进行。您输入的任何日期都不会发送到服务器或被保留。</div></div>
+<div class="faq-item"><div class="faq-q">我可以计算未来某个日期时的年龄吗？</div><div class="faq-a">可以。只需选择您想要的参考日期（过去或未来），即可得知您在那一刻的年龄。</div></div>`,
+    f_home:"首页",f_about:"关于",f_privacy:"隐私",f_contact:"联系",
+    f_copy:"SmartToolsHub © 2026 · 免费在线工具 · Nordbyte 出品", ad_label:"广告"},
+  ru:{_flag:'🇷🇺',_label:'Русский',_htmllang:'ru',_locale:'ru-RU',
+    meta_desc:"Бесплатный калькулятор возраста: точный возраст в годах, месяцах и днях, с обратным отсчётом до следующего дня рождения.",
+    title:"Калькулятор возраста — SmartToolsHub",
+    nav_age:"Возраст",nav_cal:"Калории",nav_ret:"Пенсия",nav_inf:"Инфляция",nav_ci:"Проценты",ci_long:"Сложные проценты",
+    hero_label:"✦ Калькулятор", hero_h1:"Ваш <em>точный возраст</em><br>в несколько кликов",
+    hero_p:"Узнайте точный возраст в годах, месяцах и днях — и сколько осталось до следующего дня рождения.",
+    l_birth:"Дата рождения", l_ref:"Дата отсчёта",
+    opt_day:"День",opt_month:"Месяц",opt_year:"Год",
+    months_list:["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"],
+    btn:"Рассчитать возраст →", div_results:"Результаты",
+    u_years:"Лет",u_months:"Месяцев",u_days:"Дней",
+    d_months:"Всего месяцев",d_weeks:"Всего недель",d_days:"Всего дней",d_hours:"Всего часов",
+    bday_label:"Следующий день рождения через", bday_today:"Сегодня! 🎉",
+    bday_days:n=>`${n} дн.`,
+    err_fill:"Пожалуйста, заполните все поля.", err_order:"Дата рождения должна быть раньше даты отсчёта.",
+    other_t:"Другие калькуляторы",
+    article:`<h2>Как вычислить точный возраст?</h2>
+<p>Вычисление точного возраста — это больше, чем вычитание одного года из другого. Точный возраст учитывает день и месяц рождения относительно сегодняшней даты (или выбранной вами даты отсчёта). Наш калькулятор возраста делает это мгновенно и выдаёт результат в годах, месяцах и днях, а также удобные итоги в месяцах, неделях, днях и часах.</p>
+<h3>Метод расчёта</h3>
+<p>Идея в том, чтобы сравнить дату рождения с датой отсчёта, начиная с дней, затем месяцев, затем лет:</p>
+<div class="formula">Если день отсчёта меньше дня рождения, мы занимаем дни из предыдущего месяца. Если месяц становится отрицательным, мы вычитаем один год и прибавляем двенадцать месяцев. Остаток даёт возраст в годах, месяцах и днях.</div>
+<p>Этот метод правильно учитывает високосные годы и месяцы разной длины, в отличие от простого деления числа дней на 365.</p>
+<h3>Для чего нужен расчёт возраста?</h3>
+<ul>
+<li>Узнать точный возраст для административной или медицинской формы.</li>
+<li>Вычислить возраст ребёнка в месяцах или неделях.</li>
+<li>Узнать, сколько дней осталось до следующего дня рождения.</li>
+<li>Определить возраст на конкретную прошлую или будущую дату.</li>
+</ul>
+<h3>Частые вопросы</h3>
+<div class="faq-item"><div class="faq-q">Учитываются ли високосные годы?</div><div class="faq-a">Да. Расчёт основан на реальных календарных датах, поэтому високосные годы и разная длина месяцев учитываются автоматически.</div></div>
+<div class="faq-item"><div class="faq-q">Сохраняются ли мои данные?</div><div class="faq-a">Нет. Весь расчёт выполняется в вашем браузере. Введённые даты не отправляются на сервер и не сохраняются.</div></div>
+<div class="faq-item"><div class="faq-q">Можно ли рассчитать возраст на будущую дату?</div><div class="faq-a">Да. Просто выберите нужную дату отсчёта — прошлую или будущую — чтобы узнать возраст на этот момент.</div></div>`,
+    f_home:"Главная",f_about:"О нас",f_privacy:"Конфиденциальность",f_contact:"Контакты",
+    f_copy:"SmartToolsHub © 2026 · Бесплатные онлайн-инструменты · проект Nordbyte", ad_label:"Реклама"},
+  es:{_flag:'🇪🇸',_label:'Español',_htmllang:'es',_locale:'es-ES',
+    meta_desc:"Calculadora de edad gratuita: tu edad exacta en años, meses y días, con cuenta atrás hasta tu próximo cumpleaños.",
+    title:"Calculadora de edad — SmartToolsHub",
+    nav_age:"Edad",nav_cal:"Calorías",nav_ret:"Jubilación",nav_inf:"Inflación",nav_ci:"Interés",ci_long:"Interés compuesto",
+    hero_label:"✦ Calculadora", hero_h1:"Tu <em>edad exacta</em><br>en unos clics",
+    hero_p:"Descubre tu edad precisa en años, meses y días — y cuánto falta para tu próximo cumpleaños.",
+    l_birth:"Fecha de nacimiento", l_ref:"Fecha de referencia",
+    opt_day:"Día",opt_month:"Mes",opt_year:"Año",
+    months_list:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    btn:"Calcular mi edad →", div_results:"Resultados",
+    u_years:"Años",u_months:"Meses",u_days:"Días",
+    d_months:"Total en meses",d_weeks:"Total en semanas",d_days:"Total en días",d_hours:"Total en horas",
+    bday_label:"Próximo cumpleaños en", bday_today:"¡Hoy! 🎉",
+    bday_days:n=>`${n} día${n>1?'s':''}`,
+    err_fill:"Por favor, completa todos los campos.", err_order:"La fecha de nacimiento debe ser anterior a la fecha de referencia.",
+    other_t:"Otras calculadoras",
+    article:`<h2>¿Cómo calcular tu edad exacta?</h2>
+<p>Calcular tu edad precisa es más que restar un año de otro. La edad exacta tiene en cuenta tu día y mes de nacimiento respecto a hoy (o a una fecha de referencia que elijas). Nuestra calculadora de edad lo hace al instante y te da el resultado en años, meses y días, además de totales prácticos en meses, semanas, días y horas.</p>
+<h3>El método de cálculo</h3>
+<p>La idea es comparar la fecha de nacimiento con la fecha de referencia, empezando por los días, luego los meses y por último los años:</p>
+<div class="formula">Si el día de referencia es menor que el día de nacimiento, tomamos prestados días del mes anterior. Si el mes se vuelve negativo, restamos un año y sumamos doce meses. Lo que queda es la edad en años, meses y días.</div>
+<p>Este método gestiona correctamente los años bisiestos y los meses de distinta duración, a diferencia de dividir simplemente el número de días entre 365.</p>
+<h3>¿Para qué sirve el cálculo de edad?</h3>
+<ul>
+<li>Conocer tu edad exacta para un formulario administrativo o médico.</li>
+<li>Calcular la edad de un niño en meses o semanas.</li>
+<li>Saber cuántos días faltan para tu próximo cumpleaños.</li>
+<li>Determinar tu edad en una fecha pasada o futura concreta.</li>
+</ul>
+<h3>Preguntas frecuentes</h3>
+<div class="faq-item"><div class="faq-q">¿El cálculo tiene en cuenta los años bisiestos?</div><div class="faq-a">Sí. El cálculo se basa en fechas reales del calendario, por lo que los años bisiestos y la duración variable de los meses se gestionan automáticamente.</div></div>
+<div class="faq-item"><div class="faq-q">¿Se guardan mis datos?</div><div class="faq-a">No. Todo el cálculo se realiza en tu navegador. Ninguna fecha que introduzcas se envía a un servidor ni se conserva.</div></div>
+<div class="faq-item"><div class="faq-q">¿Puedo calcular mi edad en una fecha futura?</div><div class="faq-a">Sí. Solo tienes que elegir la fecha de referencia que quieras, pasada o futura, para conocer tu edad en ese momento.</div></div>`,
+    f_home:"Inicio",f_about:"Acerca de",f_privacy:"Privacidad",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Herramientas en línea gratuitas · un proyecto Nordbyte", ad_label:"Publicidad"},
+  pt:{_flag:'🇵🇹',_label:'Português',_htmllang:'pt',_locale:'pt-BR',
+    meta_desc:"Calculadora de idade gratuita: a sua idade exata em anos, meses e dias, com contagem decrescente até ao próximo aniversário.",
+    title:"Calculadora de idade — SmartToolsHub",
+    nav_age:"Idade",nav_cal:"Calorias",nav_ret:"Reforma",nav_inf:"Inflação",nav_ci:"Juros",ci_long:"Juros compostos",
+    hero_label:"✦ Calculadora", hero_h1:"A sua <em>idade exata</em><br>em poucos cliques",
+    hero_p:"Descubra a sua idade precisa em anos, meses e dias — e quanto falta para o próximo aniversário.",
+    l_birth:"Data de nascimento", l_ref:"Data de referência",
+    opt_day:"Dia",opt_month:"Mês",opt_year:"Ano",
+    months_list:["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],
+    btn:"Calcular a minha idade →", div_results:"Resultados",
+    u_years:"Anos",u_months:"Meses",u_days:"Dias",
+    d_months:"Total em meses",d_weeks:"Total em semanas",d_days:"Total em dias",d_hours:"Total em horas",
+    bday_label:"Próximo aniversário em", bday_today:"Hoje! 🎉",
+    bday_days:n=>`${n} dia${n>1?'s':''}`,
+    err_fill:"Por favor, preencha todos os campos.", err_order:"A data de nascimento deve ser anterior à data de referência.",
+    other_t:"Outras calculadoras",
+    article:`<h2>Como calcular a sua idade exata?</h2>
+<p>Calcular a sua idade precisa é mais do que subtrair um ano de outro. A idade exata tem em conta o seu dia e mês de nascimento em relação a hoje (ou a uma data de referência que escolher). A nossa calculadora de idade faz isso instantaneamente e dá-lhe o resultado em anos, meses e dias, além de totais práticos em meses, semanas, dias e horas.</p>
+<h3>O método de cálculo</h3>
+<p>A ideia é comparar a data de nascimento com a data de referência, começando pelos dias, depois os meses e por fim os anos:</p>
+<div class="formula">Se o dia de referência for menor do que o dia de nascimento, pedimos emprestados dias do mês anterior. Se o mês ficar negativo, subtraímos um ano e somamos doze meses. O que resta é a idade em anos, meses e dias.</div>
+<p>Este método lida corretamente com anos bissextos e meses de durações diferentes, ao contrário de simplesmente dividir o número de dias por 365.</p>
+<h3>Para que serve o cálculo de idade?</h3>
+<ul>
+<li>Saber a sua idade exata para um formulário administrativo ou médico.</li>
+<li>Calcular a idade de uma criança em meses ou semanas.</li>
+<li>Saber quantos dias faltam para o próximo aniversário.</li>
+<li>Determinar a sua idade numa data passada ou futura específica.</li>
+</ul>
+<h3>Perguntas frequentes</h3>
+<div class="faq-item"><div class="faq-q">O cálculo tem em conta os anos bissextos?</div><div class="faq-a">Sim. O cálculo baseia-se em datas reais do calendário, pelo que os anos bissextos e a duração variável dos meses são tratados automaticamente.</div></div>
+<div class="faq-item"><div class="faq-q">Os meus dados são guardados?</div><div class="faq-a">Não. Todo o cálculo é feito no seu navegador. Nenhuma data que introduza é enviada para um servidor ou guardada.</div></div>
+<div class="faq-item"><div class="faq-q">Posso calcular a minha idade numa data futura?</div><div class="faq-a">Sim. Basta escolher a data de referência que quiser, passada ou futura, para saber a sua idade nesse momento.</div></div>`,
+    f_home:"Início",f_about:"Sobre",f_privacy:"Privacidade",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Ferramentas online gratuitas · um projeto Nordbyte", ad_label:"Publicidade"}
+};
 
-  // Set default ref date to today
-  const today = new Date();
-  document.getElementById('ref-date').value = today.toISOString().split('T')[0];
+const $ = id => document.getElementById(id);
+let LANG='fr';
+const T = key => (I18N[LANG]&&I18N[LANG][key]!==undefined)?I18N[LANG][key]:I18N.fr[key];
+const nfmt = n => Number(n).toLocaleString(I18N[LANG]._locale);
 
-  function calculateAge() {
-    const d = parseInt(document.getElementById('birth-day').value);
-    const m = parseInt(document.getElementById('birth-month').value);
-    const y = parseInt(document.getElementById('birth-year').value);
-    const refStr = document.getElementById('ref-date').value;
-    if(!d||!m||!y||!refStr) { alert('Veuillez remplir tous les champs.'); return; }
+function populateMonths() {
+  const sel = $('birth-month');
+  const current = sel.value;
+  sel.innerHTML = `<option value="">${T('opt_month')}</option>`;
+  T('months_list').forEach((name,i)=>{
+    const o=document.createElement('option'); o.value=i+1; o.textContent=name; sel.appendChild(o);
+  });
+  if(current) sel.value=current;
+}
 
-    const birth = new Date(y, m-1, d);
-    const ref = new Date(refStr);
-    if(birth > ref) { alert('La date de naissance doit être antérieure à la date de référence.'); return; }
+function applyLang(lang){
+  if(!I18N[lang])lang='fr';
+  LANG=lang;
+  document.documentElement.lang=I18N[lang]._htmllang;
+  document.title=T('title');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const v=T(el.getAttribute('data-i18n'));if(typeof v==='string')el.innerHTML=v;});
+  document.querySelectorAll('[data-i18n-meta]').forEach(el=>{const v=T(el.getAttribute('data-i18n-meta'));if(typeof v==='string')el.setAttribute('content',v);});
+  $('curFlag').textContent=I18N[lang]._flag;
+  $('curLabel').textContent=I18N[lang]._label;
+  document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('active',o.dataset.lang===lang));
+  $('article').innerHTML=T('article');
+  // re-render dynamic selects/options
+  populateMonths();
+  // day & year placeholder options
+  const dayPh=$('birth-day').querySelector('option[value=""]'); if(dayPh)dayPh.textContent=T('opt_day');
+  const yearPh=$('birth-year').querySelector('option[value=""]'); if(yearPh)yearPh.textContent=T('opt_year');
+  try{localStorage.setItem('sth_lang',lang);}catch{}
+}
 
-    let years = ref.getFullYear() - birth.getFullYear();
-    let months = ref.getMonth() - birth.getMonth();
-    let days = ref.getDate() - birth.getDate();
+$('langBtn').addEventListener('click',e=>{e.stopPropagation();$('langMenu').classList.toggle('open');});
+document.addEventListener('click',()=>$('langMenu').classList.remove('open'));
+document.querySelectorAll('.lang-opt').forEach(opt=>{opt.addEventListener('click',()=>{applyLang(opt.dataset.lang);$('langMenu').classList.remove('open');});});
 
-    if(days < 0) { months--; const prev = new Date(ref.getFullYear(), ref.getMonth(), 0); days += prev.getDate(); }
-    if(months < 0) { years--; months += 12; }
+// Populate day & year dropdowns
+const daySelect = $('birth-day');
+for(let i=1;i<=31;i++){const o=document.createElement('option');o.value=i;o.textContent=i;daySelect.appendChild(o);}
+const yearSelect = $('birth-year');
+const currentYear = new Date().getFullYear();
+for(let y=currentYear;y>=1920;y--){const o=document.createElement('option');o.value=y;o.textContent=y;yearSelect.appendChild(o);}
+$('ref-date').value = new Date().toISOString().split('T')[0];
 
-    const totalDays = Math.floor((ref - birth) / 86400000);
-    const totalWeeks = Math.floor(totalDays / 7);
-    const totalMonths = years * 12 + months;
-    const totalHours = totalDays * 24;
+function calculateAge(){
+  const d=parseInt($('birth-day').value);
+  const m=parseInt($('birth-month').value);
+  const y=parseInt($('birth-year').value);
+  const refStr=$('ref-date').value;
+  if(!d||!m||!y||!refStr){alert(T('err_fill'));return;}
+  const birth=new Date(y,m-1,d);
+  const ref=new Date(refStr);
+  if(birth>ref){alert(T('err_order'));return;}
 
-    document.getElementById('res-years').textContent = years;
-    document.getElementById('res-months').textContent = months;
-    document.getElementById('res-days').textContent = days;
-    document.getElementById('total-months').textContent = totalMonths.toLocaleString('fr-FR');
-    document.getElementById('total-weeks').textContent = totalWeeks.toLocaleString('fr-FR');
-    document.getElementById('total-days').textContent = totalDays.toLocaleString('fr-FR');
-    document.getElementById('total-hours').textContent = totalHours.toLocaleString('fr-FR');
+  let years=ref.getFullYear()-birth.getFullYear();
+  let months=ref.getMonth()-birth.getMonth();
+  let days=ref.getDate()-birth.getDate();
+  if(days<0){months--;const prev=new Date(ref.getFullYear(),ref.getMonth(),0);days+=prev.getDate();}
+  if(months<0){years--;months+=12;}
 
-    // Next birthday
-    let nextBday = new Date(ref.getFullYear(), m-1, d);
-    if(nextBday <= ref) nextBday = new Date(ref.getFullYear()+1, m-1, d);
-    const daysTo = Math.ceil((nextBday - ref) / 86400000);
-    document.getElementById('days-to-bday').textContent = daysTo === 0 ? "Aujourd'hui ! 🎉" : `${daysTo} jour${daysTo>1?'s':''}`;
+  const totalDays=Math.floor((ref-birth)/86400000);
+  const totalWeeks=Math.floor(totalDays/7);
+  const totalMonths=years*12+months;
+  const totalHours=totalDays*24;
 
-    const result = document.getElementById('result');
-    result.classList.add('show');
-    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
+  $('res-years').textContent=years;
+  $('res-months').textContent=months;
+  $('res-days').textContent=days;
+  $('total-months').textContent=nfmt(totalMonths);
+  $('total-weeks').textContent=nfmt(totalWeeks);
+  $('total-days').textContent=nfmt(totalDays);
+  $('total-hours').textContent=nfmt(totalHours);
+
+  let nextBday=new Date(ref.getFullYear(),m-1,d);
+  if(nextBday<=ref)nextBday=new Date(ref.getFullYear()+1,m-1,d);
+  const daysTo=Math.ceil((nextBday-ref)/86400000);
+  $('days-to-bday').textContent = daysTo===0 ? T('bday_today') : T('bday_days')(daysTo);
+
+  const result=$('result');
+  result.classList.add('show');
+  result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// Init language
+(function init(){
+  const p=new URLSearchParams(location.search);
+  let lang=p.get('l');
+  if(!lang){try{lang=localStorage.getItem('sth_lang');}catch{}}
+  if(!lang){const nav=(navigator.language||'fr').slice(0,2);if(I18N[nav])lang=nav;}
+  applyLang(lang||'fr');
+})();
 </script>
 </body>
 </html>

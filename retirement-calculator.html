@@ -5,261 +5,539 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="shortcut icon" href="favicon.svg">
-<title>Retirement Calculator</title>
+<meta name="description" data-i18n-meta="meta_desc" content="Calculateur de retraite gratuit : estimez le capital disponible à votre départ en retraite selon votre épargne actuelle, vos versements mensuels et un rendement estimé.">
+<title>Calculateur de retraite — SmartToolsHub</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #F7F3EC; --warm-white: #FDFAF5;
-    --gold: #C9A84C; --gold-light: #E8CC7A;
-    --amber: #A0672A; --charcoal: #2C2416;
-    --muted: #8C7B63; --card: #FFFFFF;
-    --border: rgba(201,168,76,0.25);
-    --blue: #4A7FA5; --blue-light: rgba(74,127,165,0.08);
+    --cream:#F7F3EC; --warm-white:#FDFAF5; --gold:#C9A84C; --gold-light:#E8CC7A;
+    --amber:#A0672A; --charcoal:#2C2416; --muted:#8C7B63; --card:#FFFFFF;
+    --border:rgba(201,168,76,0.25); --blue:#4A7FA5;
+    --shadow:0 4px 32px rgba(44,36,22,0.07),0 1px 4px rgba(44,36,22,0.04);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background-color: var(--cream); font-family: 'DM Sans', sans-serif; color: var(--charcoal); min-height: 100vh; background-image: radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(74,127,165,0.07) 0%, transparent 60%); }
-  nav { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 2.5rem; background: rgba(247,243,236,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
-  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--amber); letter-spacing: 0.05em; }
-  .nav-links { display: flex; gap: 1.5rem; }
-  .nav-links a { text-decoration: none; font-size: 0.82rem; font-weight: 500; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
-  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background-color:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charcoal);min-height:100vh;
+    background-image:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(74,127,165,0.06) 0%,transparent 60%);}
 
-  .hero { text-align: center; padding: 4rem 2rem 2rem; animation: fadeDown 0.7s ease both; }
-  .hero-label { display: inline-block; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--border); padding: 0.35rem 1rem; border-radius: 20px; margin-bottom: 1.2rem; background: rgba(201,168,76,0.07); }
-  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; line-height: 1.1; margin-bottom: 0.8rem; }
-  .hero h1 em { font-style: italic; color: var(--blue); }
-  .hero p { color: var(--muted); font-size: 1rem; max-width: 420px; margin: 0 auto; line-height: 1.7; }
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:rgba(247,243,236,0.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  @media(max-width:600px){nav{padding:1.1rem 1.3rem;}}
+  .nav-brand{display:flex;align-items:center;gap:0.55rem;text-decoration:none;}
+  .nav-brand .logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),var(--amber));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;color:white;box-shadow:0 2px 8px rgba(201,168,76,0.35);flex-shrink:0;}
+  .nav-brand .brand-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--charcoal);}
+  .nav-brand .brand-name span{color:var(--gold);}
+  .nav-right{display:flex;align-items:center;gap:1.2rem;}
+  .nav-links{display:flex;gap:1.3rem;}
+  @media(max-width:860px){.nav-links{display:none;}}
+  .nav-links a{text-decoration:none;font-size:0.8rem;font-weight:500;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase;transition:color 0.2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--gold);}
 
-  .main { max-width: 720px; margin: 2.5rem auto; padding: 0 1.5rem 4rem; animation: fadeUp 0.8s ease 0.2s both; }
-  .card { background: var(--card); border-radius: 20px; border: 1px solid var(--border); padding: 2.5rem; box-shadow: 0 4px 40px rgba(44,36,22,0.06); }
+  .lang{position:relative;}
+  .lang-btn{display:flex;align-items:center;gap:0.5rem;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:0.4rem 0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--charcoal);transition:border-color 0.2s;}
+  .lang-btn:hover{border-color:var(--gold);}
+  .lang-btn .flag{font-size:1.1rem;line-height:1;}
+  .lang-btn .chev{font-size:0.6rem;color:var(--muted);}
+  .lang-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.4rem;min-width:168px;display:none;box-shadow:0 12px 32px rgba(44,36,22,0.15);z-index:200;}
+  .lang-menu.open{display:block;}
+  .lang-opt{display:flex;align-items:center;gap:0.6rem;width:100%;background:none;border:none;color:var(--charcoal);font-family:'DM Sans',sans-serif;font-size:0.85rem;padding:0.55rem 0.7rem;border-radius:8px;cursor:pointer;text-align:left;transition:background 0.15s;}
+  .lang-opt:hover{background:var(--cream);}
+  .lang-opt .flag{font-size:1.1rem;}
+  .lang-opt.active{color:var(--gold);font-weight:600;}
+  @media(max-width:600px){.lang-btn .label{display:none;}}
 
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
-  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
-  .form-group label { font-size: 0.78rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-  .input-wrap { position: relative; }
-  .input-wrap input {
-    width: 100%; padding: 0.85rem 2.5rem 0.85rem 1rem;
-    border: 1.5px solid var(--border); border-radius: 10px;
-    background: var(--warm-white); color: var(--charcoal);
-    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
-    transition: border-color 0.2s, box-shadow 0.2s; outline: none;
-  }
-  .input-wrap input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.12); }
-  .input-unit { position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: var(--muted); pointer-events: none; }
-  .input-prefix { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 0.88rem; color: var(--muted); pointer-events: none; }
-  .input-wrap input.has-prefix { padding-left: 1.8rem; }
+  .ad-slot{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.5);border:1px dashed var(--border);border-radius:14px;color:var(--muted);overflow:hidden;}
+  .ad-slot .ad-label{font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;}
+  .ad-header{max-width:970px;margin:1.2rem auto 0;min-height:90px;}
+  .ad-footer{max-width:970px;margin:0 auto 2rem;min-height:90px;}
+  .ad-side{position:sticky;top:90px;min-height:600px;width:200px;margin-top:1.2rem;display:none;}
+  @media(min-width:1100px){.ad-side{display:flex;}}
 
-  .range-wrap { margin-top: 0.3rem; }
-  input[type=range] { width: 100%; -webkit-appearance: none; height: 4px; border-radius: 2px; background: var(--border); outline: none; cursor: pointer; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--gold); cursor: pointer; box-shadow: 0 2px 6px rgba(201,168,76,0.4); }
+  .page-wrap{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr;}
+  @media(min-width:1100px){.page-wrap{grid-template-columns:1fr 200px;align-items:start;gap:1.5rem;padding-right:1.5rem;}}
 
-  .btn { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--gold), var(--amber)); color: white; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(201,168,76,0.35); }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.4); }
+  .hero{text-align:center;padding:3.5rem 2rem 1.5rem;animation:fadeDown 0.7s ease both;}
+  .hero-label{display:inline-block;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:0.35rem 1rem;border-radius:20px;margin-bottom:1.2rem;background:rgba(201,168,76,0.07);}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;line-height:1.1;color:var(--charcoal);margin-bottom:0.8rem;}
+  .hero h1 em{font-style:italic;color:var(--blue);}
+  .hero p{color:var(--muted);font-size:1rem;max-width:440px;margin:0 auto;line-height:1.7;}
 
-  .result { margin-top: 2rem; display: none; animation: fadeUp 0.5s ease both; }
-  .result.show { display: block; }
-  .divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0; color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .main{max-width:680px;margin:1.5rem auto 0;padding:0 1.5rem 3rem;animation:fadeUp 0.8s ease 0.2s both;}
+  .card{background:var(--card);border-radius:20px;border:1px solid var(--border);padding:2.5rem;box-shadow:var(--shadow);}
+  @media(max-width:600px){.card{padding:1.6rem;}}
 
-  .hero-result { background: linear-gradient(135deg, var(--charcoal), #3d3020); border-radius: 16px; padding: 2rem; color: white; text-align: center; margin-bottom: 1.5rem; }
-  .hero-result p { font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
-  .hero-result .big { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; color: var(--gold-light); }
-  .hero-result .sub { font-size: 0.85rem; opacity: 0.6; margin-top: 0.3rem; }
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem;}
+  @media(max-width:480px){.form-grid{grid-template-columns:1fr;}}
+  .form-group{display:flex;flex-direction:column;gap:0.5rem;}
+  .form-group.full{grid-column:1/-1;}
+  .form-group label{font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);}
+  .input-wrap{position:relative;}
+  .input-wrap input{width:100%;padding:0.85rem 2.8rem 0.85rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--warm-white);color:var(--charcoal);font-family:'DM Sans',sans-serif;font-size:0.95rem;transition:border-color 0.2s,box-shadow 0.2s;outline:none;}
+  .input-wrap input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+  .input-unit{position:absolute;right:0.9rem;top:50%;transform:translateY(-50%);font-size:0.82rem;color:var(--muted);pointer-events:none;}
 
-  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1.5rem; }
-  .stat-box { background: linear-gradient(135deg, rgba(201,168,76,0.07), rgba(160,103,42,0.04)); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; text-align: center; }
-  .stat-box .n { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--amber); }
-  .stat-box .l { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+  .btn{width:100%;padding:1rem;background:linear-gradient(135deg,var(--gold),var(--amber));color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:transform 0.15s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(201,168,76,0.35);margin-top:0.5rem;}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,0.4);}
 
-  .progress-section { margin-bottom: 1.5rem; }
-  .progress-label { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.85rem; }
-  .progress-label .left { color: var(--muted); }
-  .progress-label .right { color: var(--charcoal); font-weight: 500; }
-  .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--amber)); border-radius: 4px; transition: width 1s ease; }
+  .result{margin-top:2rem;display:none;animation:fadeUp 0.5s ease both;}
+  .result.show{display:block;}
+  .divider{display:flex;align-items:center;gap:1rem;margin:2rem 0;color:var(--muted);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+  .total-card{background:linear-gradient(135deg,var(--charcoal),#3d3020);border-radius:14px;padding:1.5rem;color:white;text-align:center;margin-bottom:1.5rem;}
+  .total-card p{font-size:0.82rem;opacity:0.6;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
+  .total-card .big-number{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;color:var(--gold-light);line-height:1.1;}
+  .total-card .sub{font-size:0.82rem;opacity:0.7;margin-top:0.5rem;}
+  .breakdown{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:0.5rem;}
+  @media(max-width:480px){.breakdown{grid-template-columns:1fr;}}
+  .bd-box{background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(74,127,165,0.05));border:1px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center;}
+  .bd-box .v{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--amber);}
+  .bd-box.interest .v{color:var(--blue);}
+  .bd-box .l{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.3rem;}
+  .monthly-income{margin-top:1.5rem;background:rgba(74,127,165,0.08);border:1px solid rgba(74,127,165,0.25);border-radius:12px;padding:1.2rem;text-align:center;}
+  .monthly-income .l{font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;}
+  .monthly-income .v{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--blue);}
+  .disclaimer{margin-top:1.5rem;padding:1rem 1.2rem;background:rgba(74,127,165,0.08);border:1px solid rgba(74,127,165,0.25);border-radius:10px;font-size:0.85rem;color:var(--charcoal);line-height:1.6;}
 
-  .monthly-breakdown { background: var(--blue-light); border: 1px solid rgba(74,127,165,0.2); border-radius: 12px; padding: 1.2rem 1.5rem; }
-  .monthly-breakdown h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--blue); margin-bottom: 0.8rem; }
-  .breakdown-row { display: flex; justify-content: space-between; font-size: 0.88rem; padding: 0.4rem 0; }
-  .breakdown-row .lbl { color: var(--muted); }
-  .breakdown-row .val { font-weight: 500; }
+  .article{max-width:680px;margin:3rem auto 0;}
+  .article-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:var(--shadow);}
+  @media(max-width:600px){.article-card{padding:1.6rem;}}
+  .article h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--charcoal);margin-bottom:1rem;line-height:1.2;}
+  .article h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--charcoal);margin:1.8rem 0 0.6rem;}
+  .article p{color:var(--charcoal);font-size:0.97rem;line-height:1.8;margin-bottom:1rem;font-weight:300;}
+  .article ul{margin:0 0 1rem 1.2rem;}
+  .article li{color:var(--charcoal);font-size:0.95rem;line-height:1.7;margin-bottom:0.5rem;font-weight:300;}
+  .article .formula{background:var(--warm-white);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:10px;padding:1rem 1.2rem;font-size:0.92rem;color:var(--charcoal);margin:0 0 1rem;}
+  .faq-item{border-top:1px solid rgba(201,168,76,0.15);padding:1.1rem 0;}
+  .faq-item:last-child{padding-bottom:0;}
+  .faq-q{font-weight:500;color:var(--charcoal);font-size:0.97rem;margin-bottom:0.4rem;}
+  .faq-a{color:var(--muted);font-size:0.92rem;line-height:1.7;font-weight:300;}
 
-  .other-tools { margin-top: 3rem; }
-  .other-tools h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--charcoal); margin-bottom: 1.2rem; text-align: center; }
-  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-  .tool-link { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--charcoal); font-size: 0.88rem; font-weight: 500; transition: all 0.2s; }
-  .tool-link:hover { border-color: var(--gold); transform: translateX(3px); }
+  .other-tools{margin-top:3rem;}
+  .other-tools h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:1.2rem;text-align:center;}
+  .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+  .tool-link{display:flex;align-items:center;gap:0.75rem;padding:1rem 1.2rem;background:var(--card);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--charcoal);font-size:0.88rem;font-weight:500;transition:all 0.2s;}
+  .tool-link:hover{border-color:var(--gold);transform:translateX(3px);box-shadow:0 3px 16px rgba(201,168,76,0.12);}
+  .tool-link .icon{font-size:1.3rem;}
 
-  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  footer{padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border);}
+  .footer-brand{display:flex;align-items:center;gap:0.5rem;font-family:'Playfair Display',serif;font-size:1rem;color:var(--charcoal);}
+  .footer-brand .dot{color:var(--gold);}
+  .footer-links{display:flex;gap:1.3rem;flex-wrap:wrap;}
+  .footer-links a{text-decoration:none;font-size:0.82rem;color:var(--muted);transition:color 0.2s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-copy{font-size:0.78rem;color:var(--muted);}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>
 <body>
+
 <nav>
-  <span class="nav-logo">✦ Calculators</span>
-  <div class="nav-links">
-    <a href="age-calculator.html">Âge</a>
-    <a href="calorie-calculator.html">Calories</a>
-    <a href="retirement-calculator.html" class="active">Retraite</a>
-    <a href="inflation-calculator.html">Inflation</a>
-    <a href="compound-interest-calculator.html">Intérêts</a>
+  <a href="index.html" class="nav-brand">
+    <div class="logo-mark">✦</div>
+    <span class="brand-name">Smart<span>Tools</span>Hub</span>
+  </a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="age-calculator.html" data-i18n="nav_age">Âge</a>
+      <a href="calorie-calculator.html" data-i18n="nav_cal">Calories</a>
+      <a href="retirement-calculator.html" class="active" data-i18n="nav_ret">Retraite</a>
+      <a href="inflation-calculator.html" data-i18n="nav_inf">Inflation</a>
+      <a href="compound-interest-calculator.html" data-i18n="nav_ci">Intérêts</a>
+    </div>
+    <div class="lang">
+      <button class="lang-btn" id="langBtn">
+        <span class="flag" id="curFlag">🇫🇷</span>
+        <span class="label" id="curLabel">Français</span>
+        <span class="chev">▼</span>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-opt" data-lang="en"><span class="flag">🇬🇧</span> English</button>
+        <button class="lang-opt" data-lang="zh"><span class="flag">🇨🇳</span> 中文</button>
+        <button class="lang-opt" data-lang="ru"><span class="flag">🇷🇺</span> Русский</button>
+        <button class="lang-opt" data-lang="es"><span class="flag">🇪🇸</span> Español</button>
+        <button class="lang-opt" data-lang="pt"><span class="flag">🇵🇹</span> Português</button>
+        <button class="lang-opt active" data-lang="fr"><span class="flag">🇫🇷</span> Français</button>
+      </div>
+    </div>
   </div>
 </nav>
 
-<div class="hero">
-  <span class="hero-label">🌅 Calculateur</span>
-  <h1>Planifiez votre<br><em>retraite sereine</em></h1>
-  <p>Estimez le capital dont vous aurez besoin et les économies mensuelles à constituer pour atteindre votre objectif.</p>
+<div class="ad-slot ad-header">
+  <span class="ad-label" data-i18n="ad_label">Publicité</span>
+  <!-- AdSense header -->
 </div>
 
-<main class="main">
-  <div class="card">
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Âge actuel</label>
-        <div class="input-wrap">
-          <input type="number" id="current-age" value="35" min="18" max="80">
-          <span class="input-unit">ans</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Âge de retraite</label>
-        <div class="input-wrap">
-          <input type="number" id="retire-age" value="65" min="40" max="80">
-          <span class="input-unit">ans</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Épargne actuelle</label>
-        <div class="input-wrap">
-          <span class="input-prefix">€</span>
-          <input type="number" id="current-savings" class="has-prefix" value="20000" min="0">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Revenu mensuel souhaité</label>
-        <div class="input-wrap">
-          <span class="input-prefix">€</span>
-          <input type="number" id="monthly-income" class="has-prefix" value="2500" min="0">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Espérance de vie</label>
-        <div class="input-wrap">
-          <input type="number" id="life-expect" value="85" min="60" max="110">
-          <span class="input-unit">ans</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Rendement annuel attendu</label>
-        <div class="input-wrap">
-          <input type="number" id="return-rate" value="5" min="0" max="20" step="0.1">
-          <span class="input-unit">%</span>
-        </div>
-        <div class="range-wrap">
-          <input type="range" min="0" max="15" step="0.1" value="5" oninput="document.getElementById('return-rate').value=this.value">
-        </div>
-      </div>
+<div class="page-wrap">
+  <div class="main-col">
+    <div class="hero">
+      <span class="hero-label" data-i18n="hero_label">🌅 Calculateur</span>
+      <h1 data-i18n="hero_h1">Préparez votre<br><em>retraite</em> sereinement</h1>
+      <p data-i18n="hero_p">Estimez le capital disponible à votre départ en retraite selon votre épargne et vos versements.</p>
     </div>
-    <button class="btn" onclick="calculate()">Calculer mon plan retraite →</button>
 
-    <div class="result" id="result">
-      <div class="divider">Capital nécessaire</div>
-      <div class="hero-result">
-        <p>Objectif d'épargne total</p>
-        <div class="big" id="total-needed">—</div>
-        <div class="sub" id="retire-duration">pour — ans de retraite</div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-box"><div class="n" id="years-to-retire">—</div><div class="l">Ans restants</div></div>
-        <div class="stat-box"><div class="n" id="monthly-save">—</div><div class="l">€/mois à épargner</div></div>
-        <div class="stat-box"><div class="n" id="projected-capital">—</div><div class="l">Capital projeté</div></div>
-      </div>
-
-      <div class="progress-section">
-        <div class="progress-label">
-          <span class="left">Progression actuelle</span>
-          <span class="right" id="progress-pct">0%</span>
+    <main class="main">
+      <div class="card">
+        <div class="form-grid">
+          <div class="form-group">
+            <label data-i18n="l_age">Âge actuel</label>
+            <div class="input-wrap"><input type="number" id="age" placeholder="35" min="16" max="90"><span class="input-unit" data-i18n="u_yrs">ans</span></div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="l_retage">Âge de départ</label>
+            <div class="input-wrap"><input type="number" id="retage" placeholder="65" min="40" max="90"><span class="input-unit" data-i18n="u_yrs">ans</span></div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="l_current">Épargne actuelle</label>
+            <div class="input-wrap"><input type="number" id="current" placeholder="10000" min="0"><span class="input-unit">€</span></div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="l_monthly">Versement mensuel</label>
+            <div class="input-wrap"><input type="number" id="monthly" placeholder="200" min="0"><span class="input-unit">€</span></div>
+          </div>
+          <div class="form-group full">
+            <label data-i18n="l_return">Rendement annuel estimé</label>
+            <div class="input-wrap"><input type="number" id="ret" placeholder="4" min="0" max="100" step="0.1"><span class="input-unit">%</span></div>
+          </div>
         </div>
-        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+        <button class="btn" onclick="calculate()" data-i18n="btn">Estimer mon capital →</button>
+
+        <div class="result" id="result">
+          <div class="divider" data-i18n="div_capital">Capital estimé au départ</div>
+          <div class="total-card">
+            <p data-i18n="capital_label">À l'âge de la retraite</p>
+            <div class="big-number" id="final-capital">—</div>
+            <div class="sub" id="years-sub">—</div>
+          </div>
+          <div class="breakdown">
+            <div class="bd-box"><div class="v" id="bd-current">—</div><div class="l" data-i18n="bd_current">Épargne actuelle</div></div>
+            <div class="bd-box"><div class="v" id="bd-contrib">—</div><div class="l" data-i18n="bd_contrib">Versements</div></div>
+            <div class="bd-box interest"><div class="v" id="bd-interest">—</div><div class="l" data-i18n="bd_interest">Intérêts</div></div>
+          </div>
+          <div class="monthly-income">
+            <div class="l" data-i18n="income_label">Revenu mensuel indicatif (règle des 4 %)</div>
+            <div class="v" id="monthly-income">—</div>
+          </div>
+          <div class="disclaimer" data-i18n="disclaimer">⚠️ Cette estimation suppose un rendement constant et n'intègre ni l'inflation, ni la fiscalité, ni les pensions publiques. Elle est purement éducative et ne constitue pas un conseil financier. Pour un plan personnalisé, consultez un conseiller agréé.</div>
+        </div>
       </div>
 
-      <div class="monthly-breakdown">
-        <h4>📊 Détail du plan</h4>
-        <div class="breakdown-row"><span class="lbl">Années de retraite couvertes</span><span class="val" id="retire-years">—</span></div>
-        <div class="breakdown-row"><span class="lbl">Épargne déjà constituée</span><span class="val" id="curr-savings-val">—</span></div>
-        <div class="breakdown-row"><span class="lbl">Croissance de l'épargne actuelle</span><span class="val" id="savings-growth">—</span></div>
-        <div class="breakdown-row"><span class="lbl">Manque à combler</span><span class="val" id="gap">—</span></div>
+      <div class="ad-slot ad-footer" style="margin-top:2.5rem;">
+        <span class="ad-label" data-i18n="ad_label">Publicité</span>
+        <!-- AdSense inline -->
       </div>
-    </div>
+
+      <section class="article">
+        <div class="article-card" id="article"></div>
+      </section>
+
+      <div class="other-tools">
+        <h3 data-i18n="other_t">Autres calculateurs</h3>
+        <div class="tools-grid">
+          <a href="age-calculator.html" class="tool-link"><span class="icon">🗓️</span><span data-i18n="nav_age">Âge</span></a>
+          <a href="calorie-calculator.html" class="tool-link"><span class="icon">🔥</span><span data-i18n="nav_cal">Calories</span></a>
+          <a href="inflation-calculator.html" class="tool-link"><span class="icon">📈</span><span data-i18n="nav_inf">Inflation</span></a>
+          <a href="compound-interest-calculator.html" class="tool-link"><span class="icon">💰</span><span data-i18n="ci_long">Intérêts composés</span></a>
+        </div>
+      </div>
+    </main>
   </div>
 
-  <div class="other-tools">
-    <h3>Autres calculateurs</h3>
-    <div class="tools-grid">
-      <a href="age-calculator.html" class="tool-link"><span>🗓️</span>Âge</a>
-      <a href="calorie-calculator.html" class="tool-link"><span>🔥</span>Calories</a>
-      <a href="inflation-calculator.html" class="tool-link"><span>📈</span>Inflation</a>
-      <a href="compound-interest-calculator.html" class="tool-link"><span>💰</span>Intérêts composés</a>
-    </div>
+  <aside class="ad-slot ad-side">
+    <span class="ad-label" data-i18n="ad_label">Publicité</span>
+    <!-- AdSense vertical 200x600 -->
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-brand">Smart<span class="dot">Tools</span>Hub</div>
+  <div class="footer-links">
+    <a href="index.html" data-i18n="f_home">Accueil</a>
+    <a href="about.html" data-i18n="f_about">À propos</a>
+    <a href="privacy.html" data-i18n="f_privacy">Confidentialité</a>
+    <a href="contact.html" data-i18n="f_contact">Contact</a>
   </div>
-</main>
+  <p class="footer-copy" data-i18n="f_copy">SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte</p>
+</footer>
 
 <script>
-  function fmt(n) { return Math.round(n).toLocaleString('fr-FR') + ' €'; }
+const I18N = {
+  fr:{_flag:'🇫🇷',_label:'Français',_htmllang:'fr',_locale:'fr-FR',_cur:'EUR',
+    meta_desc:"Calculateur de retraite gratuit : estimez le capital disponible à votre départ en retraite selon votre épargne actuelle, vos versements mensuels et un rendement estimé.",
+    title:"Calculateur de retraite — SmartToolsHub",
+    nav_age:"Âge",nav_cal:"Calories",nav_ret:"Retraite",nav_inf:"Inflation",nav_ci:"Intérêts",ci_long:"Intérêts composés",
+    hero_label:"🌅 Calculateur", hero_h1:"Préparez votre<br><em>retraite</em> sereinement",
+    hero_p:"Estimez le capital disponible à votre départ en retraite selon votre épargne et vos versements.",
+    l_age:"Âge actuel", l_retage:"Âge de départ", u_yrs:"ans",
+    l_current:"Épargne actuelle", l_monthly:"Versement mensuel", l_return:"Rendement annuel estimé",
+    btn:"Estimer mon capital →", div_capital:"Capital estimé au départ", capital_label:"À l'âge de la retraite",
+    years_sub:n=>`Dans ${n} an${n>1?'s':''}`,
+    bd_current:"Épargne actuelle", bd_contrib:"Versements", bd_interest:"Intérêts",
+    income_label:"Revenu mensuel indicatif (règle des 4 %)",
+    disclaimer:"⚠️ Cette estimation suppose un rendement constant et n'intègre ni l'inflation, ni la fiscalité, ni les pensions publiques. Elle est purement éducative et ne constitue pas un conseil financier. Pour un plan personnalisé, consultez un conseiller agréé.",
+    err_fill:"Veuillez remplir les champs avec des valeurs valides.",
+    err_age:"L'âge de départ doit être supérieur à l'âge actuel.",
+    other_t:"Autres calculateurs",
+    f_home:"Accueil",f_about:"À propos",f_privacy:"Confidentialité",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte", ad_label:"Publicité",
+    article:`<h2>Comment estimer son capital retraite ?</h2>
+<p>Préparer sa retraite consiste à constituer, pendant la vie active, un capital qui complétera les pensions une fois le travail arrêté. Ce calculateur projette la valeur de votre épargne au moment du départ, en combinant votre épargne actuelle, vos versements mensuels et un rendement annuel estimé, grâce au mécanisme des intérêts composés.</p>
+<h3>La méthode de calcul</h3>
+<p>Le capital final additionne deux éléments qui fructifient jusqu'à la retraite :</p>
+<div class="formula">Capital = Épargne actuelle × (1 + r)^n + Versements mensuels capitalisés chaque mois<br>où r est le rendement mensuel et n le nombre de mois jusqu'au départ.</div>
+<p>Le « revenu mensuel indicatif » s'appuie sur la règle des 4 % : retirer environ 4 % du capital par an est souvent cité comme un rythme de retrait prudent sur le long terme. C'est un repère, pas une garantie.</p>
+<h3>Bons réflexes pour préparer sa retraite</h3>
+<ul>
+<li>Commencer tôt : le temps est le facteur le plus puissant grâce aux intérêts composés.</li>
+<li>Verser régulièrement, même de petites sommes, plutôt qu'attendre.</li>
+<li>Tenir compte de l'inflation, qui réduit le pouvoir d'achat futur du capital.</li>
+<li>Diversifier et adapter le risque à l'horizon de placement.</li>
+</ul>
+<h3>Questions fréquentes</h3>
+<div class="faq-item"><div class="faq-q">Ce montant est-il garanti ?</div><div class="faq-a">Non. Il suppose un rendement constant, alors que les marchés fluctuent. Le résultat est une projection théorique, à actualiser régulièrement.</div></div>
+<div class="faq-item"><div class="faq-q">L'inflation est-elle prise en compte ?</div><div class="faq-a">Non. Le capital est exprimé en valeur future « nominale ». Pour estimer son pouvoir d'achat réel, utilisez notre calculateur d'inflation.</div></div>
+<div class="faq-item"><div class="faq-q">Mes données sont-elles enregistrées ?</div><div class="faq-a">Non. Tout le calcul s'effectue dans votre navigateur ; rien n'est envoyé ni conservé.</div></div>`},
+  en:{_flag:'🇬🇧',_label:'English',_htmllang:'en',_locale:'en-US',_cur:'USD',
+    meta_desc:"Free retirement calculator: estimate the capital available at retirement based on your current savings, monthly contributions and an estimated return.",
+    title:"Retirement Calculator — SmartToolsHub",
+    nav_age:"Age",nav_cal:"Calories",nav_ret:"Retirement",nav_inf:"Inflation",nav_ci:"Interest",ci_long:"Compound Interest",
+    hero_label:"🌅 Calculator", hero_h1:"Plan your<br><em>retirement</em> with confidence",
+    hero_p:"Estimate the capital available at retirement based on your savings and contributions.",
+    l_age:"Current age", l_retage:"Retirement age", u_yrs:"yrs",
+    l_current:"Current savings", l_monthly:"Monthly contribution", l_return:"Estimated annual return",
+    btn:"Estimate my capital →", div_capital:"Estimated capital at retirement", capital_label:"At retirement age",
+    years_sub:n=>`In ${n} year${n>1?'s':''}`,
+    bd_current:"Current savings", bd_contrib:"Contributions", bd_interest:"Interest",
+    income_label:"Indicative monthly income (4% rule)",
+    disclaimer:"⚠️ This estimate assumes a constant return and ignores inflation, taxes and public pensions. It is purely educational and not financial advice. For a personalised plan, consult a licensed adviser.",
+    err_fill:"Please fill in the fields with valid values.",
+    err_age:"Retirement age must be greater than current age.",
+    other_t:"Other calculators",
+    f_home:"Home",f_about:"About",f_privacy:"Privacy",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Free Online Tools · a Nordbyte project", ad_label:"Advertisement",
+    article:`<h2>How to estimate your retirement capital?</h2>
+<p>Planning for retirement means building, during your working life, a capital that will supplement pensions once you stop working. This calculator projects the value of your savings at retirement, combining your current savings, monthly contributions and an estimated annual return, through the power of compound interest.</p>
+<h3>The calculation method</h3>
+<p>The final capital adds two parts that grow until retirement:</p>
+<div class="formula">Capital = Current savings × (1 + r)^n + Monthly contributions compounded each month<br>where r is the monthly return and n the number of months until retirement.</div>
+<p>The "indicative monthly income" is based on the 4% rule: withdrawing about 4% of the capital per year is often cited as a prudent long-term withdrawal pace. It's a benchmark, not a guarantee.</p>
+<h3>Good habits to prepare for retirement</h3>
+<ul>
+<li>Start early: time is the most powerful factor thanks to compounding.</li>
+<li>Contribute regularly, even small amounts, rather than waiting.</li>
+<li>Account for inflation, which reduces the future purchasing power of the capital.</li>
+<li>Diversify and match risk to your investment horizon.</li>
+</ul>
+<h3>Frequently asked questions</h3>
+<div class="faq-item"><div class="faq-q">Is this amount guaranteed?</div><div class="faq-a">No. It assumes a constant return, whereas markets fluctuate. The result is a theoretical projection, to update regularly.</div></div>
+<div class="faq-item"><div class="faq-q">Is inflation taken into account?</div><div class="faq-a">No. The capital is shown in future "nominal" value. To estimate its real purchasing power, use our inflation calculator.</div></div>
+<div class="faq-item"><div class="faq-q">Is my data stored?</div><div class="faq-a">No. The whole calculation runs in your browser; nothing is sent or kept.</div></div>`},
+  zh:{_flag:'🇨🇳',_label:'中文',_htmllang:'zh',_locale:'zh-CN',_cur:'CNY',
+    meta_desc:"免费退休计算器：根据当前储蓄、每月追加和预估回报，估算退休时可用的资金。",
+    title:"退休计算器 — SmartToolsHub",
+    nav_age:"年龄",nav_cal:"卡路里",nav_ret:"退休",nav_inf:"通胀",nav_ci:"利息",ci_long:"复利",
+    hero_label:"🌅 计算器", hero_h1:"从容规划<br>您的<em>退休</em>",
+    hero_p:"根据您的储蓄和追加金额，估算退休时可用的资金。",
+    l_age:"当前年龄", l_retage:"退休年龄", u_yrs:"岁",
+    l_current:"当前储蓄", l_monthly:"每月追加", l_return:"预估年回报率",
+    btn:"估算我的资金 →", div_capital:"退休时预估资金", capital_label:"退休时",
+    years_sub:n=>`${n} 年后`,
+    bd_current:"当前储蓄", bd_contrib:"追加投入", bd_interest:"利息",
+    income_label:"参考月收入（4% 法则）",
+    disclaimer:"⚠️ 此估算假设回报率恒定，且不考虑通胀、税收或公共养老金。仅供教育用途，不构成财务建议。如需个性化方案，请咨询持牌顾问。",
+    err_fill:"请用有效数值填写各字段。",
+    err_age:"退休年龄必须大于当前年龄。",
+    other_t:"其他计算器",
+    f_home:"首页",f_about:"关于",f_privacy:"隐私",f_contact:"联系",
+    f_copy:"SmartToolsHub © 2026 · 免费在线工具 · Nordbyte 出品", ad_label:"广告",
+    article:`<h2>如何估算退休资金？</h2>
+<p>规划退休意味着在工作期间积累一笔资金，在停止工作后补充养老金。本计算器通过复利机制，结合您当前的储蓄、每月追加和预估年回报率，预测退休时您的储蓄价值。</p>
+<h3>计算方法</h3>
+<p>最终资金由两部分组成，它们持续增长直到退休：</p>
+<div class="formula">资金 = 当前储蓄 × (1 + r)^n + 每月按月复利的追加金额<br>其中 r 为月回报率，n 为距退休的月数。</div>
+<p>"参考月收入"基于 4% 法则：每年提取约 4% 的资金，常被视为长期审慎的提取节奏。这是一个参考，而非保证。</p>
+<h3>规划退休的良好习惯</h3>
+<ul>
+<li>尽早开始：借助复利，时间是最强大的因素。</li>
+<li>定期投入，即使金额较小，也胜过等待。</li>
+<li>考虑通胀，它会削弱资金未来的购买力。</li>
+<li>分散投资，并使风险与投资期限相匹配。</li>
+</ul>
+<h3>常见问题</h3>
+<div class="faq-item"><div class="faq-q">这个金额有保证吗？</div><div class="faq-a">没有。它假设回报率恒定，而市场会波动。结果是理论预测，应定期更新。</div></div>
+<div class="faq-item"><div class="faq-q">是否考虑通胀？</div><div class="faq-a">没有。资金以未来"名义"价值表示。如需估算其真实购买力，请使用我们的通货膨胀计算器。</div></div>
+<div class="faq-item"><div class="faq-q">我的数据会被保存吗？</div><div class="faq-a">不会。整个计算都在您的浏览器中进行；不会发送或保留任何内容。</div></div>`},
+  ru:{_flag:'🇷🇺',_label:'Русский',_htmllang:'ru',_locale:'ru-RU',_cur:'RUB',
+    meta_desc:"Бесплатный пенсионный калькулятор: оцените капитал к моменту выхода на пенсию по текущим сбережениям, ежемесячным взносам и предполагаемой доходности.",
+    title:"Пенсионный калькулятор — SmartToolsHub",
+    nav_age:"Возраст",nav_cal:"Калории",nav_ret:"Пенсия",nav_inf:"Инфляция",nav_ci:"Проценты",ci_long:"Сложные проценты",
+    hero_label:"🌅 Калькулятор", hero_h1:"Спланируйте<br><em>пенсию</em> спокойно",
+    hero_p:"Оцените капитал к моменту выхода на пенсию по вашим сбережениям и взносам.",
+    l_age:"Текущий возраст", l_retage:"Возраст выхода", u_yrs:"лет",
+    l_current:"Текущие сбережения", l_monthly:"Ежемесячный взнос", l_return:"Ожидаемая годовая доходность",
+    btn:"Оценить капитал →", div_capital:"Оценочный капитал к выходу", capital_label:"К пенсионному возрасту",
+    years_sub:n=>`Через ${n} ${n%10===1&&n%100!==11?'год':(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?'года':'лет')}`,
+    bd_current:"Текущие сбережения", bd_contrib:"Взносы", bd_interest:"Проценты",
+    income_label:"Ориентировочный месячный доход (правило 4 %)",
+    disclaimer:"⚠️ Эта оценка предполагает постоянную доходность и не учитывает инфляцию, налоги и государственные пенсии. Она носит образовательный характер и не является финансовым советом. Для персонального плана обратитесь к лицензированному консультанту.",
+    err_fill:"Пожалуйста, заполните поля корректными значениями.",
+    err_age:"Возраст выхода должен быть больше текущего возраста.",
+    other_t:"Другие калькуляторы",
+    f_home:"Главная",f_about:"О нас",f_privacy:"Конфиденциальность",f_contact:"Контакты",
+    f_copy:"SmartToolsHub © 2026 · Бесплатные онлайн-инструменты · проект Nordbyte", ad_label:"Реклама",
+    article:`<h2>Как оценить пенсионный капитал?</h2>
+<p>Подготовка к пенсии — это формирование в трудовые годы капитала, который дополнит пенсию после прекращения работы. Этот калькулятор прогнозирует стоимость ваших сбережений к моменту выхода, сочетая текущие сбережения, ежемесячные взносы и предполагаемую годовую доходность благодаря сложным процентам.</p>
+<h3>Метод расчёта</h3>
+<p>Итоговый капитал складывается из двух частей, растущих до пенсии:</p>
+<div class="formula">Капитал = Текущие сбережения × (1 + r)^n + Ежемесячные взносы с ежемесячной капитализацией<br>где r — месячная доходность, n — число месяцев до выхода.</div>
+<p>«Ориентировочный месячный доход» основан на правиле 4%: снятие около 4% капитала в год часто называют осторожным темпом изъятий в долгосрочной перспективе. Это ориентир, а не гарантия.</p>
+<h3>Полезные привычки для подготовки к пенсии</h3>
+<ul>
+<li>Начинать рано: благодаря сложным процентам время — самый мощный фактор.</li>
+<li>Вносить регулярно, даже небольшие суммы, а не ждать.</li>
+<li>Учитывать инфляцию, снижающую будущую покупательную способность капитала.</li>
+<li>Диверсифицировать и соотносить риск с горизонтом вложений.</li>
+</ul>
+<h3>Частые вопросы</h3>
+<div class="faq-item"><div class="faq-q">Гарантирована ли эта сумма?</div><div class="faq-a">Нет. Она предполагает постоянную доходность, тогда как рынки колеблются. Результат — теоретический прогноз, который следует регулярно обновлять.</div></div>
+<div class="faq-item"><div class="faq-q">Учитывается ли инфляция?</div><div class="faq-a">Нет. Капитал указан в будущей «номинальной» стоимости. Чтобы оценить реальную покупательную способность, используйте наш калькулятор инфляции.</div></div>
+<div class="faq-item"><div class="faq-q">Сохраняются ли мои данные?</div><div class="faq-a">Нет. Весь расчёт выполняется в вашем браузере; ничего не отправляется и не хранится.</div></div>`},
+  es:{_flag:'🇪🇸',_label:'Español',_htmllang:'es',_locale:'es-ES',_cur:'EUR',
+    meta_desc:"Calculadora de jubilación gratuita: estima el capital disponible al jubilarte según tu ahorro actual, tus aportaciones mensuales y un rendimiento estimado.",
+    title:"Calculadora de jubilación — SmartToolsHub",
+    nav_age:"Edad",nav_cal:"Calorías",nav_ret:"Jubilación",nav_inf:"Inflación",nav_ci:"Interés",ci_long:"Interés compuesto",
+    hero_label:"🌅 Calculadora", hero_h1:"Prepara tu<br><em>jubilación</em> con calma",
+    hero_p:"Estima el capital disponible al jubilarte según tu ahorro y tus aportaciones.",
+    l_age:"Edad actual", l_retage:"Edad de jubilación", u_yrs:"años",
+    l_current:"Ahorro actual", l_monthly:"Aportación mensual", l_return:"Rendimiento anual estimado",
+    btn:"Estimar mi capital →", div_capital:"Capital estimado al jubilarte", capital_label:"A la edad de jubilación",
+    years_sub:n=>`Dentro de ${n} año${n>1?'s':''}`,
+    bd_current:"Ahorro actual", bd_contrib:"Aportaciones", bd_interest:"Intereses",
+    income_label:"Ingreso mensual indicativo (regla del 4 %)",
+    disclaimer:"⚠️ Esta estimación supone un rendimiento constante y no incluye inflación, impuestos ni pensiones públicas. Es puramente educativa y no constituye asesoramiento financiero. Para un plan personalizado, consulta a un asesor autorizado.",
+    err_fill:"Por favor, completa los campos con valores válidos.",
+    err_age:"La edad de jubilación debe ser mayor que la edad actual.",
+    other_t:"Otras calculadoras",
+    f_home:"Inicio",f_about:"Acerca de",f_privacy:"Privacidad",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Herramientas en línea gratuitas · un proyecto Nordbyte", ad_label:"Publicidad",
+    article:`<h2>¿Cómo estimar tu capital de jubilación?</h2>
+<p>Preparar la jubilación consiste en formar, durante la vida laboral, un capital que complementará las pensiones cuando dejes de trabajar. Esta calculadora proyecta el valor de tu ahorro al jubilarte, combinando tu ahorro actual, tus aportaciones mensuales y un rendimiento anual estimado, mediante el interés compuesto.</p>
+<h3>El método de cálculo</h3>
+<p>El capital final suma dos partes que crecen hasta la jubilación:</p>
+<div class="formula">Capital = Ahorro actual × (1 + r)^n + Aportaciones mensuales capitalizadas cada mes<br>donde r es el rendimiento mensual y n el número de meses hasta la jubilación.</div>
+<p>El "ingreso mensual indicativo" se basa en la regla del 4%: retirar alrededor del 4% del capital al año suele citarse como un ritmo de retirada prudente a largo plazo. Es una referencia, no una garantía.</p>
+<h3>Buenos hábitos para preparar la jubilación</h3>
+<ul>
+<li>Empezar pronto: el tiempo es el factor más poderoso gracias al interés compuesto.</li>
+<li>Aportar con regularidad, aunque sean cantidades pequeñas, en vez de esperar.</li>
+<li>Tener en cuenta la inflación, que reduce el poder adquisitivo futuro del capital.</li>
+<li>Diversificar y ajustar el riesgo al horizonte de inversión.</li>
+</ul>
+<h3>Preguntas frecuentes</h3>
+<div class="faq-item"><div class="faq-q">¿Está garantizado este importe?</div><div class="faq-a">No. Supone un rendimiento constante, mientras que los mercados fluctúan. El resultado es una proyección teórica, que conviene actualizar con regularidad.</div></div>
+<div class="faq-item"><div class="faq-q">¿Se tiene en cuenta la inflación?</div><div class="faq-a">No. El capital se muestra en valor futuro "nominal". Para estimar su poder adquisitivo real, usa nuestra calculadora de inflación.</div></div>
+<div class="faq-item"><div class="faq-q">¿Se guardan mis datos?</div><div class="faq-a">No. Todo el cálculo se realiza en tu navegador; no se envía ni se conserva nada.</div></div>`},
+  pt:{_flag:'🇵🇹',_label:'Português',_htmllang:'pt',_locale:'pt-BR',_cur:'BRL',
+    meta_desc:"Calculadora de reforma gratuita: estime o capital disponível na reforma com base na sua poupança atual, contribuições mensais e um rendimento estimado.",
+    title:"Calculadora de reforma — SmartToolsHub",
+    nav_age:"Idade",nav_cal:"Calorias",nav_ret:"Reforma",nav_inf:"Inflação",nav_ci:"Juros",ci_long:"Juros compostos",
+    hero_label:"🌅 Calculadora", hero_h1:"Prepare a sua<br><em>reforma</em> com tranquilidade",
+    hero_p:"Estime o capital disponível na reforma com base na sua poupança e contribuições.",
+    l_age:"Idade atual", l_retage:"Idade de reforma", u_yrs:"anos",
+    l_current:"Poupança atual", l_monthly:"Contribuição mensal", l_return:"Rendimento anual estimado",
+    btn:"Estimar o meu capital →", div_capital:"Capital estimado na reforma", capital_label:"À idade da reforma",
+    years_sub:n=>`Dentro de ${n} ano${n>1?'s':''}`,
+    bd_current:"Poupança atual", bd_contrib:"Contribuições", bd_interest:"Juros",
+    income_label:"Rendimento mensal indicativo (regra dos 4 %)",
+    disclaimer:"⚠️ Esta estimativa pressupõe um rendimento constante e não inclui inflação, impostos nem pensões públicas. É puramente educativa e não constitui aconselhamento financeiro. Para um plano personalizado, consulte um consultor autorizado.",
+    err_fill:"Por favor, preencha os campos com valores válidos.",
+    err_age:"A idade de reforma deve ser superior à idade atual.",
+    other_t:"Outras calculadoras",
+    f_home:"Início",f_about:"Sobre",f_privacy:"Privacidade",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Ferramentas online gratuitas · um projeto Nordbyte", ad_label:"Publicidade",
+    article:`<h2>Como estimar o seu capital de reforma?</h2>
+<p>Preparar a reforma consiste em formar, durante a vida ativa, um capital que complementará as pensões quando deixar de trabalhar. Esta calculadora projeta o valor da sua poupança na reforma, combinando a poupança atual, as contribuições mensais e um rendimento anual estimado, através dos juros compostos.</p>
+<h3>O método de cálculo</h3>
+<p>O capital final soma duas partes que crescem até à reforma:</p>
+<div class="formula">Capital = Poupança atual × (1 + r)^n + Contribuições mensais capitalizadas todos os meses<br>onde r é o rendimento mensal e n o número de meses até à reforma.</div>
+<p>O "rendimento mensal indicativo" baseia-se na regra dos 4%: retirar cerca de 4% do capital por ano é frequentemente citado como um ritmo de levantamento prudente a longo prazo. É uma referência, não uma garantia.</p>
+<h3>Bons hábitos para preparar a reforma</h3>
+<ul>
+<li>Começar cedo: o tempo é o fator mais poderoso graças aos juros compostos.</li>
+<li>Contribuir regularmente, mesmo valores pequenos, em vez de esperar.</li>
+<li>Ter em conta a inflação, que reduz o poder de compra futuro do capital.</li>
+<li>Diversificar e ajustar o risco ao horizonte de investimento.</li>
+</ul>
+<h3>Perguntas frequentes</h3>
+<div class="faq-item"><div class="faq-q">Este valor é garantido?</div><div class="faq-a">Não. Pressupõe um rendimento constante, ao passo que os mercados flutuam. O resultado é uma projeção teórica, a atualizar regularmente.</div></div>
+<div class="faq-item"><div class="faq-q">A inflação é considerada?</div><div class="faq-a">Não. O capital é apresentado em valor futuro "nominal". Para estimar o seu poder de compra real, use a nossa calculadora de inflação.</div></div>
+<div class="faq-item"><div class="faq-q">Os meus dados são guardados?</div><div class="faq-a">Não. Todo o cálculo é feito no seu navegador; nada é enviado ou guardado.</div></div>`}
+};
 
-  function calculate() {
-    const currentAge = parseInt(document.getElementById('current-age').value);
-    const retireAge = parseInt(document.getElementById('retire-age').value);
-    const lifeExpect = parseInt(document.getElementById('life-expect').value);
-    const currentSavings = parseFloat(document.getElementById('current-savings').value) || 0;
-    const monthlyIncome = parseFloat(document.getElementById('monthly-income').value) || 0;
-    const rate = parseFloat(document.getElementById('return-rate').value) / 100;
+const $ = id => document.getElementById(id);
+let LANG='fr';
+const T = key => (I18N[LANG]&&I18N[LANG][key]!==undefined)?I18N[LANG][key]:I18N.fr[key];
+const money = n => Number(Math.round(n)).toLocaleString(I18N[LANG]._locale,{style:'currency',currency:I18N[LANG]._cur,maximumFractionDigits:0});
 
-    if(retireAge <= currentAge) { alert('L\'âge de retraite doit être supérieur à l\'âge actuel.'); return; }
+function applyLang(lang){
+  if(!I18N[lang])lang='fr';
+  LANG=lang;
+  document.documentElement.lang=I18N[lang]._htmllang;
+  document.title=T('title');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const v=T(el.getAttribute('data-i18n'));if(typeof v==='string')el.innerHTML=v;});
+  document.querySelectorAll('[data-i18n-meta]').forEach(el=>{const v=T(el.getAttribute('data-i18n-meta'));if(typeof v==='string')el.setAttribute('content',v);});
+  $('curFlag').textContent=I18N[lang]._flag;
+  $('curLabel').textContent=I18N[lang]._label;
+  document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('active',o.dataset.lang===lang));
+  $('article').innerHTML=T('article');
+  if($('result').classList.contains('show')) calculate(true);
+  try{localStorage.setItem('sth_lang',lang);}catch{}
+}
 
-    const yearsToRetire = retireAge - currentAge;
-    const retireYears = lifeExpect - retireAge;
-    const monthlyRate = rate / 12;
+$('langBtn').addEventListener('click',e=>{e.stopPropagation();$('langMenu').classList.toggle('open');});
+document.addEventListener('click',()=>$('langMenu').classList.remove('open'));
+document.querySelectorAll('.lang-opt').forEach(opt=>{opt.addEventListener('click',()=>{applyLang(opt.dataset.lang);$('langMenu').classList.remove('open');});});
 
-    // Total capital needed (present value at retirement for income stream)
-    const totalNeeded = monthlyIncome * 12 * retireYears;
+function calculate(silent){
+  const age=parseInt($('age').value);
+  const retage=parseInt($('retage').value);
+  const current=parseFloat($('current').value)||0;
+  const monthly=parseFloat($('monthly').value)||0;
+  const ret=parseFloat($('ret').value);
+  if(!age||!retage||isNaN(ret)||(!current&&!monthly)){ if(!silent) alert(T('err_fill')); return; }
+  if(retage<=age){ if(!silent) alert(T('err_age')); return; }
 
-    // Current savings growth
-    const savingsGrowth = currentSavings * Math.pow(1 + rate, yearsToRetire);
+  const years=retage-age;
+  const months=years*12;
+  const r=ret/100/12;
 
-    // Gap to fill
-    const gap = Math.max(0, totalNeeded - savingsGrowth);
+  let balance=current;
+  for(let m=0;m<months;m++){ balance=balance*(1+r)+monthly; }
 
-    // Monthly savings needed (future value formula)
-    let monthlySave = 0;
-    if(monthlyRate > 0 && yearsToRetire > 0) {
-      monthlySave = gap / ((Math.pow(1 + monthlyRate, yearsToRetire * 12) - 1) / monthlyRate);
-    } else if(yearsToRetire > 0) {
-      monthlySave = gap / (yearsToRetire * 12);
-    }
+  const contributions=monthly*months;
+  const interest=balance-current-contributions;
+  const monthlyIncome=balance*0.04/12;
 
-    // Projected capital with monthly savings
-    const projectedCapital = savingsGrowth + monthlySave * ((Math.pow(1 + monthlyRate, yearsToRetire * 12) - 1) / (monthlyRate || 1));
-    const progressPct = Math.min(100, Math.round((currentSavings / totalNeeded) * 100));
+  $('final-capital').textContent=money(balance);
+  $('years-sub').textContent=T('years_sub')(years);
+  $('bd-current').textContent=money(current);
+  $('bd-contrib').textContent=money(contributions);
+  $('bd-interest').textContent=money(interest);
+  $('monthly-income').textContent=money(monthlyIncome);
 
-    document.getElementById('total-needed').textContent = fmt(totalNeeded);
-    document.getElementById('retire-duration').textContent = `pour ${retireYears} ans de retraite`;
-    document.getElementById('years-to-retire').textContent = yearsToRetire;
-    document.getElementById('monthly-save').textContent = Math.round(monthlySave).toLocaleString('fr-FR');
-    document.getElementById('projected-capital').textContent = fmt(projectedCapital).replace(' €', '');
-    document.getElementById('progress-pct').textContent = progressPct + '%';
-    document.getElementById('progress-fill').style.width = progressPct + '%';
-    document.getElementById('retire-years').textContent = retireYears + ' ans';
-    document.getElementById('curr-savings-val').textContent = fmt(currentSavings);
-    document.getElementById('savings-growth').textContent = fmt(savingsGrowth);
-    document.getElementById('gap').textContent = fmt(gap);
+  const result=$('result');
+  result.classList.add('show');
+  if(!silent) result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
 
-    const result = document.getElementById('result');
-    result.classList.add('show');
-    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
+(function init(){
+  const p=new URLSearchParams(location.search);
+  let lang=p.get('l');
+  if(!lang){try{lang=localStorage.getItem('sth_lang');}catch{}}
+  if(!lang){const nav=(navigator.language||'fr').slice(0,2);if(I18N[nav])lang=nav;}
+  applyLang(lang||'fr');
+})();
 </script>
 </body>
 </html>

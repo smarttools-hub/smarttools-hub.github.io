@@ -5,218 +5,542 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="shortcut icon" href="favicon.svg">
-<title>Calorie Calculator</title>
+<meta name="description" data-i18n-meta="meta_desc" content="Calculateur de calories gratuit : estimez votre métabolisme de base (BMR) et vos besoins caloriques journaliers selon votre activité, avec la formule Mifflin-St Jeor.">
+<title>Calculateur de calories — SmartToolsHub</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --cream: #F7F3EC; --warm-white: #FDFAF5;
-    --gold: #C9A84C; --gold-light: #E8CC7A;
-    --amber: #A0672A; --charcoal: #2C2416;
-    --muted: #8C7B63; --card: #FFFFFF;
-    --border: rgba(201,168,76,0.25);
-    --green: #5A8A5E; --green-light: rgba(90,138,94,0.1);
+    --cream:#F7F3EC; --warm-white:#FDFAF5; --gold:#C9A84C; --gold-light:#E8CC7A;
+    --amber:#A0672A; --charcoal:#2C2416; --muted:#8C7B63; --card:#FFFFFF;
+    --border:rgba(201,168,76,0.25); --green:#5A8A5E;
+    --shadow:0 4px 32px rgba(44,36,22,0.07),0 1px 4px rgba(44,36,22,0.04);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background-color: var(--cream); font-family: 'DM Sans', sans-serif;
-    color: var(--charcoal); min-height: 100vh;
-    background-image: radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(90,138,94,0.06) 0%, transparent 60%);
-  }
-  nav { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 2.5rem; background: rgba(247,243,236,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
-  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--amber); letter-spacing: 0.05em; }
-  .nav-links { display: flex; gap: 1.5rem; }
-  .nav-links a { text-decoration: none; font-size: 0.82rem; font-weight: 500; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
-  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background-color:var(--cream);font-family:'DM Sans',sans-serif;color:var(--charcoal);min-height:100vh;
+    background-image:radial-gradient(ellipse at 20% 20%,rgba(201,168,76,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(90,138,94,0.06) 0%,transparent 60%);}
 
-  .hero { text-align: center; padding: 4rem 2rem 2rem; animation: fadeDown 0.7s ease both; }
-  .hero-label { display: inline-block; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--border); padding: 0.35rem 1rem; border-radius: 20px; margin-bottom: 1.2rem; background: rgba(201,168,76,0.07); }
-  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; line-height: 1.1; margin-bottom: 0.8rem; }
-  .hero h1 em { font-style: italic; color: var(--green); }
-  .hero p { color: var(--muted); font-size: 1rem; max-width: 420px; margin: 0 auto; line-height: 1.7; }
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:rgba(247,243,236,0.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  @media(max-width:600px){nav{padding:1.1rem 1.3rem;}}
+  .nav-brand{display:flex;align-items:center;gap:0.55rem;text-decoration:none;}
+  .nav-brand .logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),var(--amber));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;color:white;box-shadow:0 2px 8px rgba(201,168,76,0.35);flex-shrink:0;}
+  .nav-brand .brand-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--charcoal);}
+  .nav-brand .brand-name span{color:var(--gold);}
+  .nav-right{display:flex;align-items:center;gap:1.2rem;}
+  .nav-links{display:flex;gap:1.3rem;}
+  @media(max-width:860px){.nav-links{display:none;}}
+  .nav-links a{text-decoration:none;font-size:0.8rem;font-weight:500;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase;transition:color 0.2s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--gold);}
 
-  .main { max-width: 720px; margin: 2.5rem auto; padding: 0 1.5rem 4rem; animation: fadeUp 0.8s ease 0.2s both; }
-  .card { background: var(--card); border-radius: 20px; border: 1px solid var(--border); padding: 2.5rem; box-shadow: 0 4px 40px rgba(44,36,22,0.06); }
+  .lang{position:relative;}
+  .lang-btn{display:flex;align-items:center;gap:0.5rem;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:0.4rem 0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--charcoal);transition:border-color 0.2s;}
+  .lang-btn:hover{border-color:var(--gold);}
+  .lang-btn .flag{font-size:1.1rem;line-height:1;}
+  .lang-btn .chev{font-size:0.6rem;color:var(--muted);}
+  .lang-menu{position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.4rem;min-width:168px;display:none;box-shadow:0 12px 32px rgba(44,36,22,0.15);z-index:200;}
+  .lang-menu.open{display:block;}
+  .lang-opt{display:flex;align-items:center;gap:0.6rem;width:100%;background:none;border:none;color:var(--charcoal);font-family:'DM Sans',sans-serif;font-size:0.85rem;padding:0.55rem 0.7rem;border-radius:8px;cursor:pointer;text-align:left;transition:background 0.15s;}
+  .lang-opt:hover{background:var(--cream);}
+  .lang-opt .flag{font-size:1.1rem;}
+  .lang-opt.active{color:var(--gold);font-weight:600;}
+  @media(max-width:600px){.lang-btn .label{display:none;}}
 
-  .gender-tabs { display: flex; gap: 0.5rem; background: var(--cream); border-radius: 12px; padding: 0.4rem; margin-bottom: 2rem; }
-  .gender-tab { flex: 1; padding: 0.7rem; text-align: center; border: none; background: none; cursor: pointer; border-radius: 9px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500; color: var(--muted); transition: all 0.2s; }
-  .gender-tab.active { background: white; color: var(--charcoal); box-shadow: 0 2px 8px rgba(44,36,22,0.08); }
+  .ad-slot{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.5);border:1px dashed var(--border);border-radius:14px;color:var(--muted);overflow:hidden;}
+  .ad-slot .ad-label{font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;}
+  .ad-header{max-width:970px;margin:1.2rem auto 0;min-height:90px;}
+  .ad-footer{max-width:970px;margin:0 auto 2rem;min-height:90px;}
+  .ad-side{position:sticky;top:90px;min-height:600px;width:200px;margin-top:1.2rem;display:none;}
+  @media(min-width:1100px){.ad-side{display:flex;}}
 
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
-  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
-  .form-group label { font-size: 0.78rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-  .input-wrap { position: relative; }
-  .input-wrap input, .input-wrap select {
-    width: 100%; padding: 0.85rem 2.5rem 0.85rem 1rem;
-    border: 1.5px solid var(--border); border-radius: 10px;
-    background: var(--warm-white); color: var(--charcoal);
-    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
-    transition: border-color 0.2s, box-shadow 0.2s; outline: none; appearance: none;
-  }
-  .input-wrap input:focus, .input-wrap select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.12); }
-  .input-unit { position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: var(--muted); pointer-events: none; }
-  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C7B63' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.8rem center; cursor: pointer; }
+  .page-wrap{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr;}
+  @media(min-width:1100px){.page-wrap{grid-template-columns:1fr 200px;align-items:start;gap:1.5rem;padding-right:1.5rem;}}
 
-  .btn { width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--gold), var(--amber)); color: white; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(201,168,76,0.35); }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.4); }
+  .hero{text-align:center;padding:3.5rem 2rem 1.5rem;animation:fadeDown 0.7s ease both;}
+  .hero-label{display:inline-block;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:0.35rem 1rem;border-radius:20px;margin-bottom:1.2rem;background:rgba(201,168,76,0.07);}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;line-height:1.1;color:var(--charcoal);margin-bottom:0.8rem;}
+  .hero h1 em{font-style:italic;color:var(--green);}
+  .hero p{color:var(--muted);font-size:1rem;max-width:440px;margin:0 auto;line-height:1.7;}
 
-  .result { margin-top: 2rem; display: none; animation: fadeUp 0.5s ease both; }
-  .result.show { display: block; }
-  .divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0; color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .main{max-width:680px;margin:1.5rem auto 0;padding:0 1.5rem 3rem;animation:fadeUp 0.8s ease 0.2s both;}
+  .card{background:var(--card);border-radius:20px;border:1px solid var(--border);padding:2.5rem;box-shadow:var(--shadow);}
+  @media(max-width:600px){.card{padding:1.6rem;}}
 
-  .bmr-card { background: linear-gradient(135deg, var(--charcoal), #3d3020); border-radius: 14px; padding: 1.5rem; color: white; text-align: center; margin-bottom: 1.5rem; }
-  .bmr-card p { font-size: 0.82rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
-  .bmr-card .big-number { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--gold-light); }
-  .bmr-card .unit { font-size: 0.9rem; opacity: 0.7; }
+  .gender-tabs{display:flex;gap:0.5rem;background:var(--cream);border-radius:12px;padding:0.4rem;margin-bottom:2rem;}
+  .gender-tab{flex:1;padding:0.7rem;text-align:center;border:none;background:none;cursor:pointer;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:500;color:var(--muted);transition:all 0.2s;}
+  .gender-tab.active{background:white;color:var(--charcoal);box-shadow:0 2px 8px rgba(44,36,22,0.08);}
 
-  .activity-levels { display: flex; flex-direction: column; gap: 0.6rem; }
-  .activity-row { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; border: 1.5px solid var(--border); border-radius: 12px; transition: all 0.2s; }
-  .activity-row:hover { border-color: var(--gold); background: rgba(201,168,76,0.04); }
-  .activity-info .name { font-size: 0.9rem; font-weight: 500; color: var(--charcoal); }
-  .activity-info .desc { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
-  .activity-cals { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--amber); }
-  .activity-cals span { font-family: 'DM Sans', sans-serif; font-size: 0.75rem; color: var(--muted); font-weight: 400; }
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem;}
+  @media(max-width:480px){.form-grid{grid-template-columns:1fr;}}
+  .form-group{display:flex;flex-direction:column;gap:0.5rem;}
+  .form-group label{font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);}
+  .input-wrap{position:relative;}
+  .input-wrap input,.input-wrap select{width:100%;padding:0.85rem 2.5rem 0.85rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:var(--warm-white);color:var(--charcoal);font-family:'DM Sans',sans-serif;font-size:0.95rem;transition:border-color 0.2s,box-shadow 0.2s;outline:none;appearance:none;}
+  .input-wrap input:focus,.input-wrap select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.12);}
+  .input-unit{position:absolute;right:0.9rem;top:50%;transform:translateY(-50%);font-size:0.78rem;color:var(--muted);pointer-events:none;}
+  select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C7B63' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.8rem center;cursor:pointer;}
 
-  .other-tools { margin-top: 3rem; }
-  .other-tools h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--charcoal); margin-bottom: 1.2rem; text-align: center; }
-  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-  .tool-link { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; text-decoration: none; color: var(--charcoal); font-size: 0.88rem; font-weight: 500; transition: all 0.2s; }
-  .tool-link:hover { border-color: var(--gold); transform: translateX(3px); }
+  .btn{width:100%;padding:1rem;background:linear-gradient(135deg,var(--gold),var(--amber));color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:transform 0.15s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(201,168,76,0.35);}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,0.4);}
 
-  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .result{margin-top:2rem;display:none;animation:fadeUp 0.5s ease both;}
+  .result.show{display:block;}
+  .divider{display:flex;align-items:center;gap:1rem;margin:2rem 0;color:var(--muted);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+  .bmr-card{background:linear-gradient(135deg,var(--charcoal),#3d3020);border-radius:14px;padding:1.5rem;color:white;text-align:center;margin-bottom:1.5rem;}
+  .bmr-card p{font-size:0.82rem;opacity:0.6;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
+  .bmr-card .big-number{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--gold-light);}
+  .bmr-card .unit{font-size:0.9rem;opacity:0.7;}
+  .activity-levels{display:flex;flex-direction:column;gap:0.6rem;}
+  .activity-row{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.2rem;border:1.5px solid var(--border);border-radius:12px;transition:all 0.2s;}
+  .activity-row:hover{border-color:var(--gold);background:rgba(201,168,76,0.04);}
+  .activity-info .name{font-size:0.9rem;font-weight:500;color:var(--charcoal);}
+  .activity-info .desc{font-size:0.78rem;color:var(--muted);margin-top:0.1rem;}
+  .activity-cals{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--amber);text-align:right;}
+  .activity-cals span{font-family:'DM Sans',sans-serif;font-size:0.75rem;color:var(--muted);font-weight:400;}
+
+  .article{max-width:680px;margin:3rem auto 0;}
+  .article-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;box-shadow:var(--shadow);}
+  @media(max-width:600px){.article-card{padding:1.6rem;}}
+  .article h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--charcoal);margin-bottom:1rem;line-height:1.2;}
+  .article h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--charcoal);margin:1.8rem 0 0.6rem;}
+  .article p{color:var(--charcoal);font-size:0.97rem;line-height:1.8;margin-bottom:1rem;font-weight:300;}
+  .article ul{margin:0 0 1rem 1.2rem;}
+  .article li{color:var(--charcoal);font-size:0.95rem;line-height:1.7;margin-bottom:0.5rem;font-weight:300;}
+  .article .formula{background:var(--warm-white);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:10px;padding:1rem 1.2rem;font-size:0.92rem;color:var(--charcoal);margin:0 0 1rem;}
+  .faq-item{border-top:1px solid rgba(201,168,76,0.15);padding:1.1rem 0;}
+  .faq-item:last-child{padding-bottom:0;}
+  .faq-q{font-weight:500;color:var(--charcoal);font-size:0.97rem;margin-bottom:0.4rem;}
+  .faq-a{color:var(--muted);font-size:0.92rem;line-height:1.7;font-weight:300;}
+  .disclaimer{margin-top:1.5rem;padding:1rem 1.2rem;background:rgba(90,138,94,0.08);border:1px solid rgba(90,138,94,0.25);border-radius:10px;font-size:0.85rem;color:var(--charcoal);line-height:1.6;}
+
+  .other-tools{margin-top:3rem;}
+  .other-tools h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:1.2rem;text-align:center;}
+  .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;}
+  .tool-link{display:flex;align-items:center;gap:0.75rem;padding:1rem 1.2rem;background:var(--card);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--charcoal);font-size:0.88rem;font-weight:500;transition:all 0.2s;}
+  .tool-link:hover{border-color:var(--gold);transform:translateX(3px);box-shadow:0 3px 16px rgba(201,168,76,0.12);}
+  .tool-link .icon{font-size:1.3rem;}
+
+  footer{padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border);}
+  .footer-brand{display:flex;align-items:center;gap:0.5rem;font-family:'Playfair Display',serif;font-size:1rem;color:var(--charcoal);}
+  .footer-brand .dot{color:var(--gold);}
+  .footer-links{display:flex;gap:1.3rem;flex-wrap:wrap;}
+  .footer-links a{text-decoration:none;font-size:0.82rem;color:var(--muted);transition:color 0.2s;}
+  .footer-links a:hover{color:var(--gold);}
+  .footer-copy{font-size:0.78rem;color:var(--muted);}
+
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>
 <body>
 
 <nav>
-  <span class="nav-logo">✦ Calculators</span>
-  <div class="nav-links">
-    <a href="age-calculator.html">Âge</a>
-    <a href="calorie-calculator.html" class="active">Calories</a>
-    <a href="retirement-calculator.html">Retraite</a>
-    <a href="inflation-calculator.html">Inflation</a>
-    <a href="compound-interest-calculator.html">Intérêts</a>
+  <a href="index.html" class="nav-brand">
+    <div class="logo-mark">✦</div>
+    <span class="brand-name">Smart<span>Tools</span>Hub</span>
+  </a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="age-calculator.html" data-i18n="nav_age">Âge</a>
+      <a href="calorie-calculator.html" class="active" data-i18n="nav_cal">Calories</a>
+      <a href="retirement-calculator.html" data-i18n="nav_ret">Retraite</a>
+      <a href="inflation-calculator.html" data-i18n="nav_inf">Inflation</a>
+      <a href="compound-interest-calculator.html" data-i18n="nav_ci">Intérêts</a>
+    </div>
+    <div class="lang">
+      <button class="lang-btn" id="langBtn">
+        <span class="flag" id="curFlag">🇫🇷</span>
+        <span class="label" id="curLabel">Français</span>
+        <span class="chev">▼</span>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-opt" data-lang="en"><span class="flag">🇬🇧</span> English</button>
+        <button class="lang-opt" data-lang="zh"><span class="flag">🇨🇳</span> 中文</button>
+        <button class="lang-opt" data-lang="ru"><span class="flag">🇷🇺</span> Русский</button>
+        <button class="lang-opt" data-lang="es"><span class="flag">🇪🇸</span> Español</button>
+        <button class="lang-opt" data-lang="pt"><span class="flag">🇵🇹</span> Português</button>
+        <button class="lang-opt active" data-lang="fr"><span class="flag">🇫🇷</span> Français</button>
+      </div>
+    </div>
   </div>
 </nav>
 
-<div class="hero">
-  <span class="hero-label">🔥 Calculateur</span>
-  <h1>Vos besoins<br><em>caloriques</em> journaliers</h1>
-  <p>Calculez votre métabolisme de base et vos besoins en calories selon votre niveau d'activité.</p>
+<div class="ad-slot ad-header">
+  <span class="ad-label" data-i18n="ad_label">Publicité</span>
+  <!-- AdSense header -->
 </div>
 
-<main class="main">
-  <div class="card">
-    <div class="gender-tabs">
-      <button class="gender-tab active" onclick="setGender('homme', this)">👨 Homme</button>
-      <button class="gender-tab" onclick="setGender('femme', this)">👩 Femme</button>
+<div class="page-wrap">
+  <div class="main-col">
+    <div class="hero">
+      <span class="hero-label" data-i18n="hero_label">🔥 Calculateur</span>
+      <h1 data-i18n="hero_h1">Vos besoins<br><em>caloriques</em> journaliers</h1>
+      <p data-i18n="hero_p">Estimez votre métabolisme de base et vos besoins en calories selon votre niveau d'activité.</p>
     </div>
 
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Âge</label>
-        <div class="input-wrap">
-          <input type="number" id="age" placeholder="30" min="1" max="120">
-          <span class="input-unit">ans</span>
+    <main class="main">
+      <div class="card">
+        <div class="gender-tabs">
+          <button class="gender-tab active" id="tab-male" onclick="setGender('male',this)" data-i18n="g_male">👨 Homme</button>
+          <button class="gender-tab" id="tab-female" onclick="setGender('female',this)" data-i18n="g_female">👩 Femme</button>
         </div>
-      </div>
-      <div class="form-group">
-        <label>Poids</label>
-        <div class="input-wrap">
-          <input type="number" id="weight" placeholder="70" min="20" max="300">
-          <span class="input-unit">kg</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Taille</label>
-        <div class="input-wrap">
-          <input type="number" id="height" placeholder="175" min="50" max="250">
-          <span class="input-unit">cm</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Objectif</label>
-        <div class="input-wrap">
-          <select id="goal">
-            <option value="1">Perte de poids</option>
-            <option value="0" selected>Maintien</option>
-            <option value="-1">Prise de masse</option>
-          </select>
-        </div>
-      </div>
-    </div>
 
-    <button class="btn" onclick="calculate()">Calculer mes besoins →</button>
+        <div class="form-grid">
+          <div class="form-group">
+            <label data-i18n="l_age">Âge</label>
+            <div class="input-wrap"><input type="number" id="age" placeholder="30" min="15" max="100"><span class="input-unit" data-i18n="u_age">ans</span></div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="l_weight">Poids</label>
+            <div class="input-wrap"><input type="number" id="weight" placeholder="70" min="30" max="300"><span class="input-unit">kg</span></div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="l_height">Taille</label>
+            <div class="input-wrap"><input type="number" id="height" placeholder="175" min="100" max="250"><span class="input-unit">cm</span></div>
+          </div>
+          <div class="form-group">
+            <label data-i18n="l_goal">Objectif</label>
+            <div class="input-wrap">
+              <select id="goal">
+                <option value="1" data-i18n="goal_loss">Perte de poids</option>
+                <option value="0" selected data-i18n="goal_maintain">Maintien</option>
+                <option value="-1" data-i18n="goal_gain">Prise de masse</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-    <div class="result" id="result">
-      <div class="divider">Métabolisme de base</div>
-      <div class="bmr-card">
-        <p>BMR — Mifflin-St Jeor</p>
-        <div class="big-number" id="bmr">—</div>
-        <div class="unit">kcal / jour</div>
+        <button class="btn" onclick="calculate()" data-i18n="btn">Calculer mes besoins →</button>
+
+        <div class="result" id="result">
+          <div class="divider" data-i18n="div_bmr">Métabolisme de base</div>
+          <div class="bmr-card">
+            <p data-i18n="bmr_label">BMR — Mifflin-St Jeor</p>
+            <div class="big-number" id="bmr">—</div>
+            <div class="unit" data-i18n="kcal_day">kcal / jour</div>
+          </div>
+          <div class="divider" data-i18n="div_activity">Selon votre activité</div>
+          <div class="activity-levels" id="activity-levels"></div>
+          <div class="disclaimer" data-i18n="disclaimer">⚠️ Ces estimations sont fournies à titre informatif et ne remplacent pas l'avis d'un professionnel de santé. Consultez un médecin ou un diététicien avant tout changement alimentaire important.</div>
+        </div>
       </div>
 
-      <div class="divider">Selon votre activité</div>
-      <div class="activity-levels" id="activity-levels"></div>
-    </div>
+      <div class="ad-slot ad-footer" style="margin-top:2.5rem;">
+        <span class="ad-label" data-i18n="ad_label">Publicité</span>
+        <!-- AdSense inline -->
+      </div>
+
+      <section class="article">
+        <div class="article-card" id="article"></div>
+      </section>
+
+      <div class="other-tools">
+        <h3 data-i18n="other_t">Autres calculateurs</h3>
+        <div class="tools-grid">
+          <a href="age-calculator.html" class="tool-link"><span class="icon">🗓️</span><span data-i18n="nav_age">Âge</span></a>
+          <a href="retirement-calculator.html" class="tool-link"><span class="icon">🌅</span><span data-i18n="nav_ret">Retraite</span></a>
+          <a href="inflation-calculator.html" class="tool-link"><span class="icon">📈</span><span data-i18n="nav_inf">Inflation</span></a>
+          <a href="compound-interest-calculator.html" class="tool-link"><span class="icon">💰</span><span data-i18n="ci_long">Intérêts composés</span></a>
+        </div>
+      </div>
+    </main>
   </div>
 
-  <div class="other-tools">
-    <h3>Autres calculateurs</h3>
-    <div class="tools-grid">
-      <a href="age-calculator.html" class="tool-link"><span>🗓️</span>Âge</a>
-      <a href="retirement-calculator.html" class="tool-link"><span>🌅</span>Retraite</a>
-      <a href="inflation-calculator.html" class="tool-link"><span>📈</span>Inflation</a>
-      <a href="compound-interest-calculator.html" class="tool-link"><span>💰</span>Intérêts composés</a>
-    </div>
+  <aside class="ad-slot ad-side">
+    <span class="ad-label" data-i18n="ad_label">Publicité</span>
+    <!-- AdSense vertical 200x600 -->
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-brand">Smart<span class="dot">Tools</span>Hub</div>
+  <div class="footer-links">
+    <a href="index.html" data-i18n="f_home">Accueil</a>
+    <a href="about.html" data-i18n="f_about">À propos</a>
+    <a href="privacy.html" data-i18n="f_privacy">Confidentialité</a>
+    <a href="contact.html" data-i18n="f_contact">Contact</a>
   </div>
-</main>
+  <p class="footer-copy" data-i18n="f_copy">SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte</p>
+</footer>
 
 <script>
-  let gender = 'homme';
-  function setGender(g, el) {
-    gender = g;
-    document.querySelectorAll('.gender-tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-  }
+const I18N = {
+  fr:{_flag:'🇫🇷',_label:'Français',_htmllang:'fr',_locale:'fr-FR',
+    meta_desc:"Calculateur de calories gratuit : estimez votre métabolisme de base (BMR) et vos besoins caloriques journaliers selon votre activité, avec la formule Mifflin-St Jeor.",
+    title:"Calculateur de calories — SmartToolsHub",
+    nav_age:"Âge",nav_cal:"Calories",nav_ret:"Retraite",nav_inf:"Inflation",nav_ci:"Intérêts",ci_long:"Intérêts composés",
+    hero_label:"🔥 Calculateur", hero_h1:"Vos besoins<br><em>caloriques</em> journaliers",
+    hero_p:"Estimez votre métabolisme de base et vos besoins en calories selon votre niveau d'activité.",
+    g_male:"👨 Homme", g_female:"👩 Femme",
+    l_age:"Âge", u_age:"ans", l_weight:"Poids", l_height:"Taille", l_goal:"Objectif",
+    goal_loss:"Perte de poids", goal_maintain:"Maintien", goal_gain:"Prise de masse",
+    btn:"Calculer mes besoins →", div_bmr:"Métabolisme de base", bmr_label:"BMR — Mifflin-St Jeor",
+    kcal_day:"kcal / jour", div_activity:"Selon votre activité",
+    act:[["Sédentaire","Peu ou pas d'exercice"],["Légèrement actif","Exercice 1–3 jours/sem."],["Modérément actif","Exercice 3–5 jours/sem."],["Très actif","Exercice intense 6–7 jours/sem."],["Extrêmement actif","Travail physique ou sport intensif"]],
+    kcal:"kcal/jour",
+    disclaimer:"⚠️ Ces estimations sont fournies à titre informatif et ne remplacent pas l'avis d'un professionnel de santé. Consultez un médecin ou un diététicien avant tout changement alimentaire important.",
+    err_fill:"Veuillez remplir tous les champs avec des valeurs valides.",
+    other_t:"Autres calculateurs",
+    f_home:"Accueil",f_about:"À propos",f_privacy:"Confidentialité",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Outils en ligne gratuits · un projet Nordbyte", ad_label:"Publicité",
+    article:`<h2>Comment calculer ses besoins caloriques ?</h2>
+<p>Vos besoins caloriques journaliers correspondent à l'énergie dont votre corps a besoin chaque jour. Ils se composent de deux éléments : le métabolisme de base (BMR), c'est-à-dire l'énergie consommée au repos, et la dépense liée à votre activité physique. Notre calculateur estime ces deux valeurs à partir de votre âge, sexe, poids, taille et niveau d'activité.</p>
+<h3>La formule Mifflin-St Jeor</h3>
+<p>Pour estimer le métabolisme de base, ce calculateur utilise l'équation de Mifflin-St Jeor, reconnue comme l'une des plus fiables :</p>
+<div class="formula">Hommes : BMR = 10 × poids(kg) + 6,25 × taille(cm) − 5 × âge + 5<br>Femmes : BMR = 10 × poids(kg) + 6,25 × taille(cm) − 5 × âge − 161</div>
+<p>Le BMR est ensuite multiplié par un facteur d'activité (de 1,2 pour une vie sédentaire à 1,9 pour une activité très intense) pour obtenir la dépense énergétique totale (TDEE), soit vos besoins caloriques réels.</p>
+<h3>BMR, TDEE : quelle différence ?</h3>
+<ul>
+<li><strong>BMR</strong> : les calories brûlées au repos complet (respiration, circulation, fonctions vitales).</li>
+<li><strong>TDEE</strong> : le BMR augmenté de votre activité quotidienne — c'est le chiffre qui compte pour ajuster votre alimentation.</li>
+<li>Pour maintenir votre poids, on vise le TDEE ; un léger déficit ou surplus modifie l'objectif.</li>
+</ul>
+<h3>Questions fréquentes</h3>
+<div class="faq-item"><div class="faq-q">Ces chiffres sont-ils exacts pour tout le monde ?</div><div class="faq-a">Ce sont des estimations statistiques. Le métabolisme réel varie selon la masse musculaire, la génétique et l'état de santé. Utilisez-les comme point de départ, pas comme une vérité absolue.</div></div>
+<div class="faq-item"><div class="faq-q">Comment perdre ou prendre du poids sainement ?</div><div class="faq-a">Un déficit ou surplus modéré et progressif est généralement recommandé plutôt que des changements brutaux. Pour un objectif personnalisé et sûr, l'avis d'un professionnel de santé est précieux.</div></div>
+<div class="faq-item"><div class="faq-q">Mes données sont-elles enregistrées ?</div><div class="faq-a">Non. Tout le calcul s'effectue dans votre navigateur ; aucune information saisie n'est envoyée ni conservée.</div></div>`},
+  en:{_flag:'🇬🇧',_label:'English',_htmllang:'en',_locale:'en-US',
+    meta_desc:"Free calorie calculator: estimate your basal metabolic rate (BMR) and daily calorie needs by activity level, using the Mifflin-St Jeor formula.",
+    title:"Calorie Calculator — SmartToolsHub",
+    nav_age:"Age",nav_cal:"Calories",nav_ret:"Retirement",nav_inf:"Inflation",nav_ci:"Interest",ci_long:"Compound Interest",
+    hero_label:"🔥 Calculator", hero_h1:"Your daily<br><em>calorie</em> needs",
+    hero_p:"Estimate your basal metabolic rate and your calorie needs based on your activity level.",
+    g_male:"👨 Male", g_female:"👩 Female",
+    l_age:"Age", u_age:"yrs", l_weight:"Weight", l_height:"Height", l_goal:"Goal",
+    goal_loss:"Weight loss", goal_maintain:"Maintain", goal_gain:"Muscle gain",
+    btn:"Calculate my needs →", div_bmr:"Basal metabolic rate", bmr_label:"BMR — Mifflin-St Jeor",
+    kcal_day:"kcal / day", div_activity:"Based on your activity",
+    act:[["Sedentary","Little or no exercise"],["Lightly active","Exercise 1–3 days/week"],["Moderately active","Exercise 3–5 days/week"],["Very active","Hard exercise 6–7 days/week"],["Extremely active","Physical job or intense training"]],
+    kcal:"kcal/day",
+    disclaimer:"⚠️ These estimates are for information only and do not replace professional medical advice. Consult a doctor or dietitian before making major dietary changes.",
+    err_fill:"Please fill in all fields with valid values.",
+    other_t:"Other calculators",
+    f_home:"Home",f_about:"About",f_privacy:"Privacy",f_contact:"Contact",
+    f_copy:"SmartToolsHub © 2026 · Free Online Tools · a Nordbyte project", ad_label:"Advertisement",
+    article:`<h2>How to calculate your calorie needs?</h2>
+<p>Your daily calorie needs are the energy your body requires each day. They consist of two parts: your basal metabolic rate (BMR), the energy used at rest, and the energy spent through physical activity. Our calculator estimates both from your age, sex, weight, height and activity level.</p>
+<h3>The Mifflin-St Jeor formula</h3>
+<p>To estimate basal metabolic rate, this calculator uses the Mifflin-St Jeor equation, recognised as one of the most reliable:</p>
+<div class="formula">Men: BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5<br>Women: BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age − 161</div>
+<p>The BMR is then multiplied by an activity factor (from 1.2 for a sedentary life to 1.9 for very intense activity) to obtain total daily energy expenditure (TDEE) — your real calorie needs.</p>
+<h3>BMR vs TDEE: what's the difference?</h3>
+<ul>
+<li><strong>BMR</strong>: calories burned at complete rest (breathing, circulation, vital functions).</li>
+<li><strong>TDEE</strong>: your BMR plus daily activity — the number that matters when adjusting your diet.</li>
+<li>To maintain weight, aim for your TDEE; a slight deficit or surplus shifts the goal.</li>
+</ul>
+<h3>Frequently asked questions</h3>
+<div class="faq-item"><div class="faq-q">Are these numbers accurate for everyone?</div><div class="faq-a">They are statistical estimates. Actual metabolism varies with muscle mass, genetics and health. Use them as a starting point, not an absolute truth.</div></div>
+<div class="faq-item"><div class="faq-q">How to lose or gain weight healthily?</div><div class="faq-a">A moderate, gradual deficit or surplus is generally recommended over drastic changes. For a safe, personalised goal, professional advice is valuable.</div></div>
+<div class="faq-item"><div class="faq-q">Is my data stored?</div><div class="faq-a">No. The whole calculation runs in your browser; nothing you enter is sent or kept.</div></div>`},
+  zh:{_flag:'🇨🇳',_label:'中文',_htmllang:'zh',_locale:'zh-CN',
+    meta_desc:"免费卡路里计算器：使用 Mifflin-St Jeor 公式，根据活动水平估算您的基础代谢率（BMR）和每日卡路里需求。",
+    title:"卡路里计算器 — SmartToolsHub",
+    nav_age:"年龄",nav_cal:"卡路里",nav_ret:"退休",nav_inf:"通胀",nav_ci:"利息",ci_long:"复利",
+    hero_label:"🔥 计算器", hero_h1:"您的每日<br><em>卡路里</em>需求",
+    hero_p:"根据您的活动水平估算基础代谢率和卡路里需求。",
+    g_male:"👨 男性", g_female:"👩 女性",
+    l_age:"年龄", u_age:"岁", l_weight:"体重", l_height:"身高", l_goal:"目标",
+    goal_loss:"减重", goal_maintain:"维持", goal_gain:"增肌",
+    btn:"计算我的需求 →", div_bmr:"基础代谢率", bmr_label:"BMR — Mifflin-St Jeor",
+    kcal_day:"千卡 / 天", div_activity:"根据您的活动水平",
+    act:[["久坐","很少或不运动"],["轻度活动","每周运动 1–3 天"],["中度活动","每周运动 3–5 天"],["高度活动","每周高强度运动 6–7 天"],["极高活动","体力工作或高强度训练"]],
+    kcal:"千卡/天",
+    disclaimer:"⚠️ 这些估算仅供参考，不能替代专业医疗建议。在进行重大饮食调整前，请咨询医生或营养师。",
+    err_fill:"请用有效数值填写所有字段。",
+    other_t:"其他计算器",
+    f_home:"首页",f_about:"关于",f_privacy:"隐私",f_contact:"联系",
+    f_copy:"SmartToolsHub © 2026 · 免费在线工具 · Nordbyte 出品", ad_label:"广告",
+    article:`<h2>如何计算卡路里需求？</h2>
+<p>每日卡路里需求是您的身体每天所需的能量。它由两部分组成：基础代谢率（BMR），即静息状态下消耗的能量；以及通过体力活动消耗的能量。我们的计算器会根据您的年龄、性别、体重、身高和活动水平估算这两个数值。</p>
+<h3>Mifflin-St Jeor 公式</h3>
+<p>为估算基础代谢率，本计算器采用公认较为可靠的 Mifflin-St Jeor 方程：</p>
+<div class="formula">男性：BMR = 10 × 体重(kg) + 6.25 × 身高(cm) − 5 × 年龄 + 5<br>女性：BMR = 10 × 体重(kg) + 6.25 × 身高(cm) − 5 × 年龄 − 161</div>
+<p>随后将 BMR 乘以活动系数（久坐为 1.2，极高强度活动为 1.9），即可得到每日总能量消耗（TDEE），也就是您真实的卡路里需求。</p>
+<h3>BMR 与 TDEE 有何区别？</h3>
+<ul>
+<li><strong>BMR</strong>：完全静息状态下消耗的卡路里（呼吸、循环、生命功能）。</li>
+<li><strong>TDEE</strong>：BMR 加上日常活动 — 这是调整饮食时真正重要的数字。</li>
+<li>要维持体重，目标为 TDEE；轻微的热量缺口或盈余会改变目标。</li>
+</ul>
+<h3>常见问题</h3>
+<div class="faq-item"><div class="faq-q">这些数字对每个人都准确吗？</div><div class="faq-a">这些是统计估算值。实际代谢会因肌肉量、遗传和健康状况而异。请将其作为起点，而非绝对真理。</div></div>
+<div class="faq-item"><div class="faq-q">如何健康地减重或增重？</div><div class="faq-a">通常建议采用适度、渐进的热量缺口或盈余，而非剧烈改变。如需安全的个性化目标，专业建议非常有价值。</div></div>
+<div class="faq-item"><div class="faq-q">我的数据会被保存吗？</div><div class="faq-a">不会。整个计算都在您的浏览器中进行；您输入的任何信息都不会被发送或保留。</div></div>`},
+  ru:{_flag:'🇷🇺',_label:'Русский',_htmllang:'ru',_locale:'ru-RU',
+    meta_desc:"Бесплатный калькулятор калорий: оцените базовый обмен веществ (BMR) и суточную потребность в калориях по уровню активности по формуле Миффлина-Сан Жеора.",
+    title:"Калькулятор калорий — SmartToolsHub",
+    nav_age:"Возраст",nav_cal:"Калории",nav_ret:"Пенсия",nav_inf:"Инфляция",nav_ci:"Проценты",ci_long:"Сложные проценты",
+    hero_label:"🔥 Калькулятор", hero_h1:"Ваша суточная<br>норма <em>калорий</em>",
+    hero_p:"Оцените базовый обмен веществ и потребность в калориях в зависимости от уровня активности.",
+    g_male:"👨 Мужчина", g_female:"👩 Женщина",
+    l_age:"Возраст", u_age:"лет", l_weight:"Вес", l_height:"Рост", l_goal:"Цель",
+    goal_loss:"Снижение веса", goal_maintain:"Поддержание", goal_gain:"Набор массы",
+    btn:"Рассчитать норму →", div_bmr:"Базовый обмен веществ", bmr_label:"BMR — Миффлин-Сан Жеор",
+    kcal_day:"ккал / день", div_activity:"По вашей активности",
+    act:[["Сидячий образ жизни","Мало или нет упражнений"],["Лёгкая активность","Упражнения 1–3 дня/нед."],["Умеренная активность","Упражнения 3–5 дней/нед."],["Высокая активность","Интенсивно 6–7 дней/нед."],["Очень высокая","Физический труд или интенсивный спорт"]],
+    kcal:"ккал/день",
+    disclaimer:"⚠️ Эти оценки приведены только для информации и не заменяют консультацию специалиста. Перед серьёзными изменениями питания обратитесь к врачу или диетологу.",
+    err_fill:"Пожалуйста, заполните все поля корректными значениями.",
+    other_t:"Другие калькуляторы",
+    f_home:"Главная",f_about:"О нас",f_privacy:"Конфиденциальность",f_contact:"Контакты",
+    f_copy:"SmartToolsHub © 2026 · Бесплатные онлайн-инструменты · проект Nordbyte", ad_label:"Реклама",
+    article:`<h2>Как рассчитать потребность в калориях?</h2>
+<p>Суточная потребность в калориях — это энергия, необходимая организму каждый день. Она состоит из двух частей: базового обмена веществ (BMR) — энергии в состоянии покоя — и расхода на физическую активность. Наш калькулятор оценивает обе величины по возрасту, полу, весу, росту и уровню активности.</p>
+<h3>Формула Миффлина-Сан Жеора</h3>
+<p>Для оценки базового обмена калькулятор использует уравнение Миффлина-Сан Жеора, признанное одним из самых надёжных:</p>
+<div class="formula">Мужчины: BMR = 10 × вес(кг) + 6,25 × рост(см) − 5 × возраст + 5<br>Женщины: BMR = 10 × вес(кг) + 6,25 × рост(см) − 5 × возраст − 161</div>
+<p>Затем BMR умножается на коэффициент активности (от 1,2 при сидячем образе жизни до 1,9 при очень интенсивной активности), чтобы получить суточный расход энергии (TDEE) — вашу реальную потребность в калориях.</p>
+<h3>BMR и TDEE: в чём разница?</h3>
+<ul>
+<li><strong>BMR</strong>: калории, сжигаемые в полном покое (дыхание, кровообращение, жизненные функции).</li>
+<li><strong>TDEE</strong>: BMR плюс повседневная активность — именно это число важно при корректировке питания.</li>
+<li>Для поддержания веса ориентируются на TDEE; небольшой дефицит или профицит меняет цель.</li>
+</ul>
+<h3>Частые вопросы</h3>
+<div class="faq-item"><div class="faq-q">Точны ли эти числа для всех?</div><div class="faq-a">Это статистические оценки. Реальный обмен зависит от мышечной массы, генетики и здоровья. Используйте их как отправную точку, а не абсолютную истину.</div></div>
+<div class="faq-item"><div class="faq-q">Как худеть или набирать вес безопасно?</div><div class="faq-a">Обычно рекомендуется умеренный постепенный дефицит или профицит, а не резкие изменения. Для безопасной персональной цели полезна консультация специалиста.</div></div>
+<div class="faq-item"><div class="faq-q">Сохраняются ли мои данные?</div><div class="faq-a">Нет. Весь расчёт выполняется в вашем браузере; введённые данные не отправляются и не хранятся.</div></div>`},
+  es:{_flag:'🇪🇸',_label:'Español',_htmllang:'es',_locale:'es-ES',
+    meta_desc:"Calculadora de calorías gratuita: estima tu metabolismo basal (BMR) y tus necesidades calóricas diarias según tu actividad, con la fórmula Mifflin-St Jeor.",
+    title:"Calculadora de calorías — SmartToolsHub",
+    nav_age:"Edad",nav_cal:"Calorías",nav_ret:"Jubilación",nav_inf:"Inflación",nav_ci:"Interés",ci_long:"Interés compuesto",
+    hero_label:"🔥 Calculadora", hero_h1:"Tus necesidades<br><em>calóricas</em> diarias",
+    hero_p:"Estima tu metabolismo basal y tus necesidades de calorías según tu nivel de actividad.",
+    g_male:"👨 Hombre", g_female:"👩 Mujer",
+    l_age:"Edad", u_age:"años", l_weight:"Peso", l_height:"Altura", l_goal:"Objetivo",
+    goal_loss:"Pérdida de peso", goal_maintain:"Mantenimiento", goal_gain:"Ganar masa",
+    btn:"Calcular mis necesidades →", div_bmr:"Metabolismo basal", bmr_label:"BMR — Mifflin-St Jeor",
+    kcal_day:"kcal / día", div_activity:"Según tu actividad",
+    act:[["Sedentario","Poco o ningún ejercicio"],["Ligeramente activo","Ejercicio 1–3 días/sem."],["Moderadamente activo","Ejercicio 3–5 días/sem."],["Muy activo","Ejercicio intenso 6–7 días/sem."],["Extremadamente activo","Trabajo físico o deporte intenso"]],
+    kcal:"kcal/día",
+    disclaimer:"⚠️ Estas estimaciones son solo informativas y no sustituyen el consejo de un profesional de la salud. Consulta a un médico o dietista antes de cambios importantes en tu alimentación.",
+    err_fill:"Por favor, completa todos los campos con valores válidos.",
+    other_t:"Otras calculadoras",
+    f_home:"Inicio",f_about:"Acerca de",f_privacy:"Privacidad",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Herramientas en línea gratuitas · un proyecto Nordbyte", ad_label:"Publicidad",
+    article:`<h2>¿Cómo calcular tus necesidades calóricas?</h2>
+<p>Tus necesidades calóricas diarias son la energía que tu cuerpo requiere cada día. Se componen de dos partes: el metabolismo basal (BMR), la energía consumida en reposo, y el gasto por actividad física. Nuestra calculadora estima ambas a partir de tu edad, sexo, peso, altura y nivel de actividad.</p>
+<h3>La fórmula Mifflin-St Jeor</h3>
+<p>Para estimar el metabolismo basal, esta calculadora usa la ecuación de Mifflin-St Jeor, reconocida como una de las más fiables:</p>
+<div class="formula">Hombres: BMR = 10 × peso(kg) + 6,25 × altura(cm) − 5 × edad + 5<br>Mujeres: BMR = 10 × peso(kg) + 6,25 × altura(cm) − 5 × edad − 161</div>
+<p>El BMR se multiplica luego por un factor de actividad (de 1,2 para vida sedentaria a 1,9 para actividad muy intensa) para obtener el gasto energético total (TDEE), tus necesidades calóricas reales.</p>
+<h3>BMR y TDEE: ¿cuál es la diferencia?</h3>
+<ul>
+<li><strong>BMR</strong>: calorías quemadas en reposo total (respiración, circulación, funciones vitales).</li>
+<li><strong>TDEE</strong>: el BMR más tu actividad diaria — la cifra que importa al ajustar tu dieta.</li>
+<li>Para mantener el peso, apunta al TDEE; un ligero déficit o superávit cambia el objetivo.</li>
+</ul>
+<h3>Preguntas frecuentes</h3>
+<div class="faq-item"><div class="faq-q">¿Son exactas estas cifras para todos?</div><div class="faq-a">Son estimaciones estadísticas. El metabolismo real varía según la masa muscular, la genética y la salud. Úsalas como punto de partida, no como verdad absoluta.</div></div>
+<div class="faq-item"><div class="faq-q">¿Cómo perder o ganar peso de forma saludable?</div><div class="faq-a">Suele recomendarse un déficit o superávit moderado y gradual en lugar de cambios drásticos. Para un objetivo seguro y personalizado, el consejo profesional es valioso.</div></div>
+<div class="faq-item"><div class="faq-q">¿Se guardan mis datos?</div><div class="faq-a">No. Todo el cálculo se realiza en tu navegador; nada de lo que introduces se envía ni se conserva.</div></div>`},
+  pt:{_flag:'🇵🇹',_label:'Português',_htmllang:'pt',_locale:'pt-BR',
+    meta_desc:"Calculadora de calorias gratuita: estime o seu metabolismo basal (BMR) e as necessidades calóricas diárias por nível de atividade, com a fórmula Mifflin-St Jeor.",
+    title:"Calculadora de calorias — SmartToolsHub",
+    nav_age:"Idade",nav_cal:"Calorias",nav_ret:"Reforma",nav_inf:"Inflação",nav_ci:"Juros",ci_long:"Juros compostos",
+    hero_label:"🔥 Calculadora", hero_h1:"As suas necessidades<br><em>calóricas</em> diárias",
+    hero_p:"Estime o seu metabolismo basal e as necessidades de calorias segundo o seu nível de atividade.",
+    g_male:"👨 Homem", g_female:"👩 Mulher",
+    l_age:"Idade", u_age:"anos", l_weight:"Peso", l_height:"Altura", l_goal:"Objetivo",
+    goal_loss:"Perda de peso", goal_maintain:"Manutenção", goal_gain:"Ganho de massa",
+    btn:"Calcular as minhas necessidades →", div_bmr:"Metabolismo basal", bmr_label:"BMR — Mifflin-St Jeor",
+    kcal_day:"kcal / dia", div_activity:"Segundo a sua atividade",
+    act:[["Sedentário","Pouco ou nenhum exercício"],["Ligeiramente ativo","Exercício 1–3 dias/sem."],["Moderadamente ativo","Exercício 3–5 dias/sem."],["Muito ativo","Exercício intenso 6–7 dias/sem."],["Extremamente ativo","Trabalho físico ou desporto intenso"]],
+    kcal:"kcal/dia",
+    disclaimer:"⚠️ Estas estimativas são apenas informativas e não substituem o aconselhamento de um profissional de saúde. Consulte um médico ou nutricionista antes de mudanças alimentares importantes.",
+    err_fill:"Por favor, preencha todos os campos com valores válidos.",
+    other_t:"Outras calculadoras",
+    f_home:"Início",f_about:"Sobre",f_privacy:"Privacidade",f_contact:"Contacto",
+    f_copy:"SmartToolsHub © 2026 · Ferramentas online gratuitas · um projeto Nordbyte", ad_label:"Publicidade",
+    article:`<h2>Como calcular as suas necessidades calóricas?</h2>
+<p>As suas necessidades calóricas diárias são a energia que o seu corpo requer todos os dias. Compõem-se de duas partes: o metabolismo basal (BMR), a energia consumida em repouso, e o gasto com atividade física. A nossa calculadora estima ambas a partir da idade, sexo, peso, altura e nível de atividade.</p>
+<h3>A fórmula Mifflin-St Jeor</h3>
+<p>Para estimar o metabolismo basal, esta calculadora usa a equação de Mifflin-St Jeor, reconhecida como uma das mais fiáveis:</p>
+<div class="formula">Homens: BMR = 10 × peso(kg) + 6,25 × altura(cm) − 5 × idade + 5<br>Mulheres: BMR = 10 × peso(kg) + 6,25 × altura(cm) − 5 × idade − 161</div>
+<p>O BMR é depois multiplicado por um fator de atividade (de 1,2 para vida sedentária a 1,9 para atividade muito intensa) para obter o gasto energético total (TDEE), as suas necessidades calóricas reais.</p>
+<h3>BMR e TDEE: qual a diferença?</h3>
+<ul>
+<li><strong>BMR</strong>: calorias queimadas em repouso total (respiração, circulação, funções vitais).</li>
+<li><strong>TDEE</strong>: o BMR mais a atividade diária — o número que importa ao ajustar a alimentação.</li>
+<li>Para manter o peso, aponte ao TDEE; um ligeiro défice ou excedente altera o objetivo.</li>
+</ul>
+<h3>Perguntas frequentes</h3>
+<div class="faq-item"><div class="faq-q">Estes números são exatos para todos?</div><div class="faq-a">São estimativas estatísticas. O metabolismo real varia com a massa muscular, a genética e a saúde. Use-os como ponto de partida, não como verdade absoluta.</div></div>
+<div class="faq-item"><div class="faq-q">Como perder ou ganhar peso de forma saudável?</div><div class="faq-a">Costuma recomendar-se um défice ou excedente moderado e gradual em vez de mudanças bruscas. Para um objetivo seguro e personalizado, o aconselhamento profissional é valioso.</div></div>
+<div class="faq-item"><div class="faq-q">Os meus dados são guardados?</div><div class="faq-a">Não. Todo o cálculo é feito no seu navegador; nada do que introduz é enviado ou guardado.</div></div>`}
+};
 
-  const activities = [
-    { name: 'Sédentaire', desc: 'Peu ou pas d\'exercice', factor: 1.2 },
-    { name: 'Légèrement actif', desc: 'Exercice 1–3 jours/sem.', factor: 1.375 },
-    { name: 'Modérément actif', desc: 'Exercice 3–5 jours/sem.', factor: 1.55 },
-    { name: 'Très actif', desc: 'Exercice intense 6–7 jours/sem.', factor: 1.725 },
-    { name: 'Extrêmement actif', desc: 'Sportif professionnel', factor: 1.9 },
-  ];
+const $ = id => document.getElementById(id);
+let LANG='fr';
+const T = key => (I18N[LANG]&&I18N[LANG][key]!==undefined)?I18N[LANG][key]:I18N.fr[key];
+const nfmt = n => Number(n).toLocaleString(I18N[LANG]._locale);
+let gender='male';
+const FACTORS=[1.2,1.375,1.55,1.725,1.9];
 
-  function calculate() {
-    const age = parseFloat(document.getElementById('age').value);
-    const weight = parseFloat(document.getElementById('weight').value);
-    const height = parseFloat(document.getElementById('height').value);
-    const goal = parseInt(document.getElementById('goal').value);
-    if(!age || !weight || !height) { alert('Veuillez remplir tous les champs.'); return; }
+function setGender(g,el){
+  gender=g;
+  document.querySelectorAll('.gender-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
 
-    let bmr;
-    if(gender === 'homme') bmr = 10 * weight + 6.25 * height - 5 * age + 5;
-    else bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+function applyLang(lang){
+  if(!I18N[lang])lang='fr';
+  LANG=lang;
+  document.documentElement.lang=I18N[lang]._htmllang;
+  document.title=T('title');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const v=T(el.getAttribute('data-i18n'));if(typeof v==='string')el.innerHTML=v;});
+  document.querySelectorAll('[data-i18n-meta]').forEach(el=>{const v=T(el.getAttribute('data-i18n-meta'));if(typeof v==='string')el.setAttribute('content',v);});
+  $('curFlag').textContent=I18N[lang]._flag;
+  $('curLabel').textContent=I18N[lang]._label;
+  document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('active',o.dataset.lang===lang));
+  $('article').innerHTML=T('article');
+  // si un résultat est déjà affiché, on le recalcule pour traduire les libellés d'activité
+  if($('result').classList.contains('show')) calculate(true);
+  try{localStorage.setItem('sth_lang',lang);}catch{}
+}
 
-    document.getElementById('bmr').textContent = Math.round(bmr).toLocaleString('fr-FR');
+$('langBtn').addEventListener('click',e=>{e.stopPropagation();$('langMenu').classList.toggle('open');});
+document.addEventListener('click',()=>$('langMenu').classList.remove('open'));
+document.querySelectorAll('.lang-opt').forEach(opt=>{opt.addEventListener('click',()=>{applyLang(opt.dataset.lang);$('langMenu').classList.remove('open');});});
 
-    const adjust = goal === 1 ? -500 : goal === -1 ? 500 : 0;
-    const container = document.getElementById('activity-levels');
-    container.innerHTML = '';
-    activities.forEach(a => {
-      const tdee = Math.round(bmr * a.factor + adjust);
-      const div = document.createElement('div');
-      div.className = 'activity-row';
-      div.innerHTML = `<div class="activity-info"><div class="name">${a.name}</div><div class="desc">${a.desc}</div></div><div class="activity-cals">${tdee.toLocaleString('fr-FR')}<br><span>kcal/jour</span></div>`;
-      container.appendChild(div);
-    });
+function calculate(silent){
+  const age=parseFloat($('age').value);
+  const weight=parseFloat($('weight').value);
+  const height=parseFloat($('height').value);
+  const goal=parseInt($('goal').value);
+  if(!age||!weight||!height){ if(!silent) alert(T('err_fill')); return; }
 
-    const result = document.getElementById('result');
-    result.classList.add('show');
-    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
+  let bmr = (gender==='male')
+    ? 10*weight + 6.25*height - 5*age + 5
+    : 10*weight + 6.25*height - 5*age - 161;
+
+  $('bmr').textContent=nfmt(Math.round(bmr));
+
+  const adjust = goal===1 ? -400 : goal===-1 ? 400 : 0;
+  const container=$('activity-levels');
+  container.innerHTML='';
+  const acts=T('act');
+  acts.forEach((a,i)=>{
+    const tdee=Math.round(bmr*FACTORS[i]+adjust);
+    const div=document.createElement('div');
+    div.className='activity-row';
+    div.innerHTML=`<div class="activity-info"><div class="name">${a[0]}</div><div class="desc">${a[1]}</div></div><div class="activity-cals">${nfmt(tdee)}<br><span>${T('kcal')}</span></div>`;
+    container.appendChild(div);
+  });
+
+  const result=$('result');
+  result.classList.add('show');
+  if(!silent) result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+(function init(){
+  const p=new URLSearchParams(location.search);
+  let lang=p.get('l');
+  if(!lang){try{lang=localStorage.getItem('sth_lang');}catch{}}
+  if(!lang){const nav=(navigator.language||'fr').slice(0,2);if(I18N[nav])lang=nav;}
+  applyLang(lang||'fr');
+})();
 </script>
 </body>
 </html>
